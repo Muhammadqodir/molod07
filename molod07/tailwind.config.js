@@ -6,7 +6,20 @@ export default {
     './resources/**/*.vue',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Nunito', 'sans-serif'],
+      },
+      colors: {
+        primary: '#1E44A3',
+        secondary: '#F6F9FF',
+        accentbg: '#F4F6FB',
+        orange: '#EF3C04',
+        blue: '#427EF4',
+        disabled: '#B5B5B5',
+        green: '#00893F',
+      },
+    },
   },
   plugins: [],
 }

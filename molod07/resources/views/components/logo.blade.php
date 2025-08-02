@@ -1,0 +1,1 @@
+<img src="/images/logo.svg" alt="MOLOD07" class="h-10">

@@ -1,15 +1,10 @@
-<html>
-<!-- resources/views/welcome.blade.php -->
-<head>
-    @vite('resources/css/app.css')
-    @livewireStyles
-</head>
-<body>
-    <h1 class="text-2xl font-bold text-center mt-10">Привет, Laravel + Tailwind!</h1>
+@extends('layouts.app')
 
-    <x-button type="submit" class="w-full">test</x-button>
+@section('title', 'Главная')
 
-    @vite('resources/js/app.js')
-    @livewireScripts
-</body>
-</html>
+@section('content')
+<div class="max-w-screen-xl mx-auto px-6 py-10">
+    <h1 class="text-3xl font-bold mb-6">Добро пожаловать!</h1>
+    <p class="text-lg">Это главная страница платформы.</p>
+</div>
+@endsection
