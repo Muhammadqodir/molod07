@@ -3,8 +3,14 @@
 @section('title', 'Главная')
 
 @section('content')
-<div class="max-w-screen-xl mx-auto px-6 py-10">
-    <h1 class="text-3xl font-bold mb-6">Добро пожаловать!</h1>
-    <p class="text-lg">Это главная страница платформы.</p>
-</div>
+    @include("inc.main.hero")
+    @include("inc.main.about")
+    @include("inc.main.activities")
+    @include("inc.main.events")
+    @include("inc.main.vacancies")
+    @include("inc.main.features")
+    @include("inc.main.faq")
+    @include("inc.main.contacts")
+
+    @include("inc.alert")
 @endsection

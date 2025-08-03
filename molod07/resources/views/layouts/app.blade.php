@@ -13,7 +13,7 @@
   @livewireStyles
 </head>
 
-<body class="font-sans text-gray-800 bg-gray-50 antialiased pt-[80px]">
+<body class="font-sans text-gray-800 bg-white">
 
   {{-- Навигация --}}
   @include('inc.navigation')

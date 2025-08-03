@@ -1,6 +1,6 @@
 @props(['icon' => null, 'alt' => 'icon'])
 
-<div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 cursor-pointer">
+<div {{ $attributes->merge(['class' => "w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 cursor-pointer"]) }}>
     @if ($icon)
         <img src="{{ asset('images/' . $icon . '.svg') }}" alt="{{ $alt }}" class="w-5 h-5">
     @else

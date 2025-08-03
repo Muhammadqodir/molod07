@@ -19,6 +19,15 @@ export default {
         disabled: '#B5B5B5',
         green: '#00893F',
       },
+      keyframes: {
+        scroll: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' }, // смещаем половину ширины
+        },
+      },
+      animation: {
+        scroll: 'scroll 30s linear infinite',
+      },
     },
   },
   plugins: [],

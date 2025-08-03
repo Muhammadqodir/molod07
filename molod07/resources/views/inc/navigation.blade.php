@@ -1,4 +1,4 @@
-<div x-data="{ open: false }" class="fixed top-0 left-0 w-full bg-white border-b border-gray-100">
+<div x-data="{ open: false }" class="fixed z-[999999] top-0 left-0 w-full bg-white border-b border-gray-100">
 
     {{-- Навигация (десктоп) --}}
     <div class="max-w-screen-xl mx-auto flex items-center justify-between gap-4 px-6 py-4 hidden md:flex">
