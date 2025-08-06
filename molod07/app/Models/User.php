@@ -2,47 +2,69 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Profiles\YouthProfile;
+use App\Models\Profiles\PartnersProfile;
+use App\Models\Profiles\AdminsProfile;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+
+    public function getFullName(){
+        return match ($this->role) {
+            'youth' => $this->youthProfile->getName(),
+            'partner' => $this->partnersProfile->getName(),
+            'admin' => $this->admin->getName(),
+            default => "Undefined",
+        };
+    }
+
+
+    public function youthProfile()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(YouthProfile::class);
+    }
+
+    public function partnersProfile()
+    {
+        return $this->hasOne(PartnersProfile::class);
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(AdminsProfile::class);
+    }
+
+    public function getProfile()
+    {
+        return match ($this->role) {
+            'youth' => $this->youthProfile,
+            'partner' => $this->partnersProfile,
+            'admin' => $this->admin,
+            default => null,
+        };
+    }
+
+    public function getProfileOrFail()
+    {
+        $profile = $this->getProfile();
+        if (!$profile) {
+            throw new \Exception('Profile not found for role: ' . $this->role);
+        }
+        return $profile;
     }
 }

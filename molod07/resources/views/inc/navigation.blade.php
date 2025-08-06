@@ -4,8 +4,9 @@
     <div class="max-w-screen-xl mx-auto flex items-center justify-between gap-4 px-6 py-4 hidden md:flex">
 
         {{-- Логотип --}}
-        <x-logo />
-
+        <a href="{{ route('main') }}">
+            <x-logo />
+        </a>
         {{-- Левая часть --}}
         <div class="flex items-center gap-4">
             <x-button variant="outline">Стать партнёром</x-button>
@@ -76,9 +77,7 @@
             <x-nav-icon>
                 <x-lucide-heart class="h-5 w-5" />
             </x-nav-icon>
-            <x-nav-icon>
-                <x-lucide-user-plus class="h-5 w-5" />
-            </x-nav-icon>
+            <x-profile />
         </div>
 
     </div>
@@ -94,9 +93,7 @@
             <x-nav-icon>
                 <x-lucide-bell class="h-5 w-5" />
             </x-nav-icon>
-            <x-nav-icon>
-                <x-lucide-user-plus class="h-5 w-5" />
-            </x-nav-icon>
+            <x-profile />
             {{-- Открытие меню --}}
             <x-button @click="open = true" class="bg-primary text-white p-2 rounded-xl">
                 <x-lucide-menu class="w-5 h-5" />
