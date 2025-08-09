@@ -9,6 +9,7 @@
     {{-- Google Fonts: Nunito --}}
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
+    @stack('styles')
     @vite('resources/css/app.css')
     @livewireStyles
 </head>
@@ -17,6 +18,8 @@
 
     @yield('content')
 
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    @stack('scripts')
     @vite('resources/js/app.js')
     @livewireScripts
 </body>

@@ -3,22 +3,21 @@
 namespace App\Http\Controllers\Profiles;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateYouthProfileRequest;
+use App\Http\Requests\UpdateAdminProfileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class YouthProfileController extends Controller
+class AdminProfileController extends Controller
 {
-
     public function show()
     {
-        return view('youth.profile');
+        return view('admin.profile');
     }
 
-    public function updateProfile(UpdateYouthProfileRequest $request)
+    public function updateProfile(UpdateAdminProfileRequest $request)
     {
         $user = Auth::user();
-        $profile = $user->youthProfile; // assumes relation youthProfile exists
+        $profile = $user->adminsProfile;
 
         $data = $request->validated();
 

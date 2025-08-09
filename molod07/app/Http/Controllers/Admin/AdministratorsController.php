@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateAdministratorRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
+class AdministratorsController extends Controller
+{
+    public const PERMISSIONS = [
+        'admin.manage.administrators' => "Администраторы",
+        'admin.manage.youth' => "Молодежи",
+        'admin.manage.partners' => "Партнеры",
+        'admin.support' => "Поддержка",
+        'admin.feed.events' => "Мероприятии",
+        'admin.feed.news' => "Новости",
+        'admin.feed.grants' => "Гранты",
+        'admin.feed.courses' => "Курсы",
+        'admin.feed.tests' => "Тесты",
+        'admin.coins' => "Баллы",
+        'admin.employment.vacancies' => "Вакансии",
+        'admin.employment.responses' => "Отклики(вакансиям)",
+        'admin.documents' => "Документы",
+        'admin.blacklist' => "Черный список",
+    ];
+
+    public function show()
+    {
+        $admins = User::where('role', '=', "admin")->get();
+        return view('admin.manage.administrators', ['admins' => $admins]);
+    }
+
+    public function createShow()
+    {
+        $options = [];
+
+        foreach (self::PERMISSIONS as $key => $label) {
+            $options[] = ['value' => $key, 'label' => $label];
+        }
+        return view('admin.manage.create-administrator', [
+            'permissions' => $options
+        ]);
+    }
+
+    public function createAdminPost(CreateAdministratorRequest $request){
+
+        $validated = $request->validated();
+
+        $user = User::create([
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => 'admin',
+        ]);
+
+        $pic_url = "";
+        // Handle file upload
+        if ($request->hasFile('pic')) {
+            $file = $request->file('pic');
+            $filename = uniqid('pic_') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $pic_url = $filename;
+        }
+
+        $user->adminsProfile()->create([
+            'name' => $validated['name'],
+            'l_name' => $validated['l_name'],
+            'f_name' => $validated['f_name'] ?? null,
+            'phone' => $validated['phone'],
+            'permissions' => json_encode($validated['permissions']),
+            'pic' => $pic_url,
+        ]);
+
+        return redirect()->route('admin.manage.administrators')->with('success', 'Администратор успешно зарегистрирован.');
+    }
+}

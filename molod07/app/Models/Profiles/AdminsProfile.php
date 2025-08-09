@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Profiles;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,16 +12,23 @@ class AdminsProfile extends Model
         'name',
         'l_name',
         'f_name',
+        'pic',
         'phone',
         'permissions',
     ];
 
-    public function getName(){
+    public function getName()
+    {
         return $this->name . " " . $this->l_name . " " . $this->f_name;
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getPermissions()
+    {
+        return json_decode($this->permissions);
     }
 }

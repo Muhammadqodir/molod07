@@ -1,9 +1,7 @@
-<aside class="w-full max-w-xs space-y-6">
+<aside class="w-full max-w-xs space-y-6 hidden md:block">
     <!-- Profile section -->
     <div class="flex bg-white p-4 rounded-2xl shadow-sm flex-col items-left text-center space-y-2">
-        <div class="w-16 h-16 bg-[#e5efff] text-gray-700 font-bold text-2xl flex items-center justify-center rounded-lg">
-            {{ strtoupper(substr(Auth::user()->getFullName() ?? 'm', 0, 1)) }}
-        </div>
+        <x-profile-pic :user="Auth::user()"  class="w-20 h-20" />
         <div class="text-base font-semibold flex items-center gap-1">
             {{ Auth::user()->getFullName() ?? 'Имя и Фамилия' }}
             <x-lucide-badge-check class="text-blue-500 w-4 h-4" />
@@ -12,9 +10,9 @@
             <div class="flex justify-between items-center">
                 ID
                 <div class="flex ml-2">
-                    {{ sprintf('%06d', Auth::user()->id) }}
+                    {{ Auth::user()->getUserId() }}
                     <button type="button" class="ml-2 text-gray-400 hover:text-blue-500 focus:outline-none"
-                        onclick="navigator.clipboard.writeText('{{ sprintf('%06d', Auth::user()->id) }}')" title="Скопировать ID">
+                        onclick="copyUserId('{{ Auth::user()->getUserId() }}')" title="Скопировать ID">
                         <x-lucide-copy class="w-4 h-4" />
                     </button>
                 </div>
@@ -26,17 +24,31 @@
 
     <!-- Menu -->
     <ul class="space-y-1 bg-white p-4 rounded-2xl shadow-sm text-sm">
-        <x-sidebar-link icon="user-circle" label="Личные данные" active />
-        <x-sidebar-link icon="database" label="Баллы" />
-        <x-sidebar-link icon="ticket" label="Купоны" />
-        <x-sidebar-link icon="calendar" label="Мероприятия" />
-        <x-sidebar-link icon="newspaper" label="Новости" />
-        <x-sidebar-link icon="graduation-cap" label="Образование" />
-        <x-sidebar-link icon="search" label="Вакансии" />
-        <hr class="my-2">
-        <x-sidebar-link icon="settings" label="Настройки" />
-        <x-sidebar-link icon="bell" label="Уведомления" />
-        <x-sidebar-link icon="help-circle" label="Поддержка" />
-        <x-sidebar-link icon="log-out" label="Выйти" :href="route('logout')" />
+        {{ $slot }}
+
+        <li>
+            {{-- Logout --}}
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+
+                <a onclick="this.closest('form').submit()"
+                    class="flex items-center space-x-2 px-3 py-3 cursor-pointer rounded-xl hover:bg-gray-50 text-gray-700 }}">
+                    <x-dynamic-component :component="'lucide-log-out'" class="w-5 h-5" />
+                    <span>Выйти</span>
+                </a>
+            </form>
+        </li>
+
     </ul>
 </aside>
+
+@push('scripts')
+    <script>
+        function copyUserId(id) {
+            window.dispatchEvent(new CustomEvent('notify', {
+                detail: 'ID Скопирован'
+            }));
+            navigator.clipboard.writeText(id);
+        }
+    </script>
+@endpush

@@ -4,7 +4,7 @@
 ])
 
 @php
-    $base = 'inline-flex items-center justify-center h-10 gap-0 px-6 py-3 text-[16px] rounded-xl transition';
+    $base = 'inline-flex items-center justify-center h-10 gap-0 px-3 py-3 text-[16px] rounded-xl transition';
 
     $variants = [
         'primary' => 'bg-primary text-white hover:bg-[#173a8c]',

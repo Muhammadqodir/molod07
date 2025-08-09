@@ -17,7 +17,7 @@ export default {
         orange: '#EF3C04',
         blue: '#427EF4',
         disabled: '#B5B5B5',
-        green: '#00893F',
+        success: '#00893F',
       },
       keyframes: {
         scroll: {

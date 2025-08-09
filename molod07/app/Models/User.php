@@ -28,7 +28,7 @@ class User extends Authenticatable
         return match ($this->role) {
             'youth' => $this->youthProfile->getName(),
             'partner' => $this->partnersProfile->getName(),
-            'admin' => $this->admin->getName(),
+            'admin' => $this->adminsProfile->getName(),
             default => "Undefined",
         };
     }
@@ -44,7 +44,7 @@ class User extends Authenticatable
         return $this->hasOne(PartnersProfile::class);
     }
 
-    public function admin()
+    public function adminsProfile()
     {
         return $this->hasOne(AdminsProfile::class);
     }
@@ -54,7 +54,7 @@ class User extends Authenticatable
         return match ($this->role) {
             'youth' => $this->youthProfile,
             'partner' => $this->partnersProfile,
-            'admin' => $this->admin,
+            'admin' => $this->adminsProfile,
             default => null,
         };
     }
@@ -66,5 +66,9 @@ class User extends Authenticatable
             throw new \Exception('Profile not found for role: ' . $this->role);
         }
         return $profile;
+    }
+
+    public function getUserId(){
+        return sprintf('%06d', $this->id);
     }
 }

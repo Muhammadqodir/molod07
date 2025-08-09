@@ -2,7 +2,7 @@
     <div x-data="{ open: false }" class="relative">
         <!-- Trigger Button (Avatar) -->
         <button @click="open = !open" class="flex items-center gap-1 justify-center h-10 gap-0 overflow-hidden">
-            <img src="/images/ava.png" alt="Avatar" class="w-10 h-10 rounded-xl object-cover">
+            <x-profile-pic :user="Auth::user()" class="flex-none w-[40px] h-[40px] text-xl"/>
 
             <x-lucide-chevron-down class="w-4 transition-transform duration-200" x-bind:class="open ? 'rotate-180' : ''" />
         </button>
@@ -12,13 +12,13 @@
             class="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg p-4 z-50">
             <!-- Header -->
             <div class="flex items-center space-x-3 mb-4">
-                <img src="/images/ava.png" alt="Avatar" class="w-12 h-12 rounded-full object-cover">
+                <x-profile-pic :user="Auth::user()"  class="flex-none w-[70px] h-[70px]"/>
                 <div class="text-sm font-medium text-gray-800 leading-tight">{{ Auth::user()->getFullName() }}</div>
             </div>
 
             <!-- Actions -->
             <ul class="space-y-3 text-sm text-gray-700">
-                <a href="{{ route('youth.profile') }}">
+                <a href="{{ route('profile') }}">
                     <li class="flex items-center space-x-2 cursor-pointer hover:text-primary">
                         <x-lucide-settings class="w-5" />
                         <span>Настройки</span>
