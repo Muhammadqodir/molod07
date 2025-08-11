@@ -1,18 +1,13 @@
 @extends('layouts.sidebar-layout')
 
-@section('title', 'Администраторы')
+@section('title', 'Пользователи')
 
 @section('content')
     <div class="flex items-center justify-between mb-4">
-        <h1 class="text-3xl">Администраторы</h1>
-        <a href="{{ route('admin.manage.administrators.create') }}"
-            class="inline-flex items-center justify-center h-10 cursor-pointer gap-1 px-3 py-3 text-[16px] rounded-xl transition border-2 border-[#1E44A3] text-primary hover:bg-[#1E44A3]/10">
-            <x-lucide-plus class="h-5" />
-            <span class="hidden sm:inline">Добавить</span>
-        </a>
+        <h1 class="text-3xl">Пользователи</h1>
     </div>
 
-    <form method="GET" action="{{ route('admin.manage.administrators') }}" class="mb-6">
+    <form method="GET" action="{{ route('admin.manage.youth') }}" class="mb-6">
         <div class="relative mt-4">
             <x-search-input name="q" placeholder="Поиск по имени или email" :value="old('q', request('q'))" />
         </div>
@@ -20,7 +15,7 @@
 
 
 
-    @if ($admins->isEmpty())
+    @if ($youth->isEmpty())
         <x-empty title="По вашему запросу ничего не найдено." />
     @else
         {{-- Table --}}
@@ -29,14 +24,14 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="text-left font-medium px-4 py-3">Данные о пользователе</th>
-                        <th class="text-left font-medium px-4 py-3">ID</th>
-                        <th class="text-left font-medium w-full px-4 py-3">Привелегии</th>
+                        <th class="text-left font-medium px-4 py-3">Баллы</th>
+                        <th class="text-left font-medium px-4 py-3">Контакты</th>
                         <th class="text-left font-medium px-4 py-3">Действия</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach ($admins as $item)
+                    @foreach ($youth as $item)
                         @php
                             /** @var \App\Models\User $item */
                         @endphp
@@ -46,32 +41,33 @@
                                     <x-profile-pic :user="$item" class="flex-none h-[50px] w-[50px] text-sm" />
                                     <div>
                                         <div class="text-gray-800 font-medium">{{ $item->getFullName() }}</div>
-                                        <div class="text-gray-500 text-sm">{{ $item->email }}</div>
+                                        <div class="text-gray-500 text-sm">ID: {{ $item->getUserId() }}</div>
                                     </div>
                                 </div>
                             </td>
 
-                            {{-- ID --}}
+                            {{-- Coins --}}
                             <td class="px-4 py-4 text-gray-700">
-                                {{ $item->getUserId() }}
+                                <x-lucide-coins class="inline-block w-4 h-4 mb-1" /> 150
                             </td>
 
-                            {{-- Actions (tags) --}}
+                            {{-- Contacts --}}
                             <td class="px-4 py-4">
-                                <x-badges-clamped :items="$item->adminsProfile->getPermissions()" :limit="3" :title="$item->getFullName()" />
+                                <p> {{ $item->youthProfile->phone }} </p>
+                                <p> {{ $item->email }} </p>
                             </td>
+
+                            {{-- Actions --}}
                             <td class="px-2 py-4">
-                                @if($item->id == Auth::user()->id)
-                                    <div class="text-gray-500">Это вы</div>
-                                @else
                                 <div class="flex items-center justify-center">
 
-                                    <form method="POST" action="{{ $item->is_blocked ? route('admin.manage.administrators.unblock') : route('admin.manage.administrators.block') }}"
-                                        onsubmit="return confirm('Вы уверены, что хотите {{ $item->is_blocked ? 'разблокировать' : 'заблокировать' }} этого администратора?');">
+                                    <form method="POST"
+                                        action="{{ $item->is_blocked ? route('admin.manage.youth.unblock') : route('admin.manage.youth.block') }}"
+                                        onsubmit="return confirm('Вы уверены, что хотите {{ $item->is_blocked ? 'разблокировать' : 'заблокировать' }} этого пользователя?');">
                                         @csrf
                                         <input name="id" value="{{ $item->id }}" hidden>
                                         <button type="submit" class="p-0 m-0 bg-transparent border-0">
-                                            @if($item->is_blocked)
+                                            @if ($item->is_blocked)
                                                 <x-nav-icon>
                                                     <x-lucide-lock class="w-5 h-5" />
                                                 </x-nav-icon>
@@ -94,7 +90,6 @@
                                         </button>
                                     </form>
                                 </div>
-                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -107,11 +102,11 @@
 
     <div class="flex items-center justify-between mt-4">
         <div class="text-sm text-gray-500">
-            Показано {{ $admins->firstItem() }}–{{ $admins->lastItem() }} из {{ $admins->total() }}
+            Показано {{ $youth->firstItem() }}–{{ $youth->lastItem() }} из {{ $youth->total() }}
         </div>
 
         {{-- Пагинация (Tailwind-шаблон по умолчанию) --}}
-        {{ $admins->onEachSide(1)->appends(request()->except('page'))->links('vendor.pagination') }}
+        {{ $youth->onEachSide(1)->appends(request()->except('page'))->links('vendor.pagination') }}
     </div>
 
 @endsection

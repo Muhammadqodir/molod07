@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <form action="{{ route('youth.profile.post') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.profile.post') }}" method="post" enctype="multipart/form-data">
         @csrf
         <h1 class="text-3xl">Личные данные</h1>
 

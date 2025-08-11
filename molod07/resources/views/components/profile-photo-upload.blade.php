@@ -2,8 +2,8 @@
 @props(['name' => null])
 
 @php
-    $photoUrl = Auth::user()->youthProfile && Auth::user()->youthProfile->pic
-        ? asset('uploads/' . Auth::user()->youthProfile->pic)
+    $photoUrl = Auth::user()->getUserPic()
+        ? asset('uploads/' . Auth::user()->getUserPic())
         : null;
 @endphp
 <div class="mt-5">
@@ -40,7 +40,7 @@
                 <img :src="filePreview" alt="Preview" class="object-cover w-full h-full rounded-xl" />
             </template>
             <template x-if="!filePreview">
-                <span>{{ strtoupper(mb_substr(Auth::user()->name ?? ' ', 0, 1)) }}</span>
+                <span>{{ strtoupper(mb_substr(Auth::user()->getFullName() ?? ' ', 0, 1)) }}</span>
             </template>
         </div>
 

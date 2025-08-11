@@ -6,7 +6,7 @@
     {{-- Группа: Управление --}}
     <x-sidebar-group icon="user-cog" label="Управление" :open="request()->routeIs('admin.manage.*')">
         <x-sidebar-leaf route="admin.manage.administrators" label="Администраторы" />
-        <x-sidebar-leaf label="Пользователи" />
+        <x-sidebar-leaf route="admin.manage.youth" label="Пользователи" />
         <x-sidebar-leaf label="Партнеры" />
     </x-sidebar-group>
 

@@ -29,8 +29,25 @@ class AdministratorsController extends Controller
 
     public function show()
     {
-        $admins = User::where('role', '=', "admin")->get();
-        return view('admin.manage.administrators', ['admins' => $admins]);
+        $query = User::where('role', 'admin')
+            ->join('admins_profiles', 'users.id', '=', 'admins_profiles.user_id')
+            ->select('users.*', 'admins_profiles.name', 'admins_profiles.l_name', 'admins_profiles.f_name');
+
+        if ($search = request('q')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('admins_profiles.name', 'like', "%{$search}%")
+                    ->orWhere('admins_profiles.l_name', 'like', "%{$search}%")
+                    ->orWhere('admins_profiles.f_name', 'like', "%{$search}%")
+                    ->orWhere('users.email', 'like', "%{$search}%");
+            });
+        }
+
+        $admins = $query
+            ->orderByDesc('users.id')
+            ->paginate(10)
+            ->appends(request()->query());
+
+        return view('admin.manage.administrators', compact('admins'));
     }
 
     public function createShow()
@@ -45,7 +62,8 @@ class AdministratorsController extends Controller
         ]);
     }
 
-    public function createAdminPost(CreateAdministratorRequest $request){
+    public function createAdminPost(CreateAdministratorRequest $request)
+    {
 
         $validated = $request->validated();
 
@@ -74,5 +92,46 @@ class AdministratorsController extends Controller
         ]);
 
         return redirect()->route('admin.manage.administrators')->with('success', 'Администратор успешно зарегистрирован.');
+    }
+
+    public function remove(Request $request)
+    {
+        if (!isset($request["id"])) {
+            abort(400, 'Bad Request');
+        }
+        $id = $request["id"];
+        $admin = User::where('role', 'admin')->findOrFail($id);
+        $admin->adminsProfile()->delete();
+        $admin->delete();
+
+        return redirect()->route('admin.manage.administrators')->with('success', 'Администратор успешно удален.');
+    }
+
+    public function block(Request $request)
+    {
+        if (!isset($request["id"])) {
+            abort(400, 'Bad Request');
+        }
+        $id = $request["id"];
+        $admin = User::where('role', 'admin')->findOrFail($id);
+
+        $admin->is_blocked = true;
+        $admin->save();
+
+        return redirect()->route('admin.manage.administrators')->with('success', 'Администратор заблокирован.');
+    }
+
+    public function unblock(Request $request)
+    {
+        if (!isset($request["id"])) {
+            abort(400, 'Bad Request');
+        }
+        $id = $request["id"];
+        $admin = User::where('role', 'admin')->findOrFail($id);
+
+        $admin->is_blocked = false;
+        $admin->save();
+
+        return redirect()->route('admin.manage.administrators')->with('success', 'Администратор разблокирован.');
     }
 }

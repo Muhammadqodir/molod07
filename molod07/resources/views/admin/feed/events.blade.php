@@ -1,20 +1,20 @@
 @extends('layouts.sidebar-layout')
 
-@section('title', 'Администраторы')
+@section('title', 'Мероприятия')
 
 @section('content')
     <div class="flex items-center justify-between mb-4">
-        <h1 class="text-3xl">Администраторы</h1>
-        <a href="{{ route('admin.manage.administrators.create') }}"
+        <h1 class="text-3xl">Мероприятия</h1>
+        <a href="{{ route('admin.feed.events.create') }}"
             class="inline-flex items-center justify-center h-10 cursor-pointer gap-1 px-3 py-3 text-[16px] rounded-xl transition border-2 border-[#1E44A3] text-primary hover:bg-[#1E44A3]/10">
             <x-lucide-plus class="h-5" />
             <span class="hidden sm:inline">Добавить</span>
         </a>
     </div>
 
-    <form method="GET" action="{{ route('admin.manage.administrators') }}" class="mb-6">
+    <form method="GET" action="{{ route('admin.feed.events') }}" class="mb-6">
         <div class="relative mt-4">
-            <x-search-input name="q" placeholder="Поиск по имени или email" :value="old('q', request('q'))" />
+            <x-search-input name="q" placeholder="Поиск по названию" :value="old('q', request('q'))" />
         </div>
     </form>
 
@@ -28,7 +28,7 @@
             <table class="w-full text-sm">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="text-left font-medium px-4 py-3">Данные о пользователе</th>
+                        <th class="text-left font-medium px-4 py-3">Название</th>
                         <th class="text-left font-medium px-4 py-3">ID</th>
                         <th class="text-left font-medium w-full px-4 py-3">Привелегии</th>
                         <th class="text-left font-medium px-4 py-3">Действия</th>
@@ -60,28 +60,12 @@
                             <td class="px-4 py-4">
                                 <x-badges-clamped :items="$item->adminsProfile->getPermissions()" :limit="3" :title="$item->getFullName()" />
                             </td>
-                            <td class="px-2 py-4">
-                                @if($item->id == Auth::user()->id)
-                                    <div class="text-gray-500">Это вы</div>
-                                @else
-                                <div class="flex items-center justify-center">
 
-                                    <form method="POST" action="{{ $item->is_blocked ? route('admin.manage.administrators.unblock') : route('admin.manage.administrators.block') }}"
-                                        onsubmit="return confirm('Вы уверены, что хотите {{ $item->is_blocked ? 'разблокировать' : 'заблокировать' }} этого администратора?');">
-                                        @csrf
-                                        <input name="id" value="{{ $item->id }}" hidden>
-                                        <button type="submit" class="p-0 m-0 bg-transparent border-0">
-                                            @if($item->is_blocked)
-                                                <x-nav-icon>
-                                                    <x-lucide-lock class="w-5 h-5" />
-                                                </x-nav-icon>
-                                            @else
-                                                <x-nav-icon>
-                                                    <x-lucide-unlock class="w-5 h-5" />
-                                                </x-nav-icon>
-                                            @endif
-                                        </button>
-                                    </form>
+                            <td class="px-2 py-4">
+                                <div class="flex items-center justify-center">
+                                    <x-nav-icon>
+                                        <x-lucide-ban class="w-5 h-5" />
+                                    </x-nav-icon>
 
                                     <form method="POST" action="{{ route('admin.manage.youth.remove') }}"
                                         onsubmit="return confirm('Вы уверены, что хотите удалить этого пользователя?');">
@@ -94,7 +78,6 @@
                                         </button>
                                     </form>
                                 </div>
-                                @endif
                             </td>
                         </tr>
                     @endforeach

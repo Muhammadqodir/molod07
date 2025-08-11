@@ -6,4 +6,6 @@
 
     <h1 class="text-3xl">Поддержка</h1>
 
+    <x-empty />
+
 @endsection

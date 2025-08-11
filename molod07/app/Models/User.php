@@ -24,7 +24,8 @@ class User extends Authenticatable
     ];
 
 
-    public function getFullName(){
+    public function getFullName()
+    {
         return match ($this->role) {
             'youth' => $this->youthProfile->getName(),
             'partner' => $this->partnersProfile->getName(),
@@ -59,6 +60,12 @@ class User extends Authenticatable
         };
     }
 
+    public function getUserPic()
+    {
+        $profile = $this->getProfile();
+        return $profile->pic;
+    }
+
     public function getProfileOrFail()
     {
         $profile = $this->getProfile();
@@ -68,7 +75,8 @@ class User extends Authenticatable
         return $profile;
     }
 
-    public function getUserId(){
+    public function getUserId()
+    {
         return sprintf('%06d', $this->id);
     }
 }
