@@ -45,22 +45,23 @@
             @endphp
 
             <button type="button"
-                class="px-4 py-2 rounded-xl border text-sm
+                class="px-4 py-2 rounded-xl text-sm
                        transition-colors
                        data-pill
-                       border-gray-200 bg-gray-50 text-gray-700
-                       hover:bg-gray-100"
+                       bg-primary/10 text-gray-500"
                 :class="isSelected(@js($val)) ?
-                    'bg-primary/10 text-primary border-primary' :
+                    'bg-primary/25 text-primary' :
                     ''"
                 @click="toggle(@js($val))">
+                @if (isset($opt['icon']))
+                    <x-dynamic-component :component="'lucide-' . $opt['icon']" class="w-4 h-4 inline mr-0.5 mb-1" />
+                @endif
                 {{ $label }}
             </button>
         @endforeach
     </div>
 
-    <!-- скрытое поле с JSON -->
-    <input type="hidden" :name="name" x-model="json" />
+    <input type="hidden" :name="name" :value="inputValue" />
 </div>
 
 @once
@@ -74,14 +75,12 @@
                 return {
                     name,
                     selected: Array.isArray(initial) ? [...initial] : [],
-                    get json() {
-                        return JSON.stringify(this.selected);
+                    get inputValue() {
+                        return multiple ? JSON.stringify(this.selected) : (this.selected[0] ?? '');
                     },
-
                     isSelected(v) {
                         return this.selected.includes(v);
                     },
-
                     toggle(v) {
                         if (multiple) {
                             this.isSelected(v) ?

@@ -10,6 +10,15 @@
         <x-sidebar-leaf label="Партнеры" />
     </x-sidebar-group>
 
+
+    {{-- Группа: Мероприятия --}}
+    <x-sidebar-group icon="calendar-check" label="Мероприятия" :open="request()->routeIs('admin.events.*')">
+        <x-sidebar-leaf route="admin.events.index" label="Активные" />
+        <x-sidebar-leaf route="admin.events.requests" label="Заявки" />
+        <x-sidebar-leaf route="admin.events.archive" label="Архив" />
+
+    </x-sidebar-group>
+
     {{-- Группа: Лента --}}
     <x-sidebar-group icon="newspaper" label="Лента">
         <x-sidebar-leaf label="Мероприятия" />

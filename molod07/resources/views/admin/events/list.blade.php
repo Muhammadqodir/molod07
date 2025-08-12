@@ -5,22 +5,20 @@
 @section('content')
     <div class="flex items-center justify-between mb-4">
         <h1 class="text-3xl">Мероприятия</h1>
-        <a href="{{ route('admin.feed.events.create') }}"
+        <a href="{{ route('admin.events.create') }}"
             class="inline-flex items-center justify-center h-10 cursor-pointer gap-1 px-3 py-3 text-[16px] rounded-xl transition border-2 border-[#1E44A3] text-primary hover:bg-[#1E44A3]/10">
             <x-lucide-plus class="h-5" />
             <span class="hidden sm:inline">Добавить</span>
         </a>
     </div>
 
-    <form method="GET" action="{{ route('admin.feed.events') }}" class="mb-6">
+    <form method="GET" action="{{ route('main') }}" class="mb-6">
         <div class="relative mt-4">
             <x-search-input name="q" placeholder="Поиск по названию" :value="old('q', request('q'))" />
         </div>
     </form>
 
-
-
-    @if ($admins->isEmpty())
+    @if ($events->isEmpty())
         <x-empty title="По вашему запросу ничего не найдено." />
     @else
         {{-- Table --}}
@@ -29,36 +27,33 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="text-left font-medium px-4 py-3">Название</th>
-                        <th class="text-left font-medium px-4 py-3">ID</th>
-                        <th class="text-left font-medium w-full px-4 py-3">Привелегии</th>
+                        <th class="text-left font-medium px-4 py-3">Категория</th>
+                        <th class="text-left font-medium w-full px-4 py-3">Населённый пункт</th>
                         <th class="text-left font-medium px-4 py-3">Действия</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach ($admins as $item)
+                    @foreach ($events as $item)
                         @php
-                            /** @var \App\Models\User $item */
+                            /** @var \App\Models\Event $item */
                         @endphp
                         <tr class="border-t border-gray-100">
                             <td class="px-4 py-4">
                                 <div class="flex items-center gap-3">
-                                    <x-profile-pic :user="$item" class="flex-none h-[50px] w-[50px] text-sm" />
                                     <div>
-                                        <div class="text-gray-800 font-medium">{{ $item->getFullName() }}</div>
-                                        <div class="text-gray-500 text-sm">{{ $item->email }}</div>
+                                        <div class="text-gray-800 font-medium">{{ $item->title }}</div>
+                                        <div class="text-gray-500 text-sm">{{ $item->short_description }}</div>
                                     </div>
                                 </div>
                             </td>
 
-                            {{-- ID --}}
                             <td class="px-4 py-4 text-gray-700">
-                                {{ $item->getUserId() }}
+                                {{ $item->category }}
                             </td>
 
-                            {{-- Actions (tags) --}}
                             <td class="px-4 py-4">
-                                <x-badges-clamped :items="$item->adminsProfile->getPermissions()" :limit="3" :title="$item->getFullName()" />
+                                {{ $item->settlement }}
                             </td>
 
                             <td class="px-2 py-4">
@@ -90,11 +85,11 @@
 
     <div class="flex items-center justify-between mt-4">
         <div class="text-sm text-gray-500">
-            Показано {{ $admins->firstItem() }}–{{ $admins->lastItem() }} из {{ $admins->total() }}
+            Показано {{ $events->firstItem() }}–{{ $events->lastItem() }} из {{ $events->total() }}
         </div>
 
         {{-- Пагинация (Tailwind-шаблон по умолчанию) --}}
-        {{ $admins->onEachSide(1)->appends(request()->except('page'))->links('vendor.pagination') }}
+        {{ $events->onEachSide(1)->appends(request()->except('page'))->links('vendor.pagination') }}
     </div>
 
 @endsection

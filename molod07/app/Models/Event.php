@@ -33,6 +33,8 @@ class Event extends Model
         'telegram',
         'vk',
         'roles',
+        'status',
+        'admin_id',
     ];
 
     protected $casts = [

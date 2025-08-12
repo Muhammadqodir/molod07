@@ -6,23 +6,26 @@
     </label>
 @endif
 
-<div id="toolbar-container" class="bg-[#f7f9fc] border border-b-0 rounded-t-md md:rounded-t-lg">
-    <span class="ql-formats">
-        <button class="ql-bold"></button>
-        <button class="ql-italic"></button>
-        <button class="ql-underline"></button>
-        <button class="ql-list" value="ordered"></button>
-        <button class="ql-list" value="bullet"></button>
-        <button class="ql-link"></button>
-        <button class="ql-clean"></button>
-    </span>
-</div>
-<!-- Create the editor container -->
-<div id="editor" style="font-family: Nunito !important"
-    class="w-full h-[200px] bg-[#f7f9fc] border border-t-0 rounded-b-md md:rounded-b-lg">
+<div>
+    <div id="toolbar-container" class="bg-[#f7f9fc] border border-b-0 rounded-t-md md:rounded-t-lg">
+        <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+            <button class="ql-link"></button>
+            <button class="ql-clean"></button>
+        </span>
+    </div>
+    <!-- Create the editor container -->
+    <div id="editor" style="font-family: Nunito !important"
+        class="w-full h-[200px] bg-[#f7f9fc] border border-t-0 rounded-b-md md:rounded-b-lg">
+    </div>
+
+    <textarea name="{{ $name }}" hidden id="editorTextarea">{!! $value !!}</textarea>
 </div>
 
-<textarea name="{{ $name }}" hidden id="editorTextarea">{!! $value !!}</textarea>
 @once
     @push('styles')
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">

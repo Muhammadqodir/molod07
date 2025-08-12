@@ -13,30 +13,31 @@ class CreateEventRequest extends FormRequest
     {
         return true;
     }
-public function rules(): array
+
+    public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'nullable|exists:users,id',
 
             'category' => 'required|string|max:255',
             'type' => 'required|string|max:255',
-            'cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'cover' => 'required|image|mimes:jpg,jpeg,png|max:2048',
 
             'title' => 'required|string|max:255',
             'short_description' => 'required|string|max:500',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
 
             'address' => 'nullable|string|max:255',
-            'settlement' => 'nullable|string|max:255',
+            'settlement' => 'required|string|max:255',
 
             'start' => 'required|date',
-            'end' => 'nullable|date|after_or_equal:start',
+            'end' => 'required|date|after_or_equal:start',
 
             'supervisor_id' => 'nullable|integer',
-            'supervisor_name' => 'nullable|string|max:255',
-            'supervisor_l_name' => 'nullable|string|max:255',
-            'supervisor_phone' => 'nullable|string|max:20',
-            'supervisor_email' => 'nullable|email|max:255',
+            'supervisor_name' => 'required|string|max:255',
+            'supervisor_l_name' => 'required|string|max:255',
+            'supervisor_phone' => 'required|string|max:20',
+            'supervisor_email' => 'required|email|max:255',
 
             'docs' => 'nullable|array',
             'docs.*' => 'file|max:5120',
@@ -51,8 +52,10 @@ public function rules(): array
             'telegram' => 'nullable|string|max:255',
             'vk' => 'nullable|string|max:255',
 
-            'roles' => 'nullable|array',
-            'roles.*' => 'string|max:255',
+            'roles' => 'required|string',
+
+            'status' => 'nullable|string|in:pending,approved,rejected',
+            'admin_id' => 'nullable|integer|exists:users,id',
         ];
     }
 

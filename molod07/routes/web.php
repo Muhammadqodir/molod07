@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\AdministratorsController;
+use App\Http\Controllers\Admin\ManageEventsController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\YouthController;
 use App\Http\Controllers\Auth\RegisterYouthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\EventsController;
 use App\Http\Controllers\Profiles\AdminProfileController;
 use App\Http\Controllers\Profiles\YouthProfileController;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +53,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/manage/youth/remove', [YouthController::class, 'remove'])->name('admin.manage.youth.remove');
     Route::post('admin/manage/youth/block', [YouthController::class, 'block'])->name('admin.manage.youth.block');
     Route::post('admin/manage/youth/unblock', [YouthController::class, 'unblock'])->name('admin.manage.youth.unblock');
+
+    //Events
+    Route::get('admin/events/list', [ManageEventsController::class, 'show'])->name('admin.events.index')->defaults('type', 'actual');
+    Route::get('admin/events/requests', [ManageEventsController::class, 'show'])->name('admin.events.requests')->defaults('type', 'requests');
+    Route::get('admin/events/archive', [ManageEventsController::class, 'show'])->name('admin.events.archive')->defaults('type', 'archive');
+    Route::get('admin/events/create', [ManageEventsController::class, 'create'])->name('admin.events.create');
+    Route::post('admin/events/create', [ManageEventsController::class, 'store'])->name('admin.events.store');
 
     //Support
     Route::get('admin/support', [SupportController::class, 'show'])->name('admin.support');
