@@ -131,7 +131,7 @@
                     value="{{ old('supervisor_name') }}" />
                 <x-input label="Фамилия" name="supervisor_l_name" placeholder="Укажите фамилию"
                     value="{{ old('supervisor_l_name') }}" />
-                <x-input label="Номер телефона" name="supervisor_phone" placeholder="+7(999)999-99-99"
+                <x-input type="tel" label="Номер телефона" name="supervisor_phone" placeholder="+7(999)999-99-99"
                     value="{{ old('supervisor_phone') }}" />
             </div>
 
@@ -185,3 +185,43 @@
 
 
 @endsection
+
+
+@once
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const idInput = document.querySelector('[name="supervisor_id"]');
+                const nameInput = document.querySelector('[name="supervisor_name"]');
+                const lnameInput = document.querySelector('[name="supervisor_l_name"]');
+                const phoneInput = document.querySelector('[name="supervisor_phone"]');
+                const emailInput = document.querySelector('[name="supervisor_email"]');
+
+                let timeout = null;
+
+                idInput.addEventListener('input', function() {
+                    clearTimeout(timeout);
+
+                    const id = idInput.value.trim();
+                    if (!id) return;
+
+                    timeout = setTimeout(() => {
+                        fetch(`/admin/get-user/${id}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.error) {
+                                    console.log(data.error);
+                                    return;
+                                }
+                                nameInput.value = data.name || '';
+                                lnameInput.value = data.l_name || '';
+                                phoneInput.value = data.phone || '';
+                                emailInput.value = data.email || '';
+                            })
+                            .catch(err => console.error(err));
+                    }, 500); // задержка, чтобы не спамить сервер
+                });
+            });
+        </script>
+    @endpush
+@endonce

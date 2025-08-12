@@ -243,6 +243,7 @@
                         this.pushFiles(e.target.files, type);
                         // очистим value, чтобы можно было выбрать те же файлы повторно
                         e.target.value = '';
+                        this.syncInput(type);
                     },
 
                     handleDrop(e, type) {

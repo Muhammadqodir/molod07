@@ -32,6 +32,7 @@
             {{ $attributes }}
             @if ($name)
                 name="{{ $name }}"
+                value="{{ old($name, $value) }}"
             @endif
             id="{{ $id ?? $name }}"
             x-bind:type="inputType === 'password' && show ? 'text' : inputType"

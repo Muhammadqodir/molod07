@@ -46,7 +46,7 @@ class CreateEventRequest extends FormRequest
             'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
 
             'videos' => 'nullable|array',
-            'videos.*' => 'url',
+            'videos.*' => 'file|mimetypes:video/*|max:102400',
 
             'web' => 'nullable|url|max:255',
             'telegram' => 'nullable|string|max:255',

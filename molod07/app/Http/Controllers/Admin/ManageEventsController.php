@@ -37,6 +37,8 @@ class ManageEventsController extends Controller
 
     public function store(CreateEventRequest $request)
     {
+
+        // dd('Store event', $request->all());
         $v = $request->validated();
 
         // если user_id не прислан — берём из auth
@@ -92,10 +94,19 @@ class ManageEventsController extends Controller
                 }
             }
 
-            if ($docPaths || $imagePaths) {
+            // videos (массив видео)
+            $videoPaths = [];
+            if ($request->hasFile('videos')) {
+                foreach ($request->file('videos') as $video) {
+                    $videoPaths[] = $video->store("events/{$event->id}/videos", 'public');
+                }
+            }
+
+            if ($docPaths || $imagePaths || $videoPaths) {
                 $event->update([
                     'docs'   => $docPaths ?: [],
                     'images' => $imagePaths ?: [],
+                    'videos' => $videoPaths ?: [],
                 ]);
             }
 

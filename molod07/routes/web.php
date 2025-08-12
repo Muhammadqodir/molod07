@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\Profiles\AdminProfileController;
 use App\Http\Controllers\Profiles\YouthProfileController;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -63,6 +64,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     //Support
     Route::get('admin/support', [SupportController::class, 'show'])->name('admin.support');
+
+
+
+    Route::get('/admin/get-user/{id}', function ($id) {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['error' => 'Пользователь не найден'], 404);
+        }
+        return response()->json([
+            'name' => $user->getProfile()->name,
+            'l_name' => $user->getProfile()->l_name,
+            'phone' => $user->getProfile()->phone,
+            'email' => $user->email,
+        ]);
+    })->name('admin.get.user');
 });
 
 //Profile redirect
