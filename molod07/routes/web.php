@@ -4,7 +4,9 @@ use App\Http\Controllers\Admin\AdministratorsController;
 use App\Http\Controllers\Admin\ManageEventsController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\YouthController;
+use App\Http\Controllers\Auth\RegisterPartnerController;
 use App\Http\Controllers\Auth\RegisterYouthController;
+use App\Http\Controllers\Profiles\PartnerProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\EventsController;
@@ -20,6 +22,9 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/register/youth', [RegisterYouthController::class, 'show'])->name('youth.reg');
     Route::post('/register/youth', [RegisterYouthController::class, 'register'])->name("youth.reg.post");
+
+    Route::get('/register/partner', [RegisterPartnerController::class, 'show'])->name('partner.reg');
+    Route::post('/register/partner', [RegisterPartnerController::class, 'register'])->name("partner.reg.post");
 });
 
 
@@ -34,6 +39,13 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 Route::middleware(['auth', 'role:youth'])->group(function () {
     Route::get('/profile/youth', [YouthProfileController::class, 'show'])->name('youth.profile');
     Route::post('/profile/youth/post', [YouthProfileController::class, 'updateProfile'])->name('youth.profile.post');
+});
+
+
+//Partner routes
+Route::middleware(['auth', 'role:partner'])->group(function () {
+    Route::get('/profile/partner', [PartnerProfileController::class, 'show'])->name('partner.profile');
+    Route::post('/profile/partner/post', [PartnerProfileController::class, 'updateProfile'])->name('partner.profile.post');
 });
 
 //Admin routes
@@ -56,11 +68,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/manage/youth/unblock', [YouthController::class, 'unblock'])->name('admin.manage.youth.unblock');
 
     //Events
-    Route::get('admin/events/list', [ManageEventsController::class, 'show'])->name('admin.events.index')->defaults('type', 'actual');
-    Route::get('admin/events/requests', [ManageEventsController::class, 'show'])->name('admin.events.requests')->defaults('type', 'requests');
-    Route::get('admin/events/archive', [ManageEventsController::class, 'show'])->name('admin.events.archive')->defaults('type', 'archive');
+    Route::get('admin/events/list', [ManageEventsController::class, 'show'])->name('admin.events.index')->defaults('status', 'active');
+    Route::get('admin/events/requests', [ManageEventsController::class, 'show'])->name('admin.events.requests')->defaults('status', 'pending');
+    Route::get('admin/events/archive', [ManageEventsController::class, 'show'])->name('admin.events.archive')->defaults('status', 'archived');
     Route::get('admin/events/create', [ManageEventsController::class, 'create'])->name('admin.events.create');
     Route::post('admin/events/create', [ManageEventsController::class, 'store'])->name('admin.events.store');
+    Route::get('admin/events/preview/{id}', [ManageEventsController::class, 'preview'])->name('admin.events.preview');
 
     //Support
     Route::get('admin/support', [SupportController::class, 'show'])->name('admin.support');
@@ -79,6 +92,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'email' => $user->email,
         ]);
     })->name('admin.get.user');
+
+    Route::get('/admin/get-partner/{id}', function ($id) {
+        $partner = User::where('role', 'partner')->find($id);
+        if (!$partner) {
+            return response()->json(['error' => 'Партнер не найден'], 404);
+        }
+        return response()->json([
+            'name' => $partner->getProfile()->name,
+            'l_name' => $partner->getProfile()->l_name,
+            'phone' => $partner->getProfile()->phone,
+            'email' => $partner->email,
+        ]);
+    })->name('admin.get.partner');
 });
 
 //Profile redirect

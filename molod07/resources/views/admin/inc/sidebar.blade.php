@@ -16,8 +16,14 @@
         <x-sidebar-leaf route="admin.events.index" label="Активные" />
         <x-sidebar-leaf route="admin.events.requests" label="Заявки" />
         <x-sidebar-leaf route="admin.events.archive" label="Архив" />
-
     </x-sidebar-group>
+
+
+    {{-- Группа: Новости --}}
+    {{-- <x-sidebar-group icon="newspaper" label="Новости" :open="request()->routeIs('admin.news.*')">
+        <x-sidebar-leaf route="admin.news.index" label="Все новости" />
+        <x-sidebar-leaf route="admin.news.create" label="Создать новость" />
+    </x-sidebar-group> --}}
 
     {{-- Группа: Лента --}}
     <x-sidebar-group icon="newspaper" label="Лента">

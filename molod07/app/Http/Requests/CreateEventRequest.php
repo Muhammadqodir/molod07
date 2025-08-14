@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateEventRequest extends FormRequest
@@ -17,7 +18,16 @@ class CreateEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'nullable|exists:users,id',
+            'user_id' => [
+                'required',
+                'exists:users,id',
+                function ($attribute, $value, $fail) {
+                    $user = User::find($value);
+                    if (!$user || $user->type !== 'partner') {
+                        $fail('Выбранный пользователь должен быть партнёром.');
+                    }
+                },
+            ],
 
             'category' => 'required|string|max:255',
             'type' => 'required|string|max:255',
@@ -46,7 +56,7 @@ class CreateEventRequest extends FormRequest
             'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
 
             'videos' => 'nullable|array',
-            'videos.*' => 'file|mimetypes:video/*|max:102400',
+            'videos.*' => 'file|max:102400',
 
             'web' => 'nullable|url|max:255',
             'telegram' => 'nullable|string|max:255',

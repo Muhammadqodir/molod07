@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers\Profiles;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdatePartnerProfileRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class PartnerProfileController extends Controller
+{
+
+    public function show()
+    {
+        return view('partner.profile');
+    }
+
+    public function updateProfile(UpdatePartnerProfileRequest $request)
+    {
+        $user = Auth::user();
+        $profile = $user->partnerProfile; // assumes relation partnerProfile exists
+
+        $data = $request->validated();
+
+        // Handle file upload
+        if ($request->hasFile('pic')) {
+            $file = $request->file('pic');
+            $filename = uniqid('pic_') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $data['pic'] = $filename;
+        }
+
+        if ($request->boolean('remove_pic')) {
+            $data['pic'] = null;
+        }
+
+        $profile->update($data);
+
+        return redirect()->back()->with('success', 'Профиль успешно обновлен!');
+    }
+}

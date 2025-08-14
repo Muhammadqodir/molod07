@@ -9,7 +9,9 @@
         </a>
         {{-- Левая часть --}}
         <div class="flex items-center gap-4">
-            <x-button variant="outline">Стать партнёром</x-button>
+            <a href="{{ route('partner.reg') }}">
+                <x-button variant="outline">Стать партнёром</x-button>
+            </a>
             <x-icon-button icon="vk" />
             <x-icon-button icon="telega" />
         </div>

@@ -27,8 +27,8 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="text-left font-medium px-4 py-3">Название</th>
-                        <th class="text-left font-medium px-4 py-3">Категория</th>
-                        <th class="text-left font-medium w-full px-4 py-3">Населённый пункт</th>
+                        <th class="text-left font-medium px-4 py-3">Статус</th>
+                        <th class="text-left font-medium px-4 py-3">Руководитель</th>
                         <th class="text-left font-medium px-4 py-3">Действия</th>
                     </tr>
                 </thead>
@@ -41,6 +41,8 @@
                         <tr class="border-t border-gray-100">
                             <td class="px-4 py-4">
                                 <div class="flex items-center gap-3">
+                                    <img src="{{ asset('storage/' . $item->cover) }}" alt="{{ $item->title }}"
+                                        class="w-10 h-10 object-cover rounded-lg" />
                                     <div>
                                         <div class="text-gray-800 font-medium">{{ $item->title }}</div>
                                         <div class="text-gray-500 text-sm">{{ $item->short_description }}</div>
@@ -49,17 +51,44 @@
                             </td>
 
                             <td class="px-4 py-4 text-gray-700">
-                                {{ $item->category }}
+                                <span
+                                    class="inline-block px-2 py-1 rounded bg-gray-100 text-gray-800 text-xs font-semibold">
+                                    {{ $item->status }}
+                                </span>
                             </td>
 
                             <td class="px-4 py-4">
-                                {{ $item->settlement }}
+                                {{ $item->getSupervisorFullName() ?? 'Не указан' }}
                             </td>
 
                             <td class="px-2 py-4">
                                 <div class="flex items-center justify-center">
-                                    <x-nav-icon>
-                                        <x-lucide-ban class="w-5 h-5" />
+
+                                    <a href="{{ route('admin.events.preview', $item->id) }}" class="p-0 m-0 bg-transparent border-0" title="Одобрить">
+                                        <x-nav-icon>
+                                            <x-lucide-eye class="w-5 h-5" />
+                                        </x-nav-icon>
+                                    </a>
+
+                                    <form method="POST" action="{{ route('main', $item->id) }}" class="mr-2">
+                                        @csrf
+                                        <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Одобрить">
+                                            <x-nav-icon>
+                                                <x-lucide-check class="w-5 h-5 text-green-600" />
+                                            </x-nav-icon>
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{{ route('main', $item->id) }}" class="mr-2">
+                                        @csrf
+                                        <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Отклонить">
+                                            <x-nav-icon>
+                                                <x-lucide-x class="w-5 h-5 text-red-600" />
+                                            </x-nav-icon>
+                                        </button>
+                                    </form>
+
+                                    {{-- <x-nav-icon>
+                                        <x-lucide-pen class="w-5 h-5" />
                                     </x-nav-icon>
 
                                     <form method="POST" action="{{ route('admin.manage.youth.remove') }}"
@@ -71,7 +100,7 @@
                                                 <x-lucide-trash-2 class="w-5 h-5" />
                                             </x-nav-icon>
                                         </button>
-                                    </form>
+                                    </form> --}}
                                 </div>
                             </td>
                         </tr>

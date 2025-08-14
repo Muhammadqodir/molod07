@@ -50,4 +50,8 @@ class Event extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getSupervisorFullName(){
+        return trim("{$this->supervisor_name} {$this->supervisor_l_name}");
+    }
 }

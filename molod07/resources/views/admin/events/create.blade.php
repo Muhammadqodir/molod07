@@ -11,6 +11,47 @@
 
         {{-- Категория --}}
         <section class="space-y-3">
+
+            <div class="text-lg font-medium">Организатор мероприятия</div>
+
+            <x-input label="ID партнера" name="partner_id" placeholder="ID партнера" value="{{ old('partner_id') }}" />
+            <small id="partner_name">Введите ID партнера</small>
+
+            @push('scripts')
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const partnerIdInput = document.querySelector('[name="partner_id"]');
+                        const partnerNameElem = document.getElementById('partner_name');
+                        let timeout = null;
+
+                        partnerIdInput.addEventListener('input', function() {
+                            clearTimeout(timeout);
+                            const id = partnerIdInput.value.trim();
+                            if (!id) {
+                                partnerNameElem.textContent = 'Введите ID партнера';
+                                return;
+                            }
+                            timeout = setTimeout(() => {
+                                fetch(`/admin/get-partner/${id}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.error || !data.name) {
+                                            partnerNameElem.textContent = 'Партнер не найден';
+                                            return;
+                                        }
+                                        partnerNameElem.textContent = data.name;
+                                    })
+                                    .catch(() => {
+                                        partnerNameElem.textContent = 'Ошибка поиска партнера';
+                                    });
+                            }, 500);
+                        });
+                    });
+                </script>
+            @endpush
+
+            <hr>
+
             <div class="text-lg font-medium">Направление мероприятия</div>
 
             @php

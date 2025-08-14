@@ -13,21 +13,25 @@ class ManageEventsController extends Controller
 {
     public function show(Request $request)
     {
-        $request->merge([
-            'type' => $request->input('type', 'actual'),
-        ]);
+        $status = $request->query('status', $request->route('status'));
         $q = $request->string('q')->toString();
-
         $events = Event::query()
             ->when($q, fn($qry) => $qry->where(function ($w) use ($q) {
-                $w->where('title', 'like', "%{$q}%")
-                    ->orWhere('short_description', 'like', "%{$q}%");
+            $w->where('title', 'like', "%{$q}%")
+                ->orWhere('short_description', 'like', "%{$q}%");
             }))
+            ->where('status', $status)
             ->orderByDesc('id')
             ->paginate(12)
             ->appends($request->query());
 
         return view('admin.events.list', compact('events', 'q'));
+    }
+
+    public function preview($id)
+    {
+        $event = Event::findOrFail($id);
+        return view('pages.event', compact('event'));
     }
 
     public function create()
@@ -74,7 +78,7 @@ class ManageEventsController extends Controller
             // 2) файлы
             // cover (один)
             if ($request->hasFile('cover')) {
-                $path = $request->file('cover')->store("events/{$event->id}/cover", 'public');
+                $path = $request->file('cover')->store("uploads/events{$event->id}/cover", 'public');
                 $event->update(['cover' => $path]);
             }
 
@@ -82,7 +86,7 @@ class ManageEventsController extends Controller
             $docPaths = [];
             if ($request->hasFile('docs')) {
                 foreach ($request->file('docs') as $file) {
-                    $docPaths[] = $file->store("events/{$event->id}/docs", 'public');
+                    $docPaths[] = $file->store("uploads/events{$event->id}/docs", 'public');
                 }
             }
 
@@ -90,7 +94,7 @@ class ManageEventsController extends Controller
             $imagePaths = [];
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $img) {
-                    $imagePaths[] = $img->store("events/{$event->id}/images", 'public');
+                    $imagePaths[] = $img->store("uploads/events{$event->id}/images", 'public');
                 }
             }
 
@@ -98,7 +102,7 @@ class ManageEventsController extends Controller
             $videoPaths = [];
             if ($request->hasFile('videos')) {
                 foreach ($request->file('videos') as $video) {
-                    $videoPaths[] = $video->store("events/{$event->id}/videos", 'public');
+                    $videoPaths[] = $video->store("uploads/events{$event->id}/videos", 'public');
                 }
             }
 
