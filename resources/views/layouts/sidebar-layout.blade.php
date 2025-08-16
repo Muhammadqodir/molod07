@@ -35,7 +35,7 @@
                     @break
 
                     @case('partner')
-                        @include('admin.inc.sidebar')
+                        @include('partner.inc.sidebar')
                     @break
                 @endswitch
 

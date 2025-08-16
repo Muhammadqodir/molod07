@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdministratorsController;
 use App\Http\Controllers\Admin\ManageEventsController;
+use App\Http\Controllers\Admin\PartnersController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\YouthController;
 use App\Http\Controllers\Auth\RegisterPartnerController;
@@ -66,6 +67,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/manage/youth/remove', [YouthController::class, 'remove'])->name('admin.manage.youth.remove');
     Route::post('admin/manage/youth/block', [YouthController::class, 'block'])->name('admin.manage.youth.block');
     Route::post('admin/manage/youth/unblock', [YouthController::class, 'unblock'])->name('admin.manage.youth.unblock');
+
+
+    //Partners
+    Route::get('admin/manage/partners', [PartnersController::class, 'show'])->name('admin.manage.partners');
+    Route::post('admin/manage/partners/remove', [PartnersController::class, 'remove'])->name('admin.manage.partners.remove');
+    Route::post('admin/manage/partners/block', [PartnersController::class, 'block'])->name('admin.manage.partners.block');
+    Route::post('admin/manage/partners/unblock', [PartnersController::class, 'unblock'])->name('admin.manage.partners.unblock');
 
     //Events
     Route::get('admin/events/list', [ManageEventsController::class, 'show'])->name('admin.events.index')->defaults('status', 'active');

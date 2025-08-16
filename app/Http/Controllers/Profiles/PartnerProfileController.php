@@ -18,7 +18,7 @@ class PartnerProfileController extends Controller
     public function updateProfile(UpdatePartnerProfileRequest $request)
     {
         $user = Auth::user();
-        $profile = $user->partnerProfile; // assumes relation partnerProfile exists
+        $profile = $user->partnersProfile; // assumes relation partnerProfile exists
 
         $data = $request->validated();
 

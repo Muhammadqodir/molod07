@@ -27,6 +27,11 @@ class PartnersProfile extends Model
         return $this->org_name;
     }
 
+    public function getDirector()
+    {
+        return trim("{$this->person_name} {$this->person_lname}");
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

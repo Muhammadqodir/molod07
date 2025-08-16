@@ -29,7 +29,7 @@
                 </div>
 
                 <div x-show="step === 2">
-                    <x-input name="address" type="text" label="Населенный пункт"
+                    <x-input name="org_address" type="text" label="Населенный пункт"
                         placeholder="Введите населенный пункт" />
                     <x-input name="email" type="email" label="E-mail" placeholder="Укажите e-mail" />
                     <x-input name="phone" type="tel" label="Телефон" placeholder="+7(999)999-99-99" />

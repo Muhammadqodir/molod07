@@ -1,7 +1,7 @@
 <aside class="w-full max-w-xs space-y-6 hidden md:block">
     <!-- Profile section -->
     <div class="flex bg-white p-4 rounded-2xl shadow-sm flex-col items-left text-center space-y-2">
-        <x-profile-pic :user="Auth::user()"  class="w-20 h-20" />
+        <x-profile-pic :user="Auth::user()" class="w-20 h-20" />
         <div class="text-base font-semibold flex items-center gap-1">
             {{ Auth::user()->getFullName() ?? 'Имя и Фамилия' }}
             <x-lucide-badge-check class="text-blue-500 w-4 h-4" />
@@ -18,7 +18,21 @@
                 </div>
 
             </div>
-            <div class="flex justify-between">Баллы <span class="ml-2">100</span></div>
+
+            @switch(Auth::user()->role)
+                @case('admin')
+                    <div></div>
+                @break
+
+                @case('youth')
+                    <div class="flex justify-between">Баллы <span class="ml-2">100</span></div>
+                @break
+
+                @case('partner')
+                    <div class="flex justify-between mt-1">Мероприятия <span class="ml-2">0</span></div>
+                    <div class="flex justify-between mt-1">Вакансии <span class="ml-2">0</span></div>
+                @break
+            @endswitch
         </div>
     </div>
 

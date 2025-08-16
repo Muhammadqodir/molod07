@@ -21,7 +21,7 @@
                     value="{{ Auth::user()->partnersProfile->person_name }}" />
                 <x-input label="Фамилия руководителя" name="person_lname" placeholder="Укажите фамилию руководителя"
                     value="{{ Auth::user()->partnersProfile->person_lname }}" />
-                <x-input label="Отчество руководителя" name="person_lname" placeholder="Укажите отчество руководителя"
+                <x-input label="Отчество руководителя" name="person_fname" placeholder="Укажите отчество руководителя"
                     value="{{ Auth::user()->partnersProfile->person_fname }}" :help="'не обязательно к заполнению'" />
             </div>
         </div>
@@ -35,6 +35,9 @@
                     value="{{ Auth::user()->partnersProfile->phone }}" />
                 <x-input type="email" :disabled="true" label="E-mail" name="email" placeholder="Укажите e-mail"
                     value="{{ Auth::user()->email }}" />
+
+                <x-input label="Населенный пункт" name="org_address" placeholder="Укажите населенный пункт"
+                    value="{{ Auth::user()->partnersProfile->org_address }}" />
 
                 <x-input label="Веб-сайт" name="web" placeholder="https://example.com" :help="'не обязательно к заполнению'"
                     value="{{ Auth::user()->partnersProfile->web }}" />

@@ -22,8 +22,8 @@ class PartnerRegisterRequest extends FormRequest
         return [
             'org_name' => ['required', 'string', 'max:255'],
             'person_name' => ['required', 'string', 'max:255'],
-            'person_f_name' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
+            'person_lname' => ['required', 'string', 'max:255'],
+            'org_address' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'phone' => ['required', 'string', 'regex:/^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/'],
             'password' => [
@@ -34,6 +34,22 @@ class PartnerRegisterRequest extends FormRequest
                 'confirmed',
                 'regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/'
             ],
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     */
+    public function attributes()
+    {
+        return [
+            'org_name' => 'название организации',
+            'person_name' => 'имя контактного лица',
+            'person_lname' => 'фамилия контактного лица',
+            'org_address' => 'населенный пункт',
+            'email' => 'электронная почта',
+            'phone' => 'телефон',
+            'password' => 'пароль',
         ];
     }
 
