@@ -1,11 +1,11 @@
 @extends('layouts.sidebar-layout')
 
-@section('title', 'Мероприятия')
+@section('title', 'Новости')
 
 @section('content')
     <div class="flex items-center justify-between mb-4">
-        <h1 class="text-3xl">Мероприятия</h1>
-        <a href="{{ route('admin.events.create') }}"
+        <h1 class="text-3xl">Новости</h1>
+        <a href="{{ route('admin.news.create') }}"
             class="inline-flex items-center justify-center h-10 cursor-pointer gap-1 px-3 py-3 text-[16px] rounded-xl transition border-2 border-[#1E44A3] text-primary hover:bg-[#1E44A3]/10">
             <x-lucide-plus class="h-5" />
             <span class="hidden sm:inline">Добавить</span>
@@ -18,7 +18,7 @@
         </div>
     </form>
 
-    @if ($events->isEmpty())
+    @if ($news->isEmpty())
         <x-empty title="По вашему запросу ничего не найдено." />
     @else
         {{-- Table --}}
@@ -34,9 +34,9 @@
                 </thead>
 
                 <tbody>
-                    @foreach ($events as $item)
+                    @foreach ($news as $item)
                         @php
-                            /** @var \App\Models\Event $item */
+                            /** @var \App\Models\News $item */
                         @endphp
                         <tr class="border-t border-gray-100">
                             <td class="px-4 py-4 w-full">
@@ -77,7 +77,7 @@
                                     {{-- <x-profile-pic :user="$item->partner" class="inline" size="w-8 h-8" /> --}}
                                     <div class="text-sm text-primary">
                                         {{-- сюда можно вывести партнёра/организацию при наличии --}}
-                                        {{ $item->partner->getFullName() ?? 'Организация' }}
+                                        {{ $item->author->getFullName() ?? 'Организация' }}
                                         {{-- @if ($event->partnersProfile->verified ?? false) --}}
                                         <x-lucide-badge-check class="inline w-4 h-4 text-primary" />
                                         {{-- @endif --}}

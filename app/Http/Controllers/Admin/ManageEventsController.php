@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateEventRequest;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -25,12 +26,20 @@ class ManageEventsController extends Controller
             ->paginate(12)
             ->appends($request->query());
 
+        // Add partner and supervisor fields to each event
+        foreach ($events as $event) {
+            $event->partner = User::find($event->user_id);
+            $event->supervisor = User::find($event->supervisor_id);
+        }
+
         return view('admin.events.list', compact('events', 'q'));
     }
 
     public function preview($id)
     {
         $event = Event::findOrFail($id);
+        $event->partner = User::find($event->user_id);
+        $event->supervisor = User::find($event->supervisor_id);
         return view('pages.event', compact('event'));
     }
 
@@ -118,5 +127,29 @@ class ManageEventsController extends Controller
                 ->route('admin.events.index', $event)
                 ->with('success', 'Событие успешно создано.');
         });
+    }
+
+    public function approve($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->status = 'approved';
+        $event->admin_id = Auth::id();
+        $event->save();
+
+        return redirect()
+            ->route('admin.events.index', $event)
+            ->with('success', 'Событие успешно одобрено.');
+    }
+
+    public function reject($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->status = 'rejected';
+        $event->admin_id = Auth::id();
+        $event->save();
+
+        return redirect()
+            ->route('admin.events.index', $event)
+            ->with('success', 'Событие успешно отклонено.');
     }
 }

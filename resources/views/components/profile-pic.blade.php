@@ -1,7 +1,7 @@
 {{-- Accept a $user argument for the component --}}
-@props(['user'])
+@props(['user', 'size' => 'w-20 h-20'])
 <div
-    {{ $attributes->merge(['class' => 'w-20 h-20 rounded-xl bg-[#e5efff] flex items-center justify-center text-2xl text-gray-700 font-medium overflow-hidden']) }}>
+    {{ $attributes->merge(['class' => $size . ' rounded-xl bg-[#e5efff] flex items-center justify-center text-2xl text-gray-700 font-medium overflow-hidden']) }}>
     @php
         $userPic = $user->getProfile()->pic;
     @endphp

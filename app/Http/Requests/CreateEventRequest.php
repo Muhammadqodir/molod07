@@ -23,7 +23,7 @@ class CreateEventRequest extends FormRequest
                 'exists:users,id',
                 function ($attribute, $value, $fail) {
                     $user = User::find($value);
-                    if (!$user || $user->type !== 'partner') {
+                    if (!$user || $user->role !== 'partner') {
                         $fail('Выбранный пользователь должен быть партнёром.');
                     }
                 },

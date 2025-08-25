@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdministratorsController;
 use App\Http\Controllers\Admin\ManageEventsController;
+use App\Http\Controllers\Admin\ManageNewsController;
 use App\Http\Controllers\Admin\PartnersController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\YouthController;
@@ -68,7 +69,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/manage/youth/block', [YouthController::class, 'block'])->name('admin.manage.youth.block');
     Route::post('admin/manage/youth/unblock', [YouthController::class, 'unblock'])->name('admin.manage.youth.unblock');
 
-
     //Partners
     Route::get('admin/manage/partners', [PartnersController::class, 'show'])->name('admin.manage.partners');
     Route::post('admin/manage/partners/remove', [PartnersController::class, 'remove'])->name('admin.manage.partners.remove');
@@ -76,19 +76,30 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/manage/partners/unblock', [PartnersController::class, 'unblock'])->name('admin.manage.partners.unblock');
 
     //Events
-    Route::get('admin/events/list', [ManageEventsController::class, 'show'])->name('admin.events.index')->defaults('status', 'active');
+    Route::get('admin/events/list', [ManageEventsController::class, 'show'])->name('admin.events.index')->defaults('status', 'approved');
     Route::get('admin/events/requests', [ManageEventsController::class, 'show'])->name('admin.events.requests')->defaults('status', 'pending');
     Route::get('admin/events/archive', [ManageEventsController::class, 'show'])->name('admin.events.archive')->defaults('status', 'archived');
     Route::get('admin/events/create', [ManageEventsController::class, 'create'])->name('admin.events.create');
     Route::post('admin/events/create', [ManageEventsController::class, 'store'])->name('admin.events.store');
     Route::get('admin/events/preview/{id}', [ManageEventsController::class, 'preview'])->name('admin.events.preview');
+    Route::post('admin/events/approve/{id}', [ManageEventsController::class, 'approve'])->name('admin.events.approve');
+    Route::post('admin/events/reject/{id}', [ManageEventsController::class, 'reject'])->name('admin.events.reject');
+
+    //News
+    Route::get('admin/news/list', [ManageNewsController::class, 'show'])->name('admin.news.index')->defaults('status', 'published');
+    Route::get('admin/news/requests', [ManageNewsController::class, 'show'])->name('admin.news.requests')->defaults('status', 'pending');
+    Route::get('admin/news/archive', [ManageNewsController::class, 'show'])->name('admin.news.archive')->defaults('status', 'archived');
+    Route::get('admin/news/create', [ManageNewsController::class, 'create'])->name('admin.news.create');
+    Route::post('admin/news/create', [ManageNewsController::class, 'store'])->name('admin.news.store');
+    Route::get('admin/news/preview/{id}', [ManageNewsController::class, 'preview'])->name('admin.news.preview');
+    Route::post('admin/news/approve/{id}', [ManageNewsController::class, 'approve'])->name('admin.news.approve');
+    Route::post('admin/news/reject/{id}', [ManageNewsController::class, 'reject'])->name('admin.news.reject');
 
     //Support
     Route::get('admin/support', [SupportController::class, 'show'])->name('admin.support');
 
-
-
     Route::get('/admin/get-user/{id}', function ($id) {
+        $id = ltrim($id, '0');
         $user = User::find($id);
         if (!$user) {
             return response()->json(['error' => 'Пользователь не найден'], 404);
@@ -99,20 +110,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'phone' => $user->getProfile()->phone,
             'email' => $user->email,
         ]);
-    })->name('admin.get.user');
+    })->middleware(['auth', 'role:admin'])->name('admin.get.user');
 
     Route::get('/admin/get-partner/{id}', function ($id) {
+        $id = ltrim($id, '0');
         $partner = User::where('role', 'partner')->find($id);
         if (!$partner) {
             return response()->json(['error' => 'Партнер не найден'], 404);
         }
         return response()->json([
-            'name' => $partner->getProfile()->name,
-            'l_name' => $partner->getProfile()->l_name,
-            'phone' => $partner->getProfile()->phone,
+            'name' => $partner->getFullName(),
             'email' => $partner->email,
         ]);
-    })->name('admin.get.partner');
+    })->middleware(['auth', 'role:admin'])->name('admin.get.partner');
 });
 
 //Profile redirect

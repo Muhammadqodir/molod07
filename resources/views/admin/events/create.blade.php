@@ -14,13 +14,13 @@
 
             <div class="text-lg font-medium">Организатор мероприятия</div>
 
-            <x-input label="ID партнера" name="partner_id" placeholder="ID партнера" value="{{ old('partner_id') }}" />
+            <x-input label="ID партнера" name="user_id" placeholder="ID партнера" value="{{ old('user_id') }}" />
             <small id="partner_name">Введите ID партнера</small>
 
             @push('scripts')
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
-                        const partnerIdInput = document.querySelector('[name="partner_id"]');
+                        const partnerIdInput = document.querySelector('[name="user_id"]');
                         const partnerNameElem = document.getElementById('partner_name');
                         let timeout = null;
 
@@ -55,36 +55,8 @@
             <div class="text-lg font-medium">Направление мероприятия</div>
 
             @php
-                // можно передавать из контроллера
-                $categories = [
-                    ['icon' => 'atom', 'label' => 'Наука', 'value' => 'science'],
-                    ['icon' => 'leaf', 'label' => 'Экология', 'value' => 'ecology'],
-                    ['icon' => 'dumbbell', 'label' => 'Спорт', 'value' => 'sport'],
-                    ['icon' => 'cpu', 'label' => 'Технологии', 'value' => 'tech'],
-                    ['icon' => 'handshake', 'label' => 'Патриотизм', 'value' => 'patriot'],
-                    ['icon' => 'sparkles', 'label' => 'Креатив', 'value' => 'creative'],
-                    ['icon' => 'palette', 'label' => 'Творчество', 'value' => 'art'],
-                    ['icon' => 'briefcase', 'label' => 'Бизнес', 'value' => 'business'],
-                    ['icon' => 'badge-russian-ruble', 'label' => 'Трудоустройство', 'value' => 'employment'],
-                    ['icon' => 'heart-handshake', 'label' => 'Добровольчество', 'value' => 'volunteering'],
-                    ['icon' => 'ellipsis', 'label' => 'Другое', 'value' => 'other'],
-                ];
-
-                $types = [
-                    ['label' => 'Конкурс', 'value' => 'contest'],
-                    ['label' => 'Форум', 'value' => 'forum'],
-                    ['label' => 'Встреча', 'value' => 'meeting'],
-                    ['label' => 'Семинар', 'value' => 'seminar'],
-                    ['label' => 'Лекция', 'value' => 'lecture'],
-                    ['label' => 'Конференция', 'value' => 'conference'],
-                    ['label' => 'Выставка', 'value' => 'exhibition'],
-                    ['label' => 'Мастер‑класс', 'value' => 'masterclass'],
-                    ['label' => 'Акция', 'value' => 'action'],
-                    ['label' => 'Флешмоб', 'value' => 'flashmob'],
-                    ['label' => 'Тренинг', 'value' => 'training'],
-                    ['label' => 'Презентация', 'value' => 'presentation'],
-                    ['label' => 'Круглый стол', 'value' => 'roundtable'],
-                ];
+                $categories = config('events.categories');
+                $types = config('events.types');
             @endphp
 
             <div class="space-y-2">
