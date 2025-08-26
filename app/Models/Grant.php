@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Grant extends Model
+{
+
+    protected $fillable = [
+        'user_id',
+        'category',
+        'cover',
+        'title',
+        'short_description',
+        'description',
+        'address',
+        'settlement',
+        'deadline',
+        'docs',
+        'web',
+        'telegram',
+        'vk',
+        'conditions',
+        'requirements',
+        'reward',
+        'status',
+        'admin_id',
+    ];
+
+    protected $casts = [
+        'deadline' => 'date',
+        'docs' => 'array',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}

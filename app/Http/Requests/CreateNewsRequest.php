@@ -25,7 +25,7 @@ class CreateNewsRequest extends FormRequest
             'title' => 'required|string|max:255',
             'short_description' => 'required|string|max:1000',
             'description' => 'required|string',
-            'cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'cover' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'category' => 'required|string|max:255',
             'admin_id' => 'nullable|integer|exists:users,id',
             'status' => 'nullable|string|in:draft,published,archived',

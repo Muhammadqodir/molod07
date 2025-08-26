@@ -88,14 +88,14 @@ class ManageEventsController extends Controller
             // cover (один)
             if ($request->hasFile('cover')) {
                 $path = $request->file('cover')->store("uploads/events{$event->id}/cover", 'public');
-                $event->update(['cover' => $path]);
+                $event->update(['cover' => 'storage/' . $path]);
             }
 
             // docs (массив любых файлов)
             $docPaths = [];
             if ($request->hasFile('docs')) {
                 foreach ($request->file('docs') as $file) {
-                    $docPaths[] = $file->store("uploads/events{$event->id}/docs", 'public');
+                    $docPaths[] = 'storage/' . $file->store("uploads/events{$event->id}/docs", 'public');
                 }
             }
 
@@ -103,7 +103,7 @@ class ManageEventsController extends Controller
             $imagePaths = [];
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $img) {
-                    $imagePaths[] = $img->store("uploads/events{$event->id}/images", 'public');
+                    $imagePaths[] = 'storage/' . $img->store("uploads/events{$event->id}/images", 'public');
                 }
             }
 
@@ -111,7 +111,7 @@ class ManageEventsController extends Controller
             $videoPaths = [];
             if ($request->hasFile('videos')) {
                 foreach ($request->file('videos') as $video) {
-                    $videoPaths[] = $video->store("uploads/events{$event->id}/videos", 'public');
+                    $videoPaths[] = 'storage/' . $video->store("uploads/events{$event->id}/videos", 'public');
                 }
             }
 
@@ -125,7 +125,7 @@ class ManageEventsController extends Controller
 
             return redirect()
                 ->route('admin.events.index', $event)
-                ->with('success', 'Событие успешно создано.');
+                ->with('success', 'Мероприятие успешно создано.');
         });
     }
 
@@ -138,7 +138,7 @@ class ManageEventsController extends Controller
 
         return redirect()
             ->route('admin.events.index', $event)
-            ->with('success', 'Событие успешно одобрено.');
+            ->with('success', 'Мероприятие успешно одобрено.');
     }
 
     public function reject($id)
@@ -150,6 +150,17 @@ class ManageEventsController extends Controller
 
         return redirect()
             ->route('admin.events.index', $event)
-            ->with('success', 'Событие успешно отклонено.');
+            ->with('success', 'Мероприятие успешно отклонено.');
+    }
+
+    public function archive($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->status = 'archived';
+        $event->save();
+
+        return redirect()
+            ->route('admin.events.index')
+            ->with('success', 'Мероприятие успешно перемещено в архив.');
     }
 }

@@ -84,6 +84,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/events/preview/{id}', [ManageEventsController::class, 'preview'])->name('admin.events.preview');
     Route::post('admin/events/approve/{id}', [ManageEventsController::class, 'approve'])->name('admin.events.approve');
     Route::post('admin/events/reject/{id}', [ManageEventsController::class, 'reject'])->name('admin.events.reject');
+    Route::post('admin/events/action/archive/{id}', [ManageEventsController::class, 'archive'])->name('admin.events.action.archive');
 
     //News
     Route::get('admin/news/list', [ManageNewsController::class, 'show'])->name('admin.news.index')->defaults('status', 'published');
@@ -94,6 +95,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/news/preview/{id}', [ManageNewsController::class, 'preview'])->name('admin.news.preview');
     Route::post('admin/news/approve/{id}', [ManageNewsController::class, 'approve'])->name('admin.news.approve');
     Route::post('admin/news/reject/{id}', [ManageNewsController::class, 'reject'])->name('admin.news.reject');
+    Route::post('admin/news/action/archive/{id}', [ManageNewsController::class, 'archive'])->name('admin.news.action.archive');
 
     //Support
     Route::get('admin/support', [SupportController::class, 'show'])->name('admin.support');

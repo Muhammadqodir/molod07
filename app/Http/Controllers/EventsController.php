@@ -77,14 +77,14 @@ class EventsController extends Controller
             // cover (один)
             if ($request->hasFile('cover')) {
                 $path = $request->file('cover')->store("uploads/events{$event->id}/cover", 'public');
-                $event->update(['cover' => $path]);
+                $event->update(['cover' => 'storage/' . $path]);
             }
 
             // docs (массив любых файлов)
             $docPaths = [];
             if ($request->hasFile('docs')) {
                 foreach ($request->file('docs') as $file) {
-                    $docPaths[] = $file->store("uploads/events{$event->id}/docs", 'public');
+                    $docPaths[] = 'storage/' . $file->store("uploads/events{$event->id}/docs", 'public');
                 }
             }
 
@@ -92,7 +92,7 @@ class EventsController extends Controller
             $imagePaths = [];
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $img) {
-                    $imagePaths[] = $img->store("uploads/events{$event->id}/images", 'public');
+                    $imagePaths[] = 'storage/' . $img->store("uploads/events{$event->id}/images", 'public');
                 }
             }
 
@@ -167,13 +167,13 @@ class EventsController extends Controller
 
         // загрузка новых файлов
         if ($request->hasFile('cover')) {
-            $data['cover'] = $request->file('cover')->store("uploads/events{$event->id}/cover", 'public');
+            $data['cover'] = 'storage/' . $request->file('cover')->store("uploads/events{$event->id}/cover", 'public');
         }
 
         if ($request->hasFile('docs')) {
             $docPaths = $event->docs ?? [];
             foreach ($request->file('docs') as $file) {
-                $docPaths[] = $file->store("uploads/events{$event->id}/docs", 'public');
+                $docPaths[] = 'storage/' . $file->store("uploads/events{$event->id}/docs", 'public');
             }
             $data['docs'] = $docPaths;
         }
@@ -181,7 +181,7 @@ class EventsController extends Controller
         if ($request->hasFile('images')) {
             $imgPaths = $event->images ?? [];
             foreach ($request->file('images') as $img) {
-                $imgPaths[] = $img->store("uploads/events{$event->id}/images", 'public');
+                $imgPaths[] = 'storage/' . $img->store("uploads/events{$event->id}/images", 'public');
             }
             $data['images'] = $imgPaths;
         }

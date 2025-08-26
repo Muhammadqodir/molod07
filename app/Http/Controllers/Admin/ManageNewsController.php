@@ -16,7 +16,7 @@ class ManageNewsController extends Controller
     {
         $status = $request->query('status', $request->route('status'));
         $q = $request->string('q')->toString();
-        $events = News::query()
+        $news = News::query()
             ->when($q, fn($qry) => $qry->where(function ($w) use ($q) {
             $w->where('title', 'like', "%{$q}%")
                 ->orWhere('short_description', 'like', "%{$q}%");
@@ -26,19 +26,19 @@ class ManageNewsController extends Controller
             ->paginate(12)
             ->appends($request->query());
 
-        // Add partner and supervisor fields to each event
-        foreach ($events as $event) {
-            $event->partner = User::find($event->user_id);
-            $event->supervisor = User::find($event->supervisor_id);
+        // Add partner and supervisor fields to each news item
+        foreach ($news as $item) {
+            $item->partner = User::find($item->user_id);
+            $item->supervisor = User::find($item->supervisor_id);
         }
 
-        return view('admin.news.list', compact('events', 'q'));
+        return view('admin.news.list', compact('news', 'q'));
     }
 
     public function preview($id)
     {
-        $event = News::findOrFail($id);
-        return view('pages.news', compact('event'));
+        $news = News::findOrFail($id);
+        return view('pages.news', compact('news'));
     }
 
     public function create()
@@ -52,24 +52,20 @@ class ManageNewsController extends Controller
 
         $v['user_id'] = Auth::id();
 
-        // Handle cover image upload
+        // Handle cover image upload using storage
         if ($request->hasFile('cover')) {
             $coverFile = $request->file('cover');
-            $coverName = time() . '_' . uniqid() . '.' . $coverFile->getClientOriginalExtension();
-            $coverFile->move(public_path('uploads/news'), $coverName);
-            $v['cover'] = 'uploads/news/' . $coverName;
+            $coverPath = $coverFile->store('news_covers', 'public');
+            $v['cover'] = 'storage/' . $coverPath;
         }
 
-        // Set default status if not provided
-        if (!isset($v['status'])) {
-            $v['status'] = 'draft';
-        }
+        $v['status'] = 'published';
 
         // Create the news entry
         $news = News::create($v);
 
         return redirect()
-            ->route('admin.news.list')
+            ->route('admin.news.index')
             ->with('success', 'Новость успешно создана.');
     }
 
@@ -95,5 +91,16 @@ class ManageNewsController extends Controller
         return redirect()
             ->route('admin.news.list', $event)
             ->with('success', 'Новость успешно отклонена.');
+    }
+
+    public function archive($id)
+    {
+        $news = News::findOrFail($id);
+        $news->status = 'archived';
+        $news->save();
+
+        return redirect()
+            ->route('admin.news.index')
+            ->with('success', 'Новость успешно перемещена в архив.');
     }
 }

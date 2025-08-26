@@ -10,7 +10,6 @@
         <x-sidebar-leaf route="admin.manage.partners" label="Партнеры" />
     </x-sidebar-group>
 
-
     {{-- Группа: Мероприятия --}}
     <x-sidebar-group icon="calendar-check" label="Мероприятия" :open="request()->routeIs('admin.events.*')">
         <x-sidebar-leaf route="admin.events.index" label="Активные" />
@@ -18,32 +17,32 @@
         <x-sidebar-leaf route="admin.events.archive" label="Архив" />
     </x-sidebar-group>
 
-
     {{-- Группа: Новости --}}
-    {{-- <x-sidebar-group icon="newspaper" label="Новости" :open="request()->routeIs('admin.news.*')">
-        <x-sidebar-leaf route="admin.news.index" label="Все новости" />
-        <x-sidebar-leaf route="admin.news.create" label="Создать новость" />
-    </x-sidebar-group> --}}
-
-    {{-- Группа: Лента --}}
-    <x-sidebar-group icon="newspaper" label="Лента">
-        <x-sidebar-leaf label="Мероприятия" />
-        <x-sidebar-leaf label="Новости" />
-        <x-sidebar-leaf label="Гранты" />
-        <x-sidebar-leaf label="Курсы" />
-        <x-sidebar-leaf label="Тесты" />
+    <x-sidebar-group icon="newspaper" label="Новости" :open="request()->routeIs('admin.news.*')">
+        <x-sidebar-leaf route="admin.news.index" label="Активные" />
+        <x-sidebar-leaf route="admin.news.requests" label="Заявки" />
+        <x-sidebar-leaf route="admin.news.archive" label="Архив" />
     </x-sidebar-group>
 
-    {{-- Группа: Сервис --}}
-    <x-sidebar-group icon="shapes" label="Сервис">
-        <x-sidebar-leaf label="Купоны" />
-        <x-sidebar-leaf label="Баллы" />
+    {{-- Группа: Гранты --}}
+    <x-sidebar-group icon="file-badge" label="Гранты" :open="request()->routeIs('admin.grants.*')">
+        {{-- <x-sidebar-leaf route="admin.grants.index" label="Активные" />
+        <x-sidebar-leaf route="admin.grants.requests" label="Заявки" />
+        <x-sidebar-leaf route="admin.grants.archive" label="Архив" /> --}}
     </x-sidebar-group>
 
-    {{-- Группа: Трудоустройство --}}
-    <x-sidebar-group icon="briefcase" label="Трудоустройство">
-        <x-sidebar-leaf label="Вакансии" />
-        <x-sidebar-leaf label="Отклики" />
+    {{-- Группа: Подкасты --}}
+    <x-sidebar-group icon="podcast" label="Подкасты" :open="request()->routeIs('admin.podcasts.*')">
+        {{-- <x-sidebar-leaf route="admin.podcasts.index" label="Активные" />
+        <x-sidebar-leaf route="admin.podcasts.requests" label="Заявки" />
+        <x-sidebar-leaf route="admin.podcasts.archive" label="Архив" /> --}}
+    </x-sidebar-group>
+
+    {{-- Группа: Вакансии --}}
+    <x-sidebar-group icon="briefcase-business" label="Вакансии" :open="request()->routeIs('admin.vacancies.*')">
+        {{-- <x-sidebar-leaf route="admin.vacancies.index" label="Активные" />
+        <x-sidebar-leaf route="admin.vacancies.requests" label="Заявки" />
+        <x-sidebar-leaf route="admin.vacancies.archive" label="Архив" /> --}}
     </x-sidebar-group>
 
     <hr class="my-2">

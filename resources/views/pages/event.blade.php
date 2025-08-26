@@ -34,7 +34,7 @@
                     <div class="md:col-span-4">
                         <div class="aspect-[4/3] bg-gray-100 rounded-2xl overflow-hidden">
                             @if ($event->cover)
-                                <img src="{{ Storage::url($event->cover) }}" alt="cover" class="w-full h-full object-cover">
+                                <img src="{{ asset($event->cover) }}" alt="cover" class="w-full h-full object-cover">
                             @endif
                         </div>
                     </div>
@@ -231,9 +231,9 @@
                             <h3 class="text-lg">Фотографии</h3>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 @foreach ($images as $img)
-                                    <a href="{{ asset('storage/' . (is_array($img) ? $img['url'] ?? '#' : $img)) }}"
+                                    <a href="{{ asset((is_array($img) ? $img['url'] ?? '#' : $img)) }}"
                                         target="_blank" class="block aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
-                                        <img src="{{ asset('storage/' . (is_array($img) ? $img['url'] ?? '#' : $img)) }}"
+                                        <img src="{{ asset((is_array($img) ? $img['url'] ?? '#' : $img)) }}"
                                             class="w-full h-full object-cover" alt="">
                                     </a>
                                 @endforeach
@@ -274,11 +274,15 @@
                                             ? $d
                                             : [
                                                 'name' => basename($d),
-                                                'url' => asset('storage/' . $d),
+                                                'url' => asset( $d),
                                                 'type' => pathinfo($d, PATHINFO_EXTENSION),
                                             ];
-                                        $sizeBytes = filesize(storage_path('app/public/' . $d)) ?: 0;
-                                        $doc['size'] = round($sizeBytes / 1024 / 1024, 2) . ' МБ';
+                                        // Fix the file path for filesize calculation
+                                        $filePath = str_starts_with($d, 'storage/')
+                                            ? storage_path('app/public/' . substr($d, 8))
+                                            : storage_path('app/' . $d);
+                                        $sizeBytes = file_exists($filePath) ? filesize($filePath) : 0;
+                                        $doc['size'] = $sizeBytes > 0 ? round($sizeBytes / 1024 / 1024, 2) . ' МБ' : 'Неизвестно';
                                     @endphp
                                     <div class="flex items-center justify-between border-b pb-2">
                                         <div class="flex items-center gap-3">

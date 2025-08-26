@@ -12,9 +12,6 @@
         <section class="space-y-3">
             <div class="text-lg font-medium">Обложка</div>
             <x-image-selector name="cover" label="" :value="old('cover_url')" :max-mb="2" :accept="['image/png', 'image/jpeg']" />
-            @error('cover')
-                <p class="text-sm text-red-600">{{ $message }}</p>
-            @enderror
         </section>
 
         <hr>
@@ -29,7 +26,7 @@
             @endphp
 
             <div class="space-y-2">
-                <x-multi-choice name="category" :options="$categories" :value="old('category', '')" :multiple="false" title="Категория"
+                <x-multi-choice name="category" :options="$categories" :value="old('category', '')" :multiple="false" title=""
                     hint="Выберите один вариант" />
                 @error('category')
                     <p class="text-sm text-red-600">{{ $message }}</p>
