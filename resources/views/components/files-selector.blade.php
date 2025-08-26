@@ -25,6 +25,19 @@
     $docAcceptAttr = implode(',', $docAccept);
     $imgAcceptAttr = implode(',', $imgAccept);
     $vidAcceptAttr = implode(',', $vidAccept);
+
+    $enabledTypes = collect([
+        'docs' => $maxDocs > 0,
+        'images' => $maxImages > 0,
+        'videos' => $maxVideos > 0
+    ])->filter()->count();
+
+    $gridCols = match($enabledTypes) {
+        1 => 'grid-cols-1',
+        2 => 'grid-cols-1 md:grid-cols-2',
+        3 => 'grid-cols-1 md:grid-cols-3',
+        default => 'grid-cols-1'
+    };
 @endphp
 
 <div x-data="filesSelector({
@@ -47,8 +60,9 @@
     <h1 class="text-2xl mb-5">{{ $label }}</h1>
 
     {{-- верхние карточки-загрузчики --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div class="grid {{ $gridCols }} gap-5">
         {{-- Документы --}}
+        @if($maxDocs > 0)
         <label
             class="cursor-pointer rounded-2xl bg-[#f6f8fe] p-6 border border-transparent hover:border-primary/30 block flex flex-col items-center justify-center"
             @dragover.prevent @drop.prevent="handleDrop($event, 'docs')">
@@ -63,8 +77,10 @@
             <input type="file" class="hidden" multiple x-ref="docsInput" name="{{ $docsName }}[]"
                 accept="{{ $docAcceptAttr }}" @change="handleSelect($event, 'docs')" />
         </label>
+        @endif
 
         {{-- Фотографии --}}
+        @if($maxImages > 0)
         <label
             class="cursor-pointer rounded-2xl bg-[#f6f8fe] p-6 border border-transparent hover:border-primary/30 block flex flex-col items-center justify-center"
             @dragover.prevent @drop.prevent="handleDrop($event, 'images')">
@@ -79,8 +95,10 @@
             <input type="file" class="hidden" multiple x-ref="imagesInput" name="{{ $imagesName }}[]"
                 accept="{{ $imgAcceptAttr }}" @change="handleSelect($event, 'images')" />
         </label>
+        @endif
 
         {{-- Видео --}}
+        @if($maxVideos > 0)
         <label
             class="cursor-pointer rounded-2xl bg-[#f6f8fe] p-6 border border-transparent hover:border-primary/30 block flex flex-col items-center justify-center"
             @dragover.prevent @drop.prevent="handleDrop($event, 'videos')">
@@ -95,6 +113,7 @@
             <input type="file" class="hidden" multiple x-ref="videosInput" name="{{ $videosName }}[]"
                 accept="{{ $vidAcceptAttr }}" @change="handleSelect($event, 'videos')" />
         </label>
+        @endif
     </div>
 
     {{-- ошибки глобально --}}

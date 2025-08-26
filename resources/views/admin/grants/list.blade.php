@@ -12,7 +12,7 @@
         </a>
     </div>
 
-    <form method="GET" action="{{ route('admin.grants.list') }}" class="mb-6">
+    <form method="GET" action="{{ route('admin.grants.index') }}" class="mb-6">
         <div class="relative mt-4">
             <x-search-input name="q" placeholder="Поиск по названию" :value="old('q', request('q'))" />
         </div>

@@ -26,9 +26,9 @@
 
     {{-- Группа: Гранты --}}
     <x-sidebar-group icon="file-badge" label="Гранты" :open="request()->routeIs('admin.grants.*')">
-        {{-- <x-sidebar-leaf route="admin.grants.index" label="Активные" />
+        <x-sidebar-leaf route="admin.grants.index" label="Активные" />
         <x-sidebar-leaf route="admin.grants.requests" label="Заявки" />
-        <x-sidebar-leaf route="admin.grants.archive" label="Архив" /> --}}
+        <x-sidebar-leaf route="admin.grants.archive" label="Архив" />
     </x-sidebar-group>
 
     {{-- Группа: Подкасты --}}

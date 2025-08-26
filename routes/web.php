@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdministratorsController;
 use App\Http\Controllers\Admin\ManageEventsController;
+use App\Http\Controllers\Admin\ManageGrantsController;
 use App\Http\Controllers\Admin\ManageNewsController;
 use App\Http\Controllers\Admin\PartnersController;
 use App\Http\Controllers\Admin\SupportController;
@@ -96,6 +97,17 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/news/approve/{id}', [ManageNewsController::class, 'approve'])->name('admin.news.approve');
     Route::post('admin/news/reject/{id}', [ManageNewsController::class, 'reject'])->name('admin.news.reject');
     Route::post('admin/news/action/archive/{id}', [ManageNewsController::class, 'archive'])->name('admin.news.action.archive');
+
+    //Grants
+    Route::get('admin/grants/list', [ManageGrantsController::class, 'show'])->name('admin.grants.index')->defaults('status', 'approved');
+    Route::get('admin/grants/requests', [ManageGrantsController::class, 'show'])->name('admin.grants.requests')->defaults('status', 'pending');
+    Route::get('admin/grants/archive', [ManageGrantsController::class, 'show'])->name('admin.grants.archive')->defaults('status', 'archived');
+    Route::get('admin/grants/create', [ManageGrantsController::class, 'create'])->name('admin.grants.create');
+    Route::post('admin/grants/create', [ManageGrantsController::class, 'store'])->name('admin.grants.store');
+    Route::get('admin/grants/preview/{id}', [ManageGrantsController::class, 'preview'])->name('admin.grants.preview');
+    Route::post('admin/grants/approve/{id}', [ManageGrantsController::class, 'approve'])->name('admin.grants.approve');
+    Route::post('admin/grants/reject/{id}', [ManageGrantsController::class, 'reject'])->name('admin.grants.reject');
+    Route::post('admin/grants/action/archive/{id}', [ManageGrantsController::class, 'archive'])->name('admin.grants.action.archive');
 
     //Support
     Route::get('admin/support', [SupportController::class, 'show'])->name('admin.support');

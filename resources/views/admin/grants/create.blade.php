@@ -100,13 +100,13 @@
         <section class="space-y-3">
             <div class="text-lg font-medium">Условия и требования</div>
 
-            <x-rich-text-area label="Условия участия" name="conditions" placeholder="Опишите условия участия в гранте"
+            <x-multiline-input label="Условия участия" name="conditions" placeholder="Опишите условия участия в гранте"
                 value="{{ old('conditions') }}" />
 
-            <x-rich-text-area label="Требования" name="requirements" placeholder="Опишите требования к участникам"
+            <x-multiline-input label="Требования" name="requirements" placeholder="Опишите требования к участникам"
                 value="{{ old('requirements') }}" />
 
-            <x-rich-text-area label="Награда/Поощрение" name="reward" placeholder="Опишите размер гранта или другие поощрения"
+            <x-multiline-input label="Награда/Поощрение" name="reward" placeholder="Опишите размер гранта или другие поощрения"
                 value="{{ old('reward') }}" />
         </section>
 
@@ -130,7 +130,7 @@
         {{-- Медиафайлы --}}
         <section class="space-y-3">
             <x-files-selector label="Добавление медиафайлов" docs-name="docs" images-name="images" videos-name="videos"
-                :max-docs="5" :max-images="6" :max-videos="1" :max-doc-mb="5" :max-img-mb="2"
+                :max-docs="5" :max-images="0" :max-videos="0" :max-doc-mb="5" :max-img-mb="2"
                 :max-vid-mb="100" :doc-accept="['application/pdf']" :img-accept="['image/png', 'image/jpeg']" :vid-accept="['video/mp4', 'video/quicktime']" />
             @error('docs')
                 <p class="text-sm text-red-600">{{ $message }}</p>
