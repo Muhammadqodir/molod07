@@ -80,7 +80,7 @@ class ManageEventsController extends Controller
                 'vk'                 => $v['vk'] ?? null,
                 'videos'             => $v['videos'] ?? [],
                 'roles'              => $v['roles'] ?? [],
-                'status'             => $v['status'] ?? 'pending',
+                'status'             => $v['status'] ?? 'approved',
                 'admin_id'           => Auth::id(),
             ]);
 

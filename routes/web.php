@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ManageEventsController;
 use App\Http\Controllers\Admin\ManageGrantsController;
 use App\Http\Controllers\Admin\ManageNewsController;
 use App\Http\Controllers\Admin\ManagePodcastsController;
+use App\Http\Controllers\Admin\ManageVacanciesController;
 use App\Http\Controllers\Admin\PartnersController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\YouthController;
@@ -121,6 +122,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/podcasts/action/archive/{id}', [ManagePodcastsController::class, 'archive'])->name('admin.podcasts.action.archive');
     Route::delete('admin/podcasts/{id}', [ManagePodcastsController::class, 'destroy'])->name('admin.podcasts.destroy');
 
+    //Vacancies
+    Route::get('admin/vacancies/list', [ManageVacanciesController::class, 'show'])->name('admin.vacancies.index')->defaults('status', 'approved');
+    Route::get('admin/vacancies/requests', [ManageVacanciesController::class, 'show'])->name('admin.vacancies.requests')->defaults('status', 'pending');
+    Route::get('admin/vacancies/archive', [ManageVacanciesController::class, 'show'])->name('admin.vacancies.archive')->defaults('status', 'archived');
+    Route::get('admin/vacancies/create', [ManageVacanciesController::class, 'create'])->name('admin.vacancies.create');
+    Route::post('admin/vacancies/create', [ManageVacanciesController::class, 'store'])->name('admin.vacancies.store');
+    Route::get('admin/vacancies/preview/{id}', [ManageVacanciesController::class, 'preview'])->name('admin.vacancies.preview');
+    Route::post('admin/vacancies/approve/{id}', [ManageVacanciesController::class, 'approve'])->name('admin.vacancies.approve');
+    Route::post('admin/vacancies/reject/{id}', [ManageVacanciesController::class, 'reject'])->name('admin.vacancies.reject');
+    Route::post('admin/vacancies/action/archive/{id}', [ManageVacanciesController::class, 'archive'])->name('admin.vacancies.action.archive');
+
+
     //Support
     Route::get('admin/support', [SupportController::class, 'show'])->name('admin.support');
 
@@ -147,6 +160,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         return response()->json([
             'name' => $partner->getFullName(),
             'email' => $partner->email,
+            'phone' => $partner->getProfile()->phone,
+            'address' => $partner->getProfile()->org_address,
         ]);
     })->middleware(['auth', 'role:admin'])->name('admin.get.partner');
 });

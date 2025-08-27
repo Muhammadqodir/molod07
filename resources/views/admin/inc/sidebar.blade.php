@@ -40,9 +40,9 @@
 
     {{-- Группа: Вакансии --}}
     <x-sidebar-group icon="briefcase-business" label="Вакансии" :open="request()->routeIs('admin.vacancies.*')">
-        {{-- <x-sidebar-leaf route="admin.vacancies.index" label="Активные" />
+        <x-sidebar-leaf route="admin.vacancies.index" label="Активные" />
         <x-sidebar-leaf route="admin.vacancies.requests" label="Заявки" />
-        <x-sidebar-leaf route="admin.vacancies.archive" label="Архив" /> --}}
+        <x-sidebar-leaf route="admin.vacancies.archive" label="Архив" />
     </x-sidebar-group>
 
     <hr class="my-2">
