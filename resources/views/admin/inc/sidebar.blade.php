@@ -33,9 +33,9 @@
 
     {{-- Группа: Подкасты --}}
     <x-sidebar-group icon="podcast" label="Подкасты" :open="request()->routeIs('admin.podcasts.*')">
-        {{-- <x-sidebar-leaf route="admin.podcasts.index" label="Активные" />
+        <x-sidebar-leaf route="admin.podcasts.index" label="Активные" />
         <x-sidebar-leaf route="admin.podcasts.requests" label="Заявки" />
-        <x-sidebar-leaf route="admin.podcasts.archive" label="Архив" /> --}}
+        <x-sidebar-leaf route="admin.podcasts.archive" label="Архив" />
     </x-sidebar-group>
 
     {{-- Группа: Вакансии --}}

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdministratorsController;
 use App\Http\Controllers\Admin\ManageEventsController;
 use App\Http\Controllers\Admin\ManageGrantsController;
 use App\Http\Controllers\Admin\ManageNewsController;
+use App\Http\Controllers\Admin\ManagePodcastsController;
 use App\Http\Controllers\Admin\PartnersController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\YouthController;
@@ -12,7 +13,6 @@ use App\Http\Controllers\Auth\RegisterYouthController;
 use App\Http\Controllers\Profiles\PartnerProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\EventsController;
 use App\Http\Controllers\Profiles\AdminProfileController;
 use App\Http\Controllers\Profiles\YouthProfileController;
 use App\Models\User;
@@ -108,6 +108,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/grants/approve/{id}', [ManageGrantsController::class, 'approve'])->name('admin.grants.approve');
     Route::post('admin/grants/reject/{id}', [ManageGrantsController::class, 'reject'])->name('admin.grants.reject');
     Route::post('admin/grants/action/archive/{id}', [ManageGrantsController::class, 'archive'])->name('admin.grants.action.archive');
+
+    //Podcasts
+    Route::get('admin/podcasts/list', [ManagePodcastsController::class, 'show'])->name('admin.podcasts.index')->defaults('status', 'approved');
+    Route::get('admin/podcasts/requests', [ManagePodcastsController::class, 'show'])->name('admin.podcasts.requests')->defaults('status', 'pending');
+    Route::get('admin/podcasts/archive', [ManagePodcastsController::class, 'show'])->name('admin.podcasts.archive')->defaults('status', 'archived');
+    Route::get('admin/podcasts/create', [ManagePodcastsController::class, 'create'])->name('admin.podcasts.create');
+    Route::post('admin/podcasts/create', [ManagePodcastsController::class, 'store'])->name('admin.podcasts.store');
+    Route::get('admin/podcasts/preview/{id}', [ManagePodcastsController::class, 'preview'])->name('admin.podcasts.preview');
+    Route::post('admin/podcasts/approve/{id}', [ManagePodcastsController::class, 'approve'])->name('admin.podcasts.approve');
+    Route::post('admin/podcasts/reject/{id}', [ManagePodcastsController::class, 'reject'])->name('admin.podcasts.reject');
+    Route::post('admin/podcasts/action/archive/{id}', [ManagePodcastsController::class, 'archive'])->name('admin.podcasts.action.archive');
+    Route::delete('admin/podcasts/{id}', [ManagePodcastsController::class, 'destroy'])->name('admin.podcasts.destroy');
 
     //Support
     Route::get('admin/support', [SupportController::class, 'show'])->name('admin.support');
