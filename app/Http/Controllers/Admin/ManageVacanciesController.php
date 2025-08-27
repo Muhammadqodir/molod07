@@ -16,13 +16,22 @@ class ManageVacanciesController extends Controller
     {
         $status = $request->query('status', $request->route('status'));
         $q = $request->string('q')->toString();
-        $vacancies = Vacancy::query()
+
+        $vacanciesQuery = Vacancy::query()
             ->when($q, fn($qry) => $qry->where(function ($w) use ($q) {
                 $w->where('title', 'like', "%{$q}%")
                     ->orWhere('description', 'like', "%{$q}%")
                     ->orWhere('org_name', 'like', "%{$q}%");
-            }))
-            ->where('status', $status)
+            }));
+
+        // If user is not admin, show only their vacancies
+        if (!Auth::user() || Auth::user()->role !== 'admin') {
+            $vacanciesQuery->where('user_id', Auth::id());
+        } else if (Auth::user() && Auth::user()->role === 'admin') {
+            $vacanciesQuery->where('status', $status);
+        }
+
+        $vacancies = $vacanciesQuery
             ->orderByDesc('id')
             ->paginate(12)
             ->appends($request->query());
@@ -53,8 +62,17 @@ class ManageVacanciesController extends Controller
     {
         $v = $request->validated();
 
-        // если user_id не прислан — берём из auth
-        $v['user_id'] = $v['user_id'] ?? Auth::id();
+        if (Auth::user() && Auth::user()->role === 'admin') {
+            $v['status'] = 'approved';
+            $v['user_id'] = $v['user_id'] ?? Auth::id();
+        } else {
+            $v['status'] = 'pending';
+            $v['user_id'] = Auth::id();
+            $v['org_name'] = Auth::user()->partnersProfile->org_name ?? '--';
+            $v['org_phone'] = Auth::user()->partnersProfile->phone ?? '--';
+            $v['org_address'] = Auth::user()->partnersProfile->org_address ?? '--';
+            $v['org_email'] = Auth::user()->email ?? '--';
+        }
 
         $vacancy = new Vacancy([
             'user_id' => $v['user_id'],
@@ -76,7 +94,7 @@ class ManageVacanciesController extends Controller
         $vacancy->save();
 
         return redirect()
-            ->route('admin.vacancies.index', $vacancy)
+            ->route(Auth::user()->role . '.vacancies.index', $vacancy)
             ->with('success', 'Вакансия успешно создана.');
     }
 
@@ -111,7 +129,17 @@ class ManageVacanciesController extends Controller
         $vacancy->save();
 
         return redirect()
-            ->route('admin.vacancies.index')
+            ->route(Auth::user()->role . '.vacancies.index')
             ->with('success', 'Вакансия успешно перемещена в архив.');
+    }
+
+    public function remove($id)
+    {
+        $vacancy = Vacancy::findOrFail($id);
+        $vacancy->delete();
+
+        return redirect()
+            ->route(Auth::user()->role . '.vacancies.index')
+            ->with('success', 'Вакансия успешно удалена.');
     }
 }

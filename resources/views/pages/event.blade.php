@@ -231,9 +231,9 @@
                             <h3 class="text-lg">Фотографии</h3>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 @foreach ($images as $img)
-                                    <a href="{{ asset((is_array($img) ? $img['url'] ?? '#' : $img)) }}"
-                                        target="_blank" class="block aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
-                                        <img src="{{ asset((is_array($img) ? $img['url'] ?? '#' : $img)) }}"
+                                    <a href="{{ asset(is_array($img) ? $img['url'] ?? '#' : $img) }}" target="_blank"
+                                        class="block aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
+                                        <img src="{{ asset(is_array($img) ? $img['url'] ?? '#' : $img) }}"
                                             class="w-full h-full object-cover" alt="">
                                     </a>
                                 @endforeach
@@ -274,7 +274,7 @@
                                             ? $d
                                             : [
                                                 'name' => basename($d),
-                                                'url' => asset( $d),
+                                                'url' => asset($d),
                                                 'type' => pathinfo($d, PATHINFO_EXTENSION),
                                             ];
                                         // Fix the file path for filesize calculation
@@ -282,7 +282,8 @@
                                             ? storage_path('app/public/' . substr($d, 8))
                                             : storage_path('app/' . $d);
                                         $sizeBytes = file_exists($filePath) ? filesize($filePath) : 0;
-                                        $doc['size'] = $sizeBytes > 0 ? round($sizeBytes / 1024 / 1024, 2) . ' МБ' : 'Неизвестно';
+                                        $doc['size'] =
+                                            $sizeBytes > 0 ? round($sizeBytes / 1024 / 1024, 2) . ' МБ' : 'Неизвестно';
                                     @endphp
                                     <div class="flex items-center justify-between border-b pb-2">
                                         <div class="flex items-center gap-3">
@@ -402,7 +403,12 @@
                                     </div>
                                 @endif
 
-                                <x-button class="mt-2">Подать заявку</x-button>
+                                <div>
+                                    <x-button class="mt-2">Подать заявку</x-button>
+                                    <small class="block text-gray-500">
+                                        * на роль <span class="text-primary">{{ $r['title'] }}</span>
+                                    </small>
+                                </div>
                             </div>
                         @endforeach
                     </section>

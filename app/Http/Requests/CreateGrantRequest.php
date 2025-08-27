@@ -18,16 +18,7 @@ class CreateGrantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => [
-                'required',
-                'exists:users,id',
-                function ($attribute, $value, $fail) {
-                    $user = User::find($value);
-                    if (!$user || $user->role !== 'partner') {
-                        $fail('Выбранный пользователь должен быть партнёром.');
-                    }
-                },
-            ],
+            'user_id' => 'nullable|integer|exists:users,id',
 
             'category' => 'required|string|max:255',
             'cover' => 'required|image|mimes:jpg,jpeg,png|max:2048',

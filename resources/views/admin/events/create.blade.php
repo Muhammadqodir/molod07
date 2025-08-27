@@ -6,51 +6,54 @@
     <div class="flex items-center justify-between mb-0">
         <h1 class="text-3xl">Добавить мероприятие</h1>
     </div>
-    <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+    <form action="{{ route(Auth::user()->role . '.events.store') }}" method="POST" enctype="multipart/form-data"
+        class="space-y-5">
         @csrf
 
         {{-- Категория --}}
         <section class="space-y-3">
 
-            <div class="text-lg font-medium">Организатор мероприятия</div>
+            @if (Auth::user()->role === 'admin')
+                <div class="text-lg font-medium">Организатор мероприятия</div>
 
-            <x-input label="ID партнера" name="user_id" placeholder="ID партнера" value="{{ old('user_id') }}" />
-            <small id="partner_name">Введите ID партнера</small>
+                <x-input label="ID партнера" name="user_id" placeholder="ID партнера" value="{{ old('user_id') }}" />
+                <small id="partner_name">Введите ID партнера</small>
 
-            @push('scripts')
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const partnerIdInput = document.querySelector('[name="user_id"]');
-                        const partnerNameElem = document.getElementById('partner_name');
-                        let timeout = null;
+                @push('scripts')
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const partnerIdInput = document.querySelector('[name="user_id"]');
+                            const partnerNameElem = document.getElementById('partner_name');
+                            let timeout = null;
 
-                        partnerIdInput.addEventListener('input', function() {
-                            clearTimeout(timeout);
-                            const id = partnerIdInput.value.trim();
-                            if (!id) {
-                                partnerNameElem.textContent = 'Введите ID партнера';
-                                return;
-                            }
-                            timeout = setTimeout(() => {
-                                fetch(`/admin/get-partner/${id}`)
-                                    .then(res => res.json())
-                                    .then(data => {
-                                        if (data.error || !data.name) {
-                                            partnerNameElem.textContent = 'Партнер не найден';
-                                            return;
-                                        }
-                                        partnerNameElem.textContent = data.name;
-                                    })
-                                    .catch(() => {
-                                        partnerNameElem.textContent = 'Ошибка поиска партнера';
-                                    });
-                            }, 500);
+                            partnerIdInput.addEventListener('input', function() {
+                                clearTimeout(timeout);
+                                const id = partnerIdInput.value.trim();
+                                if (!id) {
+                                    partnerNameElem.textContent = 'Введите ID партнера';
+                                    return;
+                                }
+                                timeout = setTimeout(() => {
+                                    fetch(`/admin/get-partner/${id}`)
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            if (data.error || !data.name) {
+                                                partnerNameElem.textContent = 'Партнер не найден';
+                                                return;
+                                            }
+                                            partnerNameElem.textContent = data.name;
+                                        })
+                                        .catch(() => {
+                                            partnerNameElem.textContent = 'Ошибка поиска партнера';
+                                        });
+                                }, 500);
+                            });
                         });
-                    });
-                </script>
-            @endpush
+                    </script>
+                @endpush
 
-            <hr>
+                <hr>
+            @endif
 
             <div class="text-lg font-medium">Направление мероприятия</div>
 

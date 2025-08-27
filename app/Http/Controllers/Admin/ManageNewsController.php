@@ -16,12 +16,21 @@ class ManageNewsController extends Controller
     {
         $status = $request->query('status', $request->route('status'));
         $q = $request->string('q')->toString();
-        $news = News::query()
+
+        $query = News::query()
             ->when($q, fn($qry) => $qry->where(function ($w) use ($q) {
-            $w->where('title', 'like', "%{$q}%")
-                ->orWhere('short_description', 'like', "%{$q}%");
-            }))
-            ->where('status', $status)
+                $w->where('title', 'like', "%{$q}%")
+                    ->orWhere('short_description', 'like', "%{$q}%");
+            }));
+
+        // If user is not admin, show only their news
+        if (!Auth::user() || Auth::user()->role !== 'admin') {
+            $query->where('user_id', Auth::id());
+        } else if (!Auth::user() || Auth::user()->role === 'admin') {
+            $query->where('status', $status);
+        }
+
+        $news = $query
             ->orderByDesc('id')
             ->paginate(12)
             ->appends($request->query());
@@ -59,13 +68,17 @@ class ManageNewsController extends Controller
             $v['cover'] = 'storage/' . $coverPath;
         }
 
-        $v['status'] = 'published';
+        if (Auth::user() && Auth::user()->role === 'admin') {
+            $v['status'] = 'published';
+        } else {
+            $v['status'] = 'pending';
+        }
 
         // Create the news entry
         $news = News::create($v);
 
         return redirect()
-            ->route('admin.news.index')
+            ->route(Auth::user()->role . '.news.index')
             ->with('success', 'Новость успешно создана.');
     }
 
@@ -77,7 +90,7 @@ class ManageNewsController extends Controller
         $event->save();
 
         return redirect()
-            ->route('admin.news.list', $event)
+            ->route('admin.news.index', $event)
             ->with('success', 'Новость успешно одобрена.');
     }
 
@@ -89,7 +102,7 @@ class ManageNewsController extends Controller
         $event->save();
 
         return redirect()
-            ->route('admin.news.list', $event)
+            ->route(Auth::user()->role . '.news.index', $event)
             ->with('success', 'Новость успешно отклонена.');
     }
 
@@ -100,7 +113,17 @@ class ManageNewsController extends Controller
         $news->save();
 
         return redirect()
-            ->route('admin.news.index')
+            ->route(Auth::user()->role . '.news.index')
             ->with('success', 'Новость успешно перемещена в архив.');
+    }
+
+    public function remove($id)
+    {
+        $news = News::findOrFail($id);
+        $news->delete();
+
+        return redirect()
+            ->route(Auth::user()->role . '.news.index')
+            ->with('success', 'Новость успешно удалена.');
     }
 }

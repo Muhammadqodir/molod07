@@ -14,14 +14,14 @@ use App\Http\Controllers\Auth\RegisterYouthController;
 use App\Http\Controllers\Profiles\PartnerProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\Profiles\AdminProfileController;
 use App\Http\Controllers\Profiles\YouthProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('pages.main');
-})->name("main");
+Route::get('/', [PagesController::class, 'main'])->name("main");
+Route::get('/event/{id}', [PagesController::class, 'eventPage'])->name("event");
 
 Route::middleware('guest')->group(function () {
     Route::get('/register/youth', [RegisterYouthController::class, 'show'])->name('youth.reg');
@@ -50,6 +50,32 @@ Route::middleware(['auth', 'role:youth'])->group(function () {
 Route::middleware(['auth', 'role:partner'])->group(function () {
     Route::get('/profile/partner', [PartnerProfileController::class, 'show'])->name('partner.profile');
     Route::post('/profile/partner/post', [PartnerProfileController::class, 'updateProfile'])->name('partner.profile.post');
+
+    //News
+    Route::get('partner/news/list', [ManageNewsController::class, 'show'])->name('partner.news.index');
+    Route::get('partner/news/create', [ManageNewsController::class, 'create'])->name('partner.news.create');
+    Route::post('partner/news/create', [ManageNewsController::class, 'store'])->name('partner.news.store');
+    Route::post('partner/news/action/archive/{id}', [ManageNewsController::class, 'archive'])->name('partner.news.action.archive');
+    Route::post('partner/news/action/remove/{id}', [ManageNewsController::class, 'remove'])->name('partner.news.action.remove');
+    Route::get('partner/news/preview/{id}', [ManageNewsController::class, 'preview'])->name('partner.news.preview');
+
+    //Events
+    Route::get('partner/events/list', [ManageEventsController::class, 'show'])->name('partner.events.index');
+    Route::get('partner/events/participants', [ManageEventsController::class, 'show'])->name('partner.events.participants');
+    Route::get('partner/events/create', [ManageEventsController::class, 'create'])->name('partner.events.create');
+    Route::post('partner/events/create', [ManageEventsController::class, 'store'])->name('partner.events.store');
+    Route::post('partner/events/action/archive/{id}', [ManageEventsController::class, 'archive'])->name('partner.events.action.archive');
+    Route::post('partner/events/action/remove/{id}', [ManageEventsController::class, 'remove'])->name('partner.events.action.remove');
+    Route::get('partner/events/preview/{id}', [ManageEventsController::class, 'preview'])->name('partner.events.preview');
+
+    //Vacancies
+    Route::get('partner/vacancies/list', [ManageVacanciesController::class, 'show'])->name('partner.vacancies.index');
+    Route::get('partner/vacancies/participants', [ManageVacanciesController::class, 'show'])->name('partner.vacancies.requests');
+    Route::get('partner/vacancies/create', [ManageVacanciesController::class, 'create'])->name('partner.vacancies.create');
+    Route::post('partner/vacancies/create', [ManageVacanciesController::class, 'store'])->name('partner.vacancies.store');
+    Route::post('partner/vacancies/action/archive/{id}', [ManageVacanciesController::class, 'archive'])->name('partner.vacancies.action.archive');
+    Route::post('partner/vacancies/action/remove/{id}', [ManageVacanciesController::class, 'remove'])->name('partner.vacancies.action.remove');
+    Route::get('partner/vacancies/preview/{id}', [ManageVacanciesController::class, 'preview'])->name('partner.vacancies.preview');
 });
 
 //Admin routes
@@ -149,7 +175,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'phone' => $user->getProfile()->phone,
             'email' => $user->email,
         ]);
-    })->middleware(['auth', 'role:admin'])->name('admin.get.user');
+    })->middleware(['auth', 'role:admin,partner'])->name('admin.get.user');
 
     Route::get('/admin/get-partner/{id}', function ($id) {
         $id = ltrim($id, '0');
@@ -163,7 +189,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'phone' => $partner->getProfile()->phone,
             'address' => $partner->getProfile()->org_address,
         ]);
-    })->middleware(['auth', 'role:admin'])->name('admin.get.partner');
+    })->middleware(['auth', 'role:admin,partner'])->name('admin.get.partner');
 });
 
 //Profile redirect

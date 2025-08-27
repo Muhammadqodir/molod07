@@ -6,112 +6,115 @@
     <div class="flex items-center justify-between mb-0">
         <h1 class="text-3xl">Добавить вакансию</h1>
     </div>
-    <form action="{{ route('admin.vacancies.store') }}" method="POST" class="space-y-5">
+    <form action="{{ route(Auth::user()->role . '.vacancies.store') }}" method="POST" class="space-y-5">
         @csrf
 
         {{-- Работодатель --}}
         <section class="space-y-3">
 
-            <div class="text-lg font-medium">Работодатель</div>
+            @if (Auth::user()->role === 'admin')
+                <div class="text-lg font-medium">Работодатель</div>
 
-            <x-input label="ID пользователя" name="user_id" placeholder="ID пользователя" value="{{ old('user_id') }}" />
-            <small id="user_name">Введите ID пользователя</small>
+                <x-input label="ID пользователя" name="user_id" placeholder="ID пользователя" value="{{ old('user_id') }}" />
+                <small id="user_name">Введите ID пользователя</small>
 
-            @push('scripts')
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const userIdInput = document.querySelector('[name="user_id"]');
-                        const userNameElem = document.getElementById('user_name');
-                        const orgNameInput = document.querySelector('[name="org_name"]');
-                        const orgPhoneInput = document.querySelector('[name="org_phone"]');
-                        const orgAddressInput = document.querySelector('[name="org_address"]');
-                        const orgEmailInput = document.querySelector('[name="org_email"]');
-                        let timeout = null;
+                @push('scripts')
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const userIdInput = document.querySelector('[name="user_id"]');
+                            const userNameElem = document.getElementById('user_name');
+                            const orgNameInput = document.querySelector('[name="org_name"]');
+                            const orgPhoneInput = document.querySelector('[name="org_phone"]');
+                            const orgAddressInput = document.querySelector('[name="org_address"]');
+                            const orgEmailInput = document.querySelector('[name="org_email"]');
+                            let timeout = null;
 
-                        function setOrgInputs(data, autofilled) {
-                            orgNameInput.value = data.name || '';
-                            orgPhoneInput.value = data.phone || '';
-                            orgAddressInput.value = data.address || '';
-                            orgEmailInput.value = data.email || '';
-                            orgNameInput.readOnly = autofilled;
-                            orgPhoneInput.readOnly = autofilled;
-                            orgAddressInput.readOnly = autofilled;
-                            orgEmailInput.readOnly = autofilled;
+                            function setOrgInputs(data, autofilled) {
+                                orgNameInput.value = data.name || '';
+                                orgPhoneInput.value = data.phone || '';
+                                orgAddressInput.value = data.address || '';
+                                orgEmailInput.value = data.email || '';
+                                orgNameInput.readOnly = autofilled;
+                                orgPhoneInput.readOnly = autofilled;
+                                orgAddressInput.readOnly = autofilled;
+                                orgEmailInput.readOnly = autofilled;
 
-                            // Добавляем визуальные стили для readonly полей
-                            if (autofilled) {
-                                orgNameInput.classList.add('bg-gray-100', 'cursor-not-allowed');
-                                orgPhoneInput.classList.add('bg-gray-100', 'cursor-not-allowed');
-                                orgAddressInput.classList.add('bg-gray-100', 'cursor-not-allowed');
-                                orgEmailInput.classList.add('bg-gray-100', 'cursor-not-allowed');
-                            } else {
+                                // Добавляем визуальные стили для readonly полей
+                                if (autofilled) {
+                                    orgNameInput.classList.add('bg-gray-100', 'cursor-not-allowed');
+                                    orgPhoneInput.classList.add('bg-gray-100', 'cursor-not-allowed');
+                                    orgAddressInput.classList.add('bg-gray-100', 'cursor-not-allowed');
+                                    orgEmailInput.classList.add('bg-gray-100', 'cursor-not-allowed');
+                                } else {
+                                    orgNameInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                                    orgPhoneInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                                    orgAddressInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                                    orgEmailInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                                }
+                            }
+
+                            function clearOrgInputs() {
+                                orgNameInput.value = '';
+                                orgPhoneInput.value = '';
+                                orgAddressInput.value = '';
+                                orgEmailInput.value = '';
+                                orgNameInput.readOnly = false;
+                                orgPhoneInput.readOnly = false;
+                                orgAddressInput.readOnly = false;
+                                orgEmailInput.readOnly = false;
+
+                                // Убираем визуальные стили для readonly полей
                                 orgNameInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
                                 orgPhoneInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
                                 orgAddressInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
                                 orgEmailInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
                             }
-                        }
 
-                        function clearOrgInputs() {
-                            orgNameInput.value = '';
-                            orgPhoneInput.value = '';
-                            orgAddressInput.value = '';
-                            orgEmailInput.value = '';
-                            orgNameInput.readOnly = false;
-                            orgPhoneInput.readOnly = false;
-                            orgAddressInput.readOnly = false;
-                            orgEmailInput.readOnly = false;
-
-                            // Убираем визуальные стили для readonly полей
-                            orgNameInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
-                            orgPhoneInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
-                            orgAddressInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
-                            orgEmailInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
-                        }
-
-                        userIdInput.addEventListener('input', function() {
-                            clearTimeout(timeout);
-                            const id = userIdInput.value.trim();
-                            if (!id) {
-                                userNameElem.textContent = 'Введите ID пользователя';
-                                clearOrgInputs();
-                                return;
-                            }
-                            timeout = setTimeout(() => {
-                                fetch(`/admin/get-partner/${id}`)
-                                    .then(res => res.json())
-                                    .then(data => {
-                                        if (data.error || !data.name) {
-                                            userNameElem.textContent = 'Пользователь не найден';
+                            userIdInput.addEventListener('input', function() {
+                                clearTimeout(timeout);
+                                const id = userIdInput.value.trim();
+                                if (!id) {
+                                    userNameElem.textContent = 'Введите ID пользователя';
+                                    clearOrgInputs();
+                                    return;
+                                }
+                                timeout = setTimeout(() => {
+                                    fetch(`/admin/get-partner/${id}`)
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            if (data.error || !data.name) {
+                                                userNameElem.textContent = 'Пользователь не найден';
+                                                clearOrgInputs();
+                                                return;
+                                            }
+                                            userNameElem.textContent = `${data.name} ${data.l_name || ''}`
+                                                .trim();
+                                            setOrgInputs(data, true);
+                                        })
+                                        .catch(() => {
+                                            userNameElem.textContent = 'Ошибка поиска пользователя';
                                             clearOrgInputs();
-                                            return;
-                                        }
-                                        userNameElem.textContent = `${data.name} ${data.l_name || ''}`.trim();
-                                        setOrgInputs(data, true);
-                                    })
-                                    .catch(() => {
-                                        userNameElem.textContent = 'Ошибка поиска пользователя';
-                                        clearOrgInputs();
-                                    });
-                            }, 500);
+                                        });
+                                }, 500);
+                            });
                         });
-                    });
-                </script>
-            @endpush
+                    </script>
+                @endpush
 
-            <x-input label="Название организации" name="org_name" placeholder="ООО Компания"
-                value="{{ old('org_name') }}" />
+                <x-input label="Название организации" name="org_name" placeholder="ООО Компания"
+                    value="{{ old('org_name') }}" />
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <x-input type="tel" label="Телефон организации" name="org_phone" placeholder="+7(999)999-99-99"
-                    value="{{ old('org_phone') }}" />
-                <x-input type="email" label="E‑mail организации" name="org_email" placeholder="hr@company.com"
-                    value="{{ old('org_email') }}" />
-            </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <x-input type="tel" label="Телефон организации" name="org_phone" placeholder="+7(999)999-99-99"
+                        value="{{ old('org_phone') }}" />
+                    <x-input type="email" label="E‑mail организации" name="org_email" placeholder="hr@company.com"
+                        value="{{ old('org_email') }}" />
+                </div>
 
-            <x-input label="Адрес организации" name="org_address" placeholder="Укажите полный адрес организации"
-                value="{{ old('org_address') }}" />
-            <hr>
+                <x-input label="Адрес организации" name="org_address" placeholder="Укажите полный адрес организации"
+                    value="{{ old('org_address') }}" />
+                <hr>
+            @endif
 
             <div class="text-lg font-medium">Направление и тип вакансии</div>
 

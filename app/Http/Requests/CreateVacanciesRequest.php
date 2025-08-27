@@ -30,10 +30,10 @@ class CreateVacanciesRequest extends FormRequest
             'salary_negotiable' => 'boolean',
             'type' => 'required|string',
             'experience' => 'required|string',
-            'org_name' => 'required|string|max:255',
-            'org_phone' => 'required|string|max:20|regex:/^[+]?[0-9\s\-\(\)]+$/',
-            'org_email' => 'required|email|max:255',
-            'org_address' => 'required|string|max:500',
+            'org_name' => 'nullable|string|max:255',
+            'org_phone' => 'nullable|string|max:20|regex:/^[+]?[0-9\s\-\(\)]+$/',
+            'org_email' => 'nullable|email|max:255',
+            'org_address' => 'nullable|string|max:500',
         ];
     }
 

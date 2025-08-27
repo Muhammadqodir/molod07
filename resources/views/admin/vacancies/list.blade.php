@@ -5,14 +5,14 @@
 @section('content')
     <div class="flex items-center justify-between mb-4">
         <h1 class="text-3xl">Вакансии</h1>
-        <a href="{{ route('admin.vacancies.create') }}"
+        <a href="{{ route(Auth::user()->role . '.vacancies.create') }}"
             class="inline-flex items-center justify-center h-10 cursor-pointer gap-1 px-3 py-3 text-[16px] rounded-xl transition border-2 border-[#1E44A3] text-primary hover:bg-[#1E44A3]/10">
             <x-lucide-plus class="h-5" />
             <span class="hidden sm:inline">Добавить</span>
         </a>
     </div>
 
-    <form method="GET" action="{{ route('admin.vacancies.index') }}" class="mb-6">
+    <form method="GET" action="{{ route(Auth::user()->role . '.vacancies.index') }}" class="mb-6">
         <div class="relative mt-4">
             <x-search-input name="q" placeholder="Поиск по названию или организации" :value="old('q', request('q'))" />
         </div>
@@ -67,12 +67,13 @@
                             </td>
 
                             <td class="px-4 py-4">
-                                @if($vacancy->salary_negotiable)
+                                @if ($vacancy->salary_negotiable)
                                     <span class="text-gray-600">По договорённости</span>
                                 @else
                                     <div class="text-gray-800">
-                                        @if($vacancy->salary_from && $vacancy->salary_to)
-                                            {{ number_format($vacancy->salary_from) }} - {{ number_format($vacancy->salary_to) }} ₽
+                                        @if ($vacancy->salary_from && $vacancy->salary_to)
+                                            {{ number_format($vacancy->salary_from) }} -
+                                            {{ number_format($vacancy->salary_to) }} ₽
                                         @elseif($vacancy->salary_from)
                                             от {{ number_format($vacancy->salary_from) }} сом
                                         @elseif($vacancy->salary_to)
@@ -113,7 +114,8 @@
 
                                     @switch($vacancy->status)
                                         @case('approved')
-                                            <form method="POST" action="{{ route('admin.vacancies.action.archive', $vacancy->id) }}"
+                                            <form method="POST"
+                                                action="{{ route(Auth::user()->role . '.vacancies.action.archive', $vacancy->id) }}"
                                                 class="mr-2">
                                                 @csrf
                                                 <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Архивировать">
@@ -125,43 +127,47 @@
                                         @break
 
                                         @case('pending')
-                                            <form method="POST" action="{{ route('admin.vacancies.approve', $vacancy->id) }}"
-                                                class="mr-2">
-                                                @csrf
-                                                <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Одобрить">
-                                                    <x-nav-icon>
-                                                        <x-lucide-check class="w-5 h-5 text-green-600" />
-                                                    </x-nav-icon>
-                                                </button>
-                                            </form>
-                                            <form method="POST" action="{{ route('admin.vacancies.reject', $vacancy->id) }}"
-                                                class="mr-2">
-                                                @csrf
-                                                <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Отклонить">
-                                                    <x-nav-icon>
-                                                        <x-lucide-x class="w-5 h-5 text-red-600" />
-                                                    </x-nav-icon>
-                                                </button>
-                                            </form>
+                                            @if (Auth::user()->role === 'admin')
+                                                <form method="POST" action="{{ route('admin.vacancies.approve', $vacancy->id) }}"
+                                                    class="mr-2">
+                                                    @csrf
+                                                    <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Одобрить">
+                                                        <x-nav-icon>
+                                                            <x-lucide-check class="w-5 h-5 text-green-600" />
+                                                        </x-nav-icon>
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="{{ route('admin.vacancies.reject', $vacancy->id) }}"
+                                                    class="mr-2">
+                                                    @csrf
+                                                    <button type="submit" class="p-0 m-0 bg-transparent border-0"
+                                                        title="Отклонить">
+                                                        <x-nav-icon>
+                                                            <x-lucide-x class="w-5 h-5 text-red-600" />
+                                                        </x-nav-icon>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @break
+
+                                        @case('rejected')
+                                            @if (Auth::user()->role === 'partner')
+                                                <form method="POST"
+                                                    action="{{ route('partner.vacancies.action.remove', $vacancy->id) }}" class="mr-2">
+                                                    @csrf
+                                                    <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Удалить"
+                                                        onclick="return confirm('Вы уверены, что хотите удалить это мероприятие?');">
+                                                        <x-nav-icon>
+                                                            <x-lucide-trash-2 class="w-5 h-5 text-red-600" />
+                                                        </x-nav-icon>
+                                                    </button>
+                                                </form>
+                                            @endif
                                         @break
 
                                         @default
                                     @endswitch
 
-                                    {{-- <x-nav-icon>
-                                        <x-lucide-pen class="w-5 h-5" />
-                                    </x-nav-icon>
-
-                                    <form method="POST" action="{{ route('admin.vacancies.delete', $vacancy->id) }}"
-                                        onsubmit="return confirm('Вы уверены, что хотите удалить эту вакансию?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="p-0 m-0 bg-transparent border-0">
-                                            <x-nav-icon>
-                                                <x-lucide-trash-2 class="w-5 h-5" />
-                                            </x-nav-icon>
-                                        </button>
-                                    </form> --}}
                                 </div>
                             </td>
                         </tr>

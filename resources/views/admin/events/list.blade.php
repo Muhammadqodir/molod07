@@ -5,14 +5,14 @@
 @section('content')
     <div class="flex items-center justify-between mb-4">
         <h1 class="text-3xl">Мероприятия</h1>
-        <a href="{{ route('admin.events.create') }}"
+        <a href="{{ route(Auth::user()->role . '.events.create') }}"
             class="inline-flex items-center justify-center h-10 cursor-pointer gap-1 px-3 py-3 text-[16px] rounded-xl transition border-2 border-[#1E44A3] text-primary hover:bg-[#1E44A3]/10">
             <x-lucide-plus class="h-5" />
             <span class="hidden sm:inline">Добавить</span>
         </a>
     </div>
 
-    <form method="GET" action="{{ route('main') }}" class="mb-6">
+    <form method="GET" action="{{ route(Auth::user()->role . '.events.index') }}" class="mb-6">
         <div class="relative mt-4">
             <x-search-input name="q" placeholder="Поиск по названию" :value="old('q', request('q'))" />
         </div>
@@ -46,8 +46,8 @@
                                     <div>
                                         <div class="flex items-center gap-2">
                                             <div class="text-gray-800 font-medium line-clamp-1">{{ $item->title }}</div>
-                                            <a href="{{ route('admin.events.preview', $item->id) }}" title="Открыть"
-                                                target="_blank">
+                                            <a href="{{ route(Auth::user()->role . '.events.preview', $item->id) }}"
+                                                title="Открыть" target="_blank">
                                                 <x-lucide-external-link class="w-4 h-4 text-gray-500 hover:text-primary" />
                                             </a>
                                         </div>
@@ -90,7 +90,8 @@
 
                                     @switch($item->status)
                                         @case('approved')
-                                            <form method="POST" action="{{ route('admin.events.action.archive', $item->id) }}"
+                                            <form method="POST"
+                                                action="{{ route(Auth::user()->role . '.events.action.archive', $item->id) }}"
                                                 class="mr-2">
                                                 @csrf
                                                 <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Архивировать">
@@ -102,43 +103,60 @@
                                         @break
 
                                         @case('pending')
-                                            <form method="POST" action="{{ route('admin.events.approve', $item->id) }}"
-                                                class="mr-2">
-                                                @csrf
-                                                <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Одобрить">
-                                                    <x-nav-icon>
-                                                        <x-lucide-check class="w-5 h-5 text-green-600" />
-                                                    </x-nav-icon>
-                                                </button>
-                                            </form>
-                                            <form method="POST" action="{{ route('admin.events.reject', $item->id) }}"
-                                                class="mr-2">
-                                                @csrf
-                                                <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Отклонить">
-                                                    <x-nav-icon>
-                                                        <x-lucide-x class="w-5 h-5 text-red-600" />
-                                                    </x-nav-icon>
-                                                </button>
-                                            </form>
+                                            @if (Auth::user()->role === 'admin')
+                                                <form method="POST" action="{{ route('admin.events.approve', $item->id) }}"
+                                                    class="mr-2">
+                                                    @csrf
+                                                    <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Одобрить">
+                                                        <x-nav-icon>
+                                                            <x-lucide-check class="w-5 h-5 text-green-600" />
+                                                        </x-nav-icon>
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="{{ route('admin.events.reject', $item->id) }}"
+                                                    class="mr-2">
+                                                    @csrf
+                                                    <button type="submit" class="p-0 m-0 bg-transparent border-0"
+                                                        title="Отклонить">
+                                                        <x-nav-icon>
+                                                            <x-lucide-x class="w-5 h-5 text-red-600" />
+                                                        </x-nav-icon>
+                                                    </button>
+                                                </form>
+                                            @endif
+
+                                            @if (Auth::user()->role === 'partner')
+                                                <form method="POST"
+                                                    action="{{ route('partner.events.action.remove', $item->id) }}" class="mr-2">
+                                                    @csrf
+                                                    <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Удалить"
+                                                        onclick="return confirm('Вы уверены, что хотите удалить это мероприятие?');">
+                                                        <x-nav-icon>
+                                                            <x-lucide-trash-2 class="w-5 h-5 text-red-600" />
+                                                        </x-nav-icon>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @break
+
+                                        @case('rejected')
+                                            @if (Auth::user()->role === 'partner')
+                                                <form method="POST"
+                                                    action="{{ route('partner.events.action.remove', $item->id) }}" class="mr-2">
+                                                    @csrf
+                                                    <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Удалить"
+                                                        onclick="return confirm('Вы уверены, что хотите удалить это мероприятие?');">
+                                                        <x-nav-icon>
+                                                            <x-lucide-trash-2 class="w-5 h-5 text-red-600" />
+                                                        </x-nav-icon>
+                                                    </button>
+                                                </form>
+                                            @endif
                                         @break
 
                                         @default
                                     @endswitch
 
-                                    {{-- <x-nav-icon>
-                                        <x-lucide-pen class="w-5 h-5" />
-                                    </x-nav-icon>
-
-                                    <form method="POST" action="{{ route('admin.manage.youth.remove') }}"
-                                        onsubmit="return confirm('Вы уверены, что хотите удалить этого пользователя?');">
-                                        @csrf
-                                        <input name="id" value="{{ $item->id }}" hidden>
-                                        <button type="submit" class="p-0 m-0 bg-transparent border-0">
-                                            <x-nav-icon>
-                                                <x-lucide-trash-2 class="w-5 h-5" />
-                                            </x-nav-icon>
-                                        </button>
-                                    </form> --}}
                                 </div>
                             </td>
                         </tr>

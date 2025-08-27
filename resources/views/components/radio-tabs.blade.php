@@ -13,7 +13,6 @@
             this.$watch('active', value => {
                 console.log('Active tab changed:', value);
                 this.$dispatch('tab-changed', value);
-                $dispatch('notify', 'Вы выбрали: ' + value);
             });
         }
     }"
@@ -27,7 +26,7 @@
                 :class="active === @js($tab) ? 'bg-primary/10 text-primary' : 'bg-white text-gray-700'"
             >
                 <x-dynamic-component
-                    :component="$icon"
+                    :component="'lucide-' . $icon"
                     class="'w-5 h-5 ' + (active === {{$tab}} ? 'text-primary' : 'text-gray-500')"
                 />
                 <span>{{ $tab }}</span>

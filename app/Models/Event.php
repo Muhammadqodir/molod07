@@ -51,7 +51,26 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getSupervisorFullName(){
+    public function getSupervisorFullName()
+    {
         return trim("{$this->supervisor_name} {$this->supervisor_l_name}");
+    }
+
+    public function getPoints()
+    {
+        $roles = is_string($this->roles) ? json_decode($this->roles, true) : $this->roles;
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if (isset($role['points'])) {
+                    return $role['points'];
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function getAddress()
+    {
+        return "{$this->settlement} {$this->address}";
     }
 }

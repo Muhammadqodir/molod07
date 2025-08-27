@@ -1,4 +1,5 @@
 @props([
+    'id' => null,
     'title',
     'category',
     'date',
@@ -7,7 +8,7 @@
     'link' => '#'
 ])
 
-<div class="bg-white rounded-2xl border border-gray-100 p-4 w-full max-w-sm shadow-sm">
+<div class="bg-white rounded-2xl border border-gray-100 p-4 w-full max-w-sm shadow-sm cursor-pointer hover:shadow-lg transition">
     <div class="flex items-start justify-between mb-3">
         <span class="text-sm bg-blue/20 px-3 py-1 rounded-lg font-medium">
             #{{ $category }}

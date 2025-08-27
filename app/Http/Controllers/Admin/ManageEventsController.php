@@ -16,12 +16,21 @@ class ManageEventsController extends Controller
     {
         $status = $request->query('status', $request->route('status'));
         $q = $request->string('q')->toString();
-        $events = Event::query()
+
+        $eventsQuery = Event::query()
             ->when($q, fn($qry) => $qry->where(function ($w) use ($q) {
-            $w->where('title', 'like', "%{$q}%")
-                ->orWhere('short_description', 'like', "%{$q}%");
-            }))
-            ->where('status', $status)
+                $w->where('title', 'like', "%{$q}%")
+                    ->orWhere('short_description', 'like', "%{$q}%");
+            }));
+
+        // If user is not admin, show only their news
+        if (!Auth::user() || Auth::user()->role !== 'admin') {
+            $eventsQuery->where('user_id', Auth::id());
+        } else if (Auth::user() && Auth::user()->role === 'admin') {
+            $eventsQuery->where('status', $status);
+        }
+
+        $events = $eventsQuery
             ->orderByDesc('id')
             ->paginate(12)
             ->appends($request->query());
@@ -54,8 +63,13 @@ class ManageEventsController extends Controller
         // dd('Store event', $request->all());
         $v = $request->validated();
 
-        // если user_id не прислан — берём из auth
-        $v['user_id'] = $v['user_id'] ?? Auth::id();
+        if (Auth::user() && Auth::user()->role === 'admin') {
+            $v['status'] = 'approved';
+            $v['user_id'] = $v['user_id'] ?? Auth::id();
+        } else {
+            $v['status'] = 'pending';
+            $v['user_id'] = Auth::id();
+        }
 
         return DB::transaction(function () use ($request, $v) {
             // 1) создаём запись без файлов
@@ -124,7 +138,7 @@ class ManageEventsController extends Controller
             }
 
             return redirect()
-                ->route('admin.events.index', $event)
+                ->route(Auth::user()->role . '.events.index', $event)
                 ->with('success', 'Мероприятие успешно создано.');
         });
     }
@@ -160,7 +174,17 @@ class ManageEventsController extends Controller
         $event->save();
 
         return redirect()
-            ->route('admin.events.index')
+            ->route(Auth::user()->role . '.events.index')
             ->with('success', 'Мероприятие успешно перемещено в архив.');
+    }
+
+    public function remove($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->delete();
+
+        return redirect()
+            ->route(Auth::user()->role . '.events.index')
+            ->with('success', 'Мероприятие успешно удалено.');
     }
 }

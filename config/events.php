@@ -2,10 +2,10 @@
 
 return [
     'categories' => [
+        ['icon' => 'cpu', 'label' => 'Технологии', 'value' => 'Технологии'],
         ['icon' => 'atom', 'label' => 'Наука', 'value' => 'Наука'],
         ['icon' => 'leaf', 'label' => 'Экология', 'value' => 'Экология'],
         ['icon' => 'dumbbell', 'label' => 'Спорт', 'value' => 'Спорт'],
-        ['icon' => 'cpu', 'label' => 'Технологии', 'value' => 'Технологии'],
         ['icon' => 'handshake', 'label' => 'Патриотизм', 'value' => 'Патриотизм'],
         ['icon' => 'sparkles', 'label' => 'Креатив', 'value' => 'Креатив'],
         ['icon' => 'palette', 'label' => 'Творчество', 'value' => 'Творчество'],

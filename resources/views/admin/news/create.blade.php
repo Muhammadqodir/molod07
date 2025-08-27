@@ -6,7 +6,7 @@
     <div class="flex items-center justify-between mb-0">
         <h1 class="text-3xl">Добавить новость</h1>
     </div>
-    <form action="{{ route('admin.news.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+    <form action="{{ route(Auth::user()->role . '.news.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
         @csrf
         {{-- Обложка --}}
         <section class="space-y-3">
