@@ -24,6 +24,8 @@ Route::get('/', [PagesController::class, 'main'])->name("main");
 Route::get('/event/{id}', [PagesController::class, 'eventPage'])->name("event");
 Route::get('/vacancy/{id}', [PagesController::class, 'vacancyPage'])->name("vacancy");
 
+Route::get('/events', [PagesController::class, 'eventsList'])->name("events.list");
+
 Route::middleware('guest')->group(function () {
     Route::get('/register/youth', [RegisterYouthController::class, 'show'])->name('youth.reg');
     Route::post('/register/youth', [RegisterYouthController::class, 'register'])->name("youth.reg.post");

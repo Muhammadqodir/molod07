@@ -3,9 +3,11 @@
     <div class="max-w-screen-xl mx-auto px-6">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-3xl font-semibold text-gray-800">Популярные мероприятия</h2>
-            <x-button variant="text">
-                Смотреть все
-            </x-button>
+            <a href="{{ route('events.list') }}">
+                <x-button variant="text">
+                    Смотреть все
+                </x-button>
+            </a>
         </div>
 
         @php

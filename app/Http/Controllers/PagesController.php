@@ -39,4 +39,28 @@ class PagesController extends Controller
         $vacancy->admin = User::find($vacancy->admin_id);
         return view('pages.vacancy', compact('vacancy'));
     }
+
+    function eventsList(Request $request){
+        $query = Event::where('status', 'approved');
+
+        // Filter by category if set and not 'Все'
+        $category = $request->input('category', 'Все');
+        if ($category !== 'Все') {
+            $query->where('category', $category);
+        }
+
+        // Sort by 'popular' or 'date'
+        $sort = $request->input('sort', 'popular');
+        if ($sort === 'date') {
+            $query->orderByDesc('created_at'); // Change 'date' to your actual date column
+        } else {
+            // $query->orderByDesc('views'); // Change 'views' to your actual popularity column
+        }
+
+        $items = $query->paginate(10);
+        $title = $category === 'Все' ? 'Все мероприятия' : $category;
+        $entity = 'events';
+        $count = $items->total();
+        return view('pages.list', compact('items', 'title', 'entity', 'count'));
+    }
 }

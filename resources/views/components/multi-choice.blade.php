@@ -14,6 +14,7 @@
     /** Заголовок/подсказка над кнопками (необяз.) */
     'title' => null,
     'hint' => null,
+    'bgColor' => 'bg-primary/10',
 ])
 
 @php
@@ -48,9 +49,9 @@
                 class="px-4 py-2 rounded-xl text-sm
                        transition-colors
                        data-pill
-                       bg-primary/10 text-gray-500"
+                       {{ $bgColor }} text-gray-500"
                 :class="isSelected(@js($val)) ?
-                    'bg-primary/25 text-primary' :
+                    'bg-primary/30 text-primary' :
                     ''"
                 @click="toggle(@js($val))">
                 @if (isset($opt['icon']))
