@@ -12,7 +12,7 @@
             @foreach ($vacancies as $vacancy)
                 <x-vacancy-card title="{{ $vacancy->title }}" category="{{ $vacancy->category }}"
                     date="{{ $vacancy->created_at->format('d.m.y') }}" salary="{{ $vacancy->getSalaryRange() }}"
-                    location="{{ $vacancy->org_address }}" link="{{ route('event', $vacancy->id) }}" />
+                    location="{{ $vacancy->org_address }}" link="{{ route('vacancy', $vacancy->id) }}" />
             @endforeach
 
         </div>

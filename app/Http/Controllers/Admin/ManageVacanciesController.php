@@ -48,7 +48,6 @@ class ManageVacanciesController extends Controller
     public function preview($id)
     {
         $vacancy = Vacancy::findOrFail($id);
-        $vacancy->user = User::find($vacancy->user_id);
         $vacancy->admin = User::find($vacancy->admin_id);
         return view('pages.vacancy', compact('vacancy'));
     }

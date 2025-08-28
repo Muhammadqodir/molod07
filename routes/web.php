@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [PagesController::class, 'main'])->name("main");
 Route::get('/event/{id}', [PagesController::class, 'eventPage'])->name("event");
+Route::get('/vacancy/{id}', [PagesController::class, 'vacancyPage'])->name("vacancy");
 
 Route::middleware('guest')->group(function () {
     Route::get('/register/youth', [RegisterYouthController::class, 'show'])->name('youth.reg');

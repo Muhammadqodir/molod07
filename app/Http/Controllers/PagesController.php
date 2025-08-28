@@ -32,4 +32,11 @@ class PagesController extends Controller
         $event->supervisor = User::find($event->supervisor_id);
         return view('pages.event', compact('event'));
     }
+
+    function vacancyPage($id)
+    {
+        $vacancy = Vacancy::findOrFail($id);
+        $vacancy->admin = User::find($vacancy->admin_id);
+        return view('pages.vacancy', compact('vacancy'));
+    }
 }
