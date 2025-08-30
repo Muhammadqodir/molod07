@@ -5,7 +5,6 @@
         $categories = config('events.categories');
         array_unshift($categories, ['icon' => 'layout-grid', 'label' => 'Все', 'value' => 'Все']);
         $types = config($entity . '.types');
-        $bgColor = 'bg-white';
         $currentCategory = request('category', 'Все');
         $currentSort = request('sort', 'popular');
     @endphp
@@ -18,7 +17,7 @@
             <form method="GET" action="{{ route($entity . '.list') }}" style="display:inline;">
                 <input type="hidden" name="sort" value="{{ $currentSort }}">
                 <button type="submit" name="category" value="{{ $category['value'] }}"
-                    class="inline-flex gap-1 px-4 py-2 rounded-xl text-sm transition-colors {{ $bgColor }} text-gray-500 {{ $selected ? 'bg-primary/30 text-primary' : '' }}">
+                    class="inline-flex gap-1 px-4 py-2 rounded-xl text-sm transition-colors {{ $selected ? 'bg-primary/30 text-primary' : 'bg-white text-gray-500' }}">
                     @if (!empty($category['icon']))
                         <x-dynamic-component :component="'lucide-' . $category['icon']" class="w-4 h-4 inline mr-0.5 mb-1" />
                     @endif

@@ -40,9 +40,8 @@ class PagesController extends Controller
         return view('pages.vacancy', compact('vacancy'));
     }
 
-    function eventsList(Request $request){
-        $query = Event::where('status', 'approved');
-
+    function applyFilters($query, $request)
+    {
         // Filter by category if set and not 'Все'
         $category = $request->input('category', 'Все');
         if ($category !== 'Все') {
@@ -56,11 +55,41 @@ class PagesController extends Controller
         } else {
             // $query->orderByDesc('views'); // Change 'views' to your actual popularity column
         }
+        return $query;
+    }
 
+    function eventsList(Request $request)
+    {
+        $query = Event::where('status', 'approved');
+        $query = $this->applyFilters($query, $request);
         $items = $query->paginate(10);
-        $title = $category === 'Все' ? 'Все мероприятия' : $category;
         $entity = 'events';
         $count = $items->total();
-        return view('pages.list', compact('items', 'title', 'entity', 'count'));
+        $title = $request->input('category', 'Все') === 'Все' ? 'Все мероприятия' : $request->input('category', 'Все');
+        return view('pages.list', compact('items', 'entity', 'count', 'title'));
+    }
+
+    function vacanciesList(Request $request)
+    {
+        $query = Vacancy::where('status', 'approved');
+        $query = $this->applyFilters($query, $request);
+        $items = $query->paginate(10);
+        $entity = 'vacancies';
+        $count = $items->total();
+        $title = $request->input('category', 'Все') === 'Все' ? 'Все вакансии' : $request->input('category', 'Все');
+        return view('pages.list', compact('items', 'entity', 'count', 'title'));
+    }
+
+    function aboutPage()
+    {
+        return view('pages.about');
+    }
+    function contactsPage()
+    {
+        return view('pages.contacts');
+    }
+    function documentsPage()
+    {
+        return view('pages.documents');
     }
 }

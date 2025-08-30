@@ -37,13 +37,17 @@
                 <div x-show="open" @click.away="open = false" x-transition
                     class="absolute right-0 mt-2 w-64 bg-[#fff] rounded-2xl shadow-xl p-4 z-50">
                     <ul class="space-y-0 text-gray-700">
-                        <li
-                            class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                            <x-lucide-home class="w-5 h-5 text-inherit" /> Главная
+                        <li>
+                            <a href="{{ route('main') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-home class="w-5 h-5 text-inherit" /> Главная
+                            </a>
                         </li>
-                        <li
-                            class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                            <x-lucide-heart class="w-5 h-5 text-inherit" /> Лента активности
+                        <li>
+                            <a href="{{ route('events.list') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-heart class="w-5 h-5 text-inherit" /> Лента активности
+                            </a>
                         </li>
                         <li
                             class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
@@ -53,25 +57,33 @@
                             class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
                             <x-lucide-graduation-cap class="w-5 h-5 text-inherit" /> Образование
                         </li>
-                        <li
-                            class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                            <x-lucide-briefcase class="w-5 h-5 text-inherit" /> Вакансии
+                        <li>
+                            <a href="{{ route('vacancies.list') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-briefcase class="w-5 h-5 text-inherit" /> Вакансии
+                            </a>
                         </li>
                         <li
                             class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
                             <x-lucide-headphones class="w-5 h-5 text-inherit" /> Подкасты
                         </li>
-                        <li
-                            class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                            <x-lucide-file-text class="w-5 h-5 text-inherit" /> Документы
+                        {{-- <li>
+                            <a href="{{ route('documents') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-file-text class="w-5 h-5 text-inherit" /> Документы
+                            </a>
                         </li>
-                        <li
-                            class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                            <x-lucide-smile class="w-5 h-5 text-inherit" /> О нас
-                        </li>
-                        <li
-                            class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                            <x-lucide-phone class="w-5 h-5 text-inherit" /> Контакты
+                        <li>
+                            <a href="{{ route('about') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-smile class="w-5 h-5 text-inherit" /> О нас
+                            </a>
+                        </li> --}}
+                        <li>
+                            <a href="{{ route('contacts') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-phone class="w-5 h-5 text-inherit" /> Контакты
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -121,13 +133,17 @@
 
         {{-- Пункты меню --}}
         <ul class="mt-4 space-y-3 text-gray-700">
-            <li
-                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                <x-lucide-home class="w-5 h-5 text-inherit" /> Главная
+            <li>
+                <a href="{{ route('main') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-home class="w-5 h-5 text-inherit" /> Главная
+                </a>
             </li>
-            <li
-                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                <x-lucide-heart class="w-5 h-5 text-inherit" /> Лента активности
+            <li>
+                <a href="{{ route('events.list') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-heart class="w-5 h-5 text-inherit" /> Лента активности
+                </a>
             </li>
             <li
                 class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
@@ -137,25 +153,33 @@
                 class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
                 <x-lucide-graduation-cap class="w-5 h-5 text-inherit" /> Образование
             </li>
-            <li
-                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                <x-lucide-briefcase class="w-5 h-5 text-inherit" /> Вакансии
+            <li>
+                <a href="{{ route('vacancies.list') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-briefcase class="w-5 h-5 text-inherit" /> Вакансии
+                </a>
             </li>
             <li
                 class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
                 <x-lucide-headphones class="w-5 h-5 text-inherit" /> Подкасты
             </li>
-            <li
-                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                <x-lucide-file-text class="w-5 h-5 text-inherit" /> Документы
+            {{-- <li>
+                <a href="{{ route('documents') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-file-text class="w-5 h-5 text-inherit" /> Документы
+                </a>
             </li>
-            <li
-                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                <x-lucide-smile class="w-5 h-5 text-inherit" /> О нас
-            </li>
-            <li
-                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                <x-lucide-phone class="w-5 h-5 text-inherit" /> Контакты
+            <li>
+                <a href="{{ route('about') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-smile class="w-5 h-5 text-inherit" /> О нас
+                </a>
+            </li> --}}
+            <li>
+                <a href="{{ route('contacts') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-phone class="w-5 h-5 text-inherit" /> Контакты
+                </a>
             </li>
         </ul>
 

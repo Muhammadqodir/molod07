@@ -25,6 +25,11 @@ Route::get('/event/{id}', [PagesController::class, 'eventPage'])->name("event");
 Route::get('/vacancy/{id}', [PagesController::class, 'vacancyPage'])->name("vacancy");
 
 Route::get('/events', [PagesController::class, 'eventsList'])->name("events.list");
+Route::get('/vacancies', [PagesController::class, 'vacanciesList'])->name("vacancies.list");
+
+Route::get('/about', [PagesController::class, 'aboutPage'])->name('about');
+Route::get('/contacts', [PagesController::class, 'contactsPage'])->name('contacts');
+Route::get('/documents', [PagesController::class, 'documentsPage'])->name('documents');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register/youth', [RegisterYouthController::class, 'show'])->name('youth.reg');
