@@ -48,7 +48,7 @@
 
                             {{-- Coins --}}
                             <td class="px-4 py-4 text-gray-700">
-                                <x-lucide-coins class="inline-block w-4 h-4 mb-1" /> 150
+                                <x-lucide-coins class="inline-block w-4 h-4 mb-1" /> {{ $item->youthProfile->getMyPointsSum() }}
                             </td>
 
                             {{-- Contacts --}}

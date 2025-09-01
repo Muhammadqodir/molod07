@@ -32,7 +32,7 @@ class RegisterPartnerController extends Controller
             'org_name' => $validated['org_name'],
             'person_name' => $validated['person_name'],
             'person_lname' => $validated['person_lname'] ?? null,
-            'address' => $validated['address'],
+            'org_address' => $validated['org_address'],
             'phone' => $validated['phone'],
         ]);
 

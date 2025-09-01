@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateEventRequest;
 use App\Models\Event;
+use App\Models\Participant;
+use App\Models\Points;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -186,5 +188,64 @@ class ManageEventsController extends Controller
         return redirect()
             ->route(Auth::user()->role . '.events.index')
             ->with('success', 'Мероприятие успешно удалено.');
+    }
+
+    public function getParticipants($id = null)
+    {
+        if ($id) {
+            $participantsQuery = Participant::where('event_id', $id)
+                ->whereHas('event', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->with('user');
+        } else {
+            $participantsQuery = Participant::whereHas('event', function ($query) {
+                $query->where('user_id', Auth::id());
+            })
+                ->with('user');
+        }
+
+        $participants = $participantsQuery->orderByDesc('id')->paginate(12);
+
+        return view('admin.events.participants', compact('participants'));
+    }
+
+    public function approveParticipant($id)
+    {
+        $participant = Participant::findOrFail($id);
+        $participant->status = 'approved';
+        $participant->save();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Участник успешно одобрен.');
+    }
+
+    public function rejectParticipant($id)
+    {
+        $participant = Participant::findOrFail($id);
+        $participant->status = 'rejected';
+        $participant->save();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Участник успешно отклонён.');
+    }
+
+    function accurePoints($id)
+    {
+        $participant = Participant::findOrFail($id);
+        $participant->status = 'points_accured';
+        $participant->save();
+        Points::create([
+            'user_id' => $participant->user_id,
+            'event_id' => $participant->event_id,
+            'partner_id' => $participant->event->user_id,
+            'points' => $participant->getPoints(),
+            'awarded_by' => Auth::id(),
+        ]);
+        return redirect()
+            ->back()
+            ->with('success', 'Баллы участнику успешно начислены.');
     }
 }

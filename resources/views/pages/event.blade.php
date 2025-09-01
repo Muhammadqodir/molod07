@@ -25,7 +25,42 @@
     @endphp
 
     <section class="bg-accentbg mt-[-80px] pt-[80px]">
-        <div class="max-w-6xl mx-auto py-6 space-y-8" x-data="{ tab: 'info', roleIdx: 0 }">
+        {{-- Flash messages as alerts --}}
+        @if (session('success'))
+            <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 5000)"
+                class="fixed z-[9999999999] top-[80px] right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+                <div class="flex items-center gap-2">
+                    <x-lucide-check-circle class="w-5 h-5" />
+                    <strong>Успешно!</strong>
+                </div>
+                <div class="text-sm mt-1">{{ session('success') }}</div>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 5000)"
+                class="fixed z-[9999999999] top-[80px] right-6 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
+                <div class="flex items-center gap-2">
+                    <x-lucide-alert-circle class="w-5 h-5" />
+                    <strong>Ошибка!</strong>
+                </div>
+                <div class="text-sm mt-1">{{ session('error') }}</div>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 5000)"
+                class="fixed z-[9999999999] top-[80px] right-6 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
+                <strong>Ошибка!</strong>
+                <ul class="text-sm mt-1 list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="max-w-6xl mx-auto py-6 space-y-8" x-data="{ tab: 'info', roleIdx: 0, showRegistrationDialog: false }">
 
             {{-- Top: cover + header --}}
             <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
@@ -83,7 +118,7 @@
                         @endif
 
                         <div class="mt-auto flex items-center justify-between gap-3">
-                            <x-button>
+                            <x-button @click="showRegistrationDialog = true">
                                 Подать заявку
                             </x-button>
 
@@ -404,7 +439,8 @@
                                 @endif
 
                                 <div>
-                                    <x-button class="mt-2">Подать заявку</x-button>
+                                    <x-button class="mt-2" @click="showRegistrationDialog = true">Подать
+                                        заявку</x-button>
                                     <small class="block text-gray-500">
                                         * на роль <span class="text-primary">{{ $r['title'] }}</span>
                                     </small>
@@ -414,6 +450,10 @@
                     </section>
                 @endif
             </div>
+
+            {{-- Registration dialog --}}
+            {{-- x-show="showRegistrationDialog" --}}
+            @include('inc.event_register', ['roles' => $roles, 'event' => $event])
         </div>
 
     </section>

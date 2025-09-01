@@ -73,4 +73,8 @@ class Event extends Model
     {
         return "{$this->settlement} {$this->address}";
     }
+
+    public function getRolesAsList(){
+        return is_string($this->roles) ? json_decode($this->roles, true) : $this->roles;
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Models\Profiles;
 
+use App\Models\Points;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 
@@ -24,6 +25,11 @@ class YouthProfile extends Model
 
     public function getName(){
         return $this->name . " " . $this->l_name . " " . $this->f_name;
+    }
+
+    public function getMyPointsSum()
+    {
+        return Points::where('user_id', $this->user_id)->sum('points');
     }
 
     public function user()

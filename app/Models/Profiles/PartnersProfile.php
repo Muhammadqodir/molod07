@@ -2,8 +2,10 @@
 
 namespace App\Models\Profiles;
 
+use App\Models\Event;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Models\Vacancy;
 
 class PartnersProfile extends Model
 {
@@ -35,5 +37,15 @@ class PartnersProfile extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getMyEventsCount()
+    {
+        return Event::where('user_id', $this->user_id)->count();
+    }
+
+    public function getMyVacanciesCount()
+    {
+        return Vacancy::where('user_id', $this->user_id)->count();
     }
 }

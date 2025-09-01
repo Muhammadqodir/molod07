@@ -17,6 +17,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\Profiles\AdminProfileController;
 use App\Http\Controllers\Profiles\YouthProfileController;
+use App\Http\Controllers\Youth\EventsController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,6 +52,9 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 Route::middleware(['auth', 'role:youth'])->group(function () {
     Route::get('/profile/youth', [YouthProfileController::class, 'show'])->name('youth.profile');
     Route::post('/profile/youth/post', [YouthProfileController::class, 'updateProfile'])->name('youth.profile.post');
+
+    Route::post('/event/{id}/register', [EventsController::class, 'registerForEvent'])->name("event.register");
+    Route::get('/youth/events', [EventsController::class, 'myEvents'])->name('youth.events');
 });
 
 
@@ -69,12 +73,15 @@ Route::middleware(['auth', 'role:partner'])->group(function () {
 
     //Events
     Route::get('partner/events/list', [ManageEventsController::class, 'show'])->name('partner.events.index');
-    Route::get('partner/events/participants', [ManageEventsController::class, 'show'])->name('partner.events.participants');
     Route::get('partner/events/create', [ManageEventsController::class, 'create'])->name('partner.events.create');
     Route::post('partner/events/create', [ManageEventsController::class, 'store'])->name('partner.events.store');
     Route::post('partner/events/action/archive/{id}', [ManageEventsController::class, 'archive'])->name('partner.events.action.archive');
     Route::post('partner/events/action/remove/{id}', [ManageEventsController::class, 'remove'])->name('partner.events.action.remove');
     Route::get('partner/events/preview/{id}', [ManageEventsController::class, 'preview'])->name('partner.events.preview');
+    Route::get('partner/events/participants', [ManageEventsController::class, 'getParticipants'])->name('partner.events.participants');
+    Route::post('partner/events/participants/approve/{id}', [ManageEventsController::class, 'approveParticipant'])->name('partner.events.participants.approve');
+    Route::post('partner/events/participants/reject/{id}', [ManageEventsController::class, 'rejectParticipant'])->name('partner.events.participants.reject');
+    Route::post('partner/events/participants/accure/{id}', [ManageEventsController::class, 'accurePoints'])->name('partner.events.participants.accure');
 
     //Vacancies
     Route::get('partner/vacancies/list', [ManageVacanciesController::class, 'show'])->name('partner.vacancies.index');

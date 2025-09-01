@@ -25,12 +25,12 @@
                 @break
 
                 @case('youth')
-                    <div class="flex justify-between">Баллы <span class="ml-2">100</span></div>
+                    <div class="flex justify-between">Баллы <span class="ml-2">{{ Auth::user()->youthProfile->getMyPointsSum() }}</span></div>
                 @break
 
                 @case('partner')
-                    <div class="flex justify-between mt-1">Мероприятия <span class="ml-2">0</span></div>
-                    <div class="flex justify-between mt-1">Вакансии <span class="ml-2">0</span></div>
+                    <div class="flex justify-between mt-1">Мероприятия <span class="ml-2">{{ Auth::user()->partnersProfile->getMyEventsCount() }}</span></div>
+                    <div class="flex justify-between mt-1">Вакансии <span class="ml-2">{{ Auth::user()->partnersProfile->getMyVacanciesCount() }}</span></div>
                 @break
             @endswitch
         </div>
