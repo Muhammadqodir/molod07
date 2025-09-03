@@ -18,6 +18,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\Profiles\AdminProfileController;
 use App\Http\Controllers\Profiles\YouthProfileController;
 use App\Http\Controllers\Youth\EventsController;
+use App\Http\Controllers\Youth\VacancyController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,6 +56,10 @@ Route::middleware(['auth', 'role:youth'])->group(function () {
 
     Route::post('/event/{id}/register', [EventsController::class, 'registerForEvent'])->name("event.register");
     Route::get('/youth/events', [EventsController::class, 'myEvents'])->name('youth.events');
+
+    // Vacancy routes
+    Route::get('/youth/vacancies', [VacancyController::class, 'myVacancies'])->name('youth.vacancies');
+    Route::post('/vacancy/{id}/respond', [VacancyController::class, 'respond'])->name('vacancy.respond');
 });
 
 
@@ -85,7 +90,7 @@ Route::middleware(['auth', 'role:partner'])->group(function () {
 
     //Vacancies
     Route::get('partner/vacancies/list', [ManageVacanciesController::class, 'show'])->name('partner.vacancies.index');
-    Route::get('partner/vacancies/participants', [ManageVacanciesController::class, 'show'])->name('partner.vacancies.requests');
+    Route::get('partner/vacancies/responses', [ManageVacanciesController::class, 'getResponses'])->name('partner.vacancies.responses');
     Route::get('partner/vacancies/create', [ManageVacanciesController::class, 'create'])->name('partner.vacancies.create');
     Route::post('partner/vacancies/create', [ManageVacanciesController::class, 'store'])->name('partner.vacancies.store');
     Route::post('partner/vacancies/action/archive/{id}', [ManageVacanciesController::class, 'archive'])->name('partner.vacancies.action.archive');

@@ -13,7 +13,7 @@
     {{-- Группа: Вакансии --}}
     <x-sidebar-group icon="briefcase-business" label="Вакансии" :open="request()->routeIs('partner.vacancies.*')">
         <x-sidebar-leaf route="partner.vacancies.index" label="Вакансии" />
-        <x-sidebar-leaf route="partner.vacancies.requests" label="Отклики" />
+        <x-sidebar-leaf route="partner.vacancies.responses" label="Отклики" />
     </x-sidebar-group>
 
     <hr class="my-2">

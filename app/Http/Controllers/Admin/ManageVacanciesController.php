@@ -141,4 +141,30 @@ class ManageVacanciesController extends Controller
             ->route(Auth::user()->role . '.vacancies.index')
             ->with('success', 'Вакансия успешно удалена.');
     }
+    
+    public function getResponses(Request $request)
+    {
+        $q = $request->string('q')->toString();
+        
+        $responsesQuery = \App\Models\VacancyResponse::query()
+            ->with(['vacancy', 'user', 'user.youthProfile'])
+            ->whereHas('vacancy', function ($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->when($q, function ($query) use ($q) {
+                $query->whereHas('vacancy', function ($vacancyQuery) use ($q) {
+                    $vacancyQuery->where('title', 'like', "%{$q}%");
+                })->orWhereHas('user.youthProfile', function ($userQuery) use ($q) {
+                    $userQuery->where('name', 'like', "%{$q}%")
+                        ->orWhere('l_name', 'like', "%{$q}%");
+                });
+            });
+
+        $responses = $responsesQuery
+            ->orderByDesc('created_at')
+            ->paginate(10)
+            ->appends($request->query());
+
+        return view('admin.vacancies.responses', compact('responses', 'q'));
+    }
 }

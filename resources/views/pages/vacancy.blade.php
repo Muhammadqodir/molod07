@@ -5,7 +5,42 @@
 @section('content')
 
     <section class="bg-accentbg mt-[-80px] pt-[80px] min-h-[calc(100vh-200px)]">
-        <div class="max-w-6xl mx-auto py-6 space-y-8" x-data="{ tab: 'info', roleIdx: 0 }">
+        {{-- Flash messages as alerts --}}
+        @if (session('success'))
+            <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 5000)"
+                class="fixed z-[9999999999] top-[80px] right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+                <div class="flex items-center gap-2">
+                    <x-lucide-check-circle class="w-5 h-5" />
+                    <strong>Успешно!</strong>
+                </div>
+                <div class="text-sm mt-1">{{ session('success') }}</div>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 5000)"
+                class="fixed z-[9999999999] top-[80px] right-6 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
+                <div class="flex items-center gap-2">
+                    <x-lucide-alert-circle class="w-5 h-5" />
+                    <strong>Ошибка!</strong>
+                </div>
+                <div class="text-sm mt-1">{{ session('error') }}</div>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 5000)"
+                class="fixed z-[9999999999] top-[80px] right-6 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
+                <strong>Ошибка!</strong>
+                <ul class="text-sm mt-1 list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="max-w-6xl mx-auto py-6 space-y-8" x-data="{ tab: 'info', roleIdx: 0, showVacancyResponseDialog: false }">
 
             {{-- Top: cover + header --}}
             <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
@@ -114,19 +149,20 @@
 
                             {{-- Кнопка --}}
                             <div class="mt-8">
-                                <form action="{{ route('main', $vacancy) }}" method="post">
-                                    @csrf
-                                    <button
-                                        class="inline-flex items-center justify-center rounded-xl bg-[#1F3AA9] px-5 py-3
+                                <button @click="showVacancyResponseDialog = true"
+                                    class="inline-flex items-center justify-center rounded-xl bg-[#1F3AA9] px-5 py-3
                                    text-white font-medium hover:bg-[#18308e] transition-colors">
-                                        Откликнуться
-                                    </button>
-                                </form>
+                                    Откликнуться
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
             </div>
+
+            {{-- Vacancy Response Dialog --}}
+            @include('inc.vacancy_response', ['vacancy' => $vacancy])
+        </div>
     </section>
 @endsection
