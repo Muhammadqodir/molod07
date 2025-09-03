@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdministratorsController;
+use App\Http\Controllers\Admin\ManageCoursesController;
 use App\Http\Controllers\Admin\ManageEventsController;
 use App\Http\Controllers\Admin\ManageGrantsController;
 use App\Http\Controllers\Admin\ManageNewsController;
@@ -23,11 +24,15 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [PagesController::class, 'main'])->name("main");
+Route::get('/course/{id}', [PagesController::class, 'coursePage'])->name("course");
 Route::get('/event/{id}', [PagesController::class, 'eventPage'])->name("event");
 Route::get('/vacancy/{id}', [PagesController::class, 'vacancyPage'])->name("vacancy");
+Route::get('/news/{id}', [PagesController::class, 'newsPage'])->name("news");
 
+Route::get('/courses', [PagesController::class, 'coursesList'])->name("courses.list");
 Route::get('/events', [PagesController::class, 'eventsList'])->name("events.list");
 Route::get('/vacancies', [PagesController::class, 'vacanciesList'])->name("vacancies.list");
+Route::get('/news', [PagesController::class, 'newsList'])->name("news.list");
 
 Route::get('/about', [PagesController::class, 'aboutPage'])->name('about');
 Route::get('/contacts', [PagesController::class, 'contactsPage'])->name('contacts');
@@ -167,6 +172,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/podcasts/reject/{id}', [ManagePodcastsController::class, 'reject'])->name('admin.podcasts.reject');
     Route::post('admin/podcasts/action/archive/{id}', [ManagePodcastsController::class, 'archive'])->name('admin.podcasts.action.archive');
     Route::delete('admin/podcasts/{id}', [ManagePodcastsController::class, 'destroy'])->name('admin.podcasts.destroy');
+
+    //Education/Courses
+    Route::get('admin/education/list', [ManageCoursesController::class, 'show'])->name('admin.education.index')->defaults('status', 'approved');
+    Route::get('admin/education/requests', [ManageCoursesController::class, 'show'])->name('admin.education.requests')->defaults('status', 'pending');
+    Route::get('admin/education/archive', [ManageCoursesController::class, 'show'])->name('admin.education.archive')->defaults('status', 'archived');
+    Route::get('admin/education/create', [ManageCoursesController::class, 'create'])->name('admin.education.create');
+    Route::post('admin/education/create', [ManageCoursesController::class, 'store'])->name('admin.education.store');
+    Route::get('admin/education/preview/{id}', [ManageCoursesController::class, 'preview'])->name('admin.education.preview');
+    Route::post('admin/education/approve/{id}', [ManageCoursesController::class, 'approve'])->name('admin.education.approve');
+    Route::post('admin/education/reject/{id}', [ManageCoursesController::class, 'reject'])->name('admin.education.reject');
+    Route::post('admin/education/action/archive/{id}', [ManageCoursesController::class, 'archive'])->name('admin.education.action.archive');
+    Route::delete('admin/education/{id}', [ManageCoursesController::class, 'destroy'])->name('admin.education.destroy');
 
     //Vacancies
     Route::get('admin/vacancies/list', [ManageVacanciesController::class, 'show'])->name('admin.vacancies.index')->defaults('status', 'approved');

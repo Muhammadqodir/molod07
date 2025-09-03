@@ -30,6 +30,23 @@
                                     location="{{ $item->org_address }}" link="{{ route('vacancy', $item->id) }}" />
                             @break
 
+                            @case('courses')
+                                <x-course-card image="{{ asset($item->cover) }}" category="{{ $item->category }}"
+                                    title="{{ $item->title }}" description="{{ $item->short_description }}"
+                                    length="{{ $item->length }}" modules="{{ $item->module_count }}"
+                                    link="{{ route('course', $item->id) }}" />
+                            @break
+
+                            @case('news')
+                                <x-news-card
+                                    image="{{ asset($item->cover) }}"
+                                    category="{{ $item->category }}"
+                                    title="{{ $item->title }}"
+                                    description="{{ $item->short_description }}"
+                                    date="{{ $item->created_at->format('d.m.Y') }}"
+                                    link="{{ route('news', $item->id) }}" />
+                            @break
+
                             @default
                         @endswitch
                     @endforeach

@@ -17,6 +17,13 @@
         <x-sidebar-leaf route="admin.events.archive" label="Архив" />
     </x-sidebar-group>
 
+    {{-- Группа: Образование --}}
+    <x-sidebar-group icon="book-marked" label="Образование" :open="request()->routeIs('admin.education.*')">
+        <x-sidebar-leaf route="admin.education.index" label="Активные" />
+        <x-sidebar-leaf route="admin.education.requests" label="Заявки" />
+        <x-sidebar-leaf route="admin.education.archive" label="Архив" />
+    </x-sidebar-group>
+
     {{-- Группа: Новости --}}
     <x-sidebar-group icon="newspaper" label="Новости" :open="request()->routeIs('admin.news.*')">
         <x-sidebar-leaf route="admin.news.index" label="Активные" />

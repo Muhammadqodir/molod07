@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Event;
+use App\Models\News;
 use App\Models\Participant;
 use App\Models\User;
 use App\Models\Vacancy;
@@ -24,7 +26,17 @@ class PagesController extends Controller
             ->limit(10)
             ->get();
 
-        return view('pages.main', compact('events', 'vacancies'));
+        $courses = Course::where('status', 'approved')
+            ->orderByDesc('id')
+            ->limit(6)
+            ->get();
+
+        $news = News::where('status', 'approved')
+            ->orderByDesc('id')
+            ->limit(6)
+            ->get();
+
+        return view('pages.main', compact('events', 'vacancies', 'courses', 'news'));
     }
 
     function eventPage($id)
@@ -40,6 +52,14 @@ class PagesController extends Controller
         $vacancy = Vacancy::findOrFail($id);
         $vacancy->admin = User::find($vacancy->admin_id);
         return view('pages.vacancy', compact('vacancy'));
+    }
+
+    function coursePage($id)
+    {
+        $course = Course::findOrFail($id);
+        $course->creator = User::find($course->user_id);
+        $course->admin = User::find($course->admin_id);
+        return view('pages.course', compact('course'));
     }
 
     function applyFilters($query, $request)
@@ -80,6 +100,36 @@ class PagesController extends Controller
         $count = $items->total();
         $title = $request->input('category', 'Все') === 'Все' ? 'Все вакансии' : $request->input('category', 'Все');
         return view('pages.list', compact('items', 'entity', 'count', 'title'));
+    }
+
+    function coursesList(Request $request)
+    {
+        $query = Course::where('status', 'approved');
+        $query = $this->applyFilters($query, $request);
+        $items = $query->paginate(10);
+        $entity = 'courses';
+        $count = $items->total();
+        $title = $request->input('category', 'Все') === 'Все' ? 'Все курсы' : $request->input('category', 'Все');
+        return view('pages.list', compact('items', 'entity', 'count', 'title'));
+    }
+
+    function newsList(Request $request)
+    {
+        $query = News::where('status', 'approved');
+        $query = $this->applyFilters($query, $request);
+        $items = $query->paginate(10);
+        $entity = 'news';
+        $count = $items->total();
+        $title = $request->input('category', 'Все') === 'Все' ? 'Все новости' : $request->input('category', 'Все');
+        return view('pages.list', compact('items', 'entity', 'count', 'title'));
+    }
+
+    function newsPage($id)
+    {
+        $news = News::findOrFail($id);
+        $news->author = User::find($news->user_id);
+        $news->admin = User::find($news->admin_id);
+        return view('pages.news', compact('news'));
     }
 
     function aboutPage()
