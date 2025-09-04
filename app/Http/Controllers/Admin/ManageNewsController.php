@@ -69,7 +69,7 @@ class ManageNewsController extends Controller
         }
 
         if (Auth::user() && Auth::user()->role === 'admin') {
-            $v['status'] = 'published';
+            $v['status'] = 'approved';
         } else {
             $v['status'] = 'pending';
         }

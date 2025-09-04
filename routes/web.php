@@ -144,7 +144,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/events/action/archive/{id}', [ManageEventsController::class, 'archive'])->name('admin.events.action.archive');
 
     //News
-    Route::get('admin/news/list', [ManageNewsController::class, 'show'])->name('admin.news.index')->defaults('status', 'published');
+    Route::get('admin/news/list', [ManageNewsController::class, 'show'])->name('admin.news.index')->defaults('status', 'approved');
     Route::get('admin/news/requests', [ManageNewsController::class, 'show'])->name('admin.news.requests')->defaults('status', 'pending');
     Route::get('admin/news/archive', [ManageNewsController::class, 'show'])->name('admin.news.archive')->defaults('status', 'archived');
     Route::get('admin/news/create', [ManageNewsController::class, 'create'])->name('admin.news.create');

@@ -59,7 +59,7 @@
                             <td class="px-4 py-4 text-gray-700">
                                 @php
                                     $statusColors = [
-                                        'published' => 'bg-green-100 text-green-800',
+                                        'approved' => 'bg-green-100 text-green-800',
                                         'pending' => 'bg-yellow-100 text-yellow-800',
                                         'rejected' => 'bg-red-100 text-red-800',
                                         'archived' => 'bg-gray-200 text-gray-700',
@@ -89,7 +89,7 @@
                                 <div class="flex items-center justify-center">
 
                                     @switch($item->status)
-                                        @case('published')
+                                        @case('approved')
                                             <form method="POST"
                                                 action="{{ route(Auth::user()->role . '.news.action.archive', $item->id) }}"
                                                 class="mr-2">
