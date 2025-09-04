@@ -37,6 +37,8 @@ Route::get('/news', [PagesController::class, 'newsList'])->name("news.list");
 Route::get('/about', [PagesController::class, 'aboutPage'])->name('about');
 Route::get('/contacts', [PagesController::class, 'contactsPage'])->name('contacts');
 Route::get('/documents', [PagesController::class, 'documentsPage'])->name('documents');
+Route::get('/partners', [PagesController::class, 'partnersList'])->name('partners');
+Route::get('/partner/{id}', [PagesController::class, 'partnerPage'])->name('partner');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register/youth', [RegisterYouthController::class, 'show'])->name('youth.reg');

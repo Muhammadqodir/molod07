@@ -49,9 +49,11 @@
                                 <x-lucide-heart class="w-5 h-5 text-inherit" /> Лента активности
                             </a>
                         </li>
-                        <li
-                            class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                            <x-lucide-users class="w-5 h-5 text-inherit" /> Организаторы
+                        <li>
+                            <a href="{{ route('partners') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-users class="w-5 h-5 text-inherit" /> Организаторы
+                            </a>
                         </li>
                         <li>
                             <a href="{{ route('courses.list') }}"
@@ -153,9 +155,11 @@
                     <x-lucide-heart class="w-5 h-5 text-inherit" /> Лента активности
                 </a>
             </li>
-            <li
-                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                <x-lucide-users class="w-5 h-5 text-inherit" /> Организаторы
+            <li>
+                <a href="{{ route('partners') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-users class="w-5 h-5 text-inherit" /> Организаторы
+                </a>
             </li>
             <li>
                 <a href="{{ route('courses.list') }}"

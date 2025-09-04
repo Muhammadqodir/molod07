@@ -144,4 +144,33 @@ class PagesController extends Controller
     {
         return view('pages.documents');
     }
+
+    function partnersList()
+    {
+        $partners = User::where('role', 'partner')
+            ->with('partnersProfile')
+            ->whereHas('partnersProfile')
+            ->get();
+
+        return view('pages.partners', compact('partners'));
+    }
+
+    function partnerPage($id)
+    {
+        $partner = User::where('role', 'partner')
+            ->with('partnersProfile')
+            ->findOrFail($id);
+
+        $events = Event::where('user_id', $id)
+            ->where('status', 'approved')
+            ->orderByDesc('created_at')
+            ->get();
+
+        $vacancies = Vacancy::where('user_id', $id)
+            ->where('status', 'approved')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('pages.partner', compact('partner', 'events', 'vacancies'));
+    }
 }
