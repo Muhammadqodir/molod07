@@ -73,9 +73,11 @@
                                 <x-lucide-newspaper class="w-5 h-5 text-inherit" /> Новости
                             </a>
                         </li>
-                        <li
-                            class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                            <x-lucide-headphones class="w-5 h-5 text-inherit" /> Подкасты
+                        <li>
+                            <a href="{{ route('podcasts.list') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-headphones class="w-5 h-5 text-inherit" /> Подкасты
+                            </a>
                         </li>
                         {{-- <li>
                             <a href="{{ route('documents') }}"
@@ -179,9 +181,11 @@
                     <x-lucide-newspaper class="w-5 h-5 text-inherit" /> Новости
                 </a>
             </li>
-            <li
-                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                <x-lucide-headphones class="w-5 h-5 text-inherit" /> Подкасты
+            <li>
+                <a href="{{ route('podcasts.list') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-headphones class="w-5 h-5 text-inherit" /> Подкасты
+                </a>
             </li>
             {{-- <li>
                 <a href="{{ route('documents') }}"

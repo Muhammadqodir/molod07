@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Event;
 use App\Models\News;
 use App\Models\Participant;
+use App\Models\Podcast;
 use App\Models\User;
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
@@ -124,12 +125,31 @@ class PagesController extends Controller
         return view('pages.list', compact('items', 'entity', 'count', 'title'));
     }
 
+    function podcastsList(Request $request)
+    {
+        $query = Podcast::where('status', 'approved');
+        $query = $this->applyFilters($query, $request);
+        $items = $query->paginate(10);
+        $entity = 'podcasts';
+        $count = $items->total();
+        $title = $request->input('category', 'Все') === 'Все' ? 'Все подкасты' : $request->input('category', 'Все');
+        return view('pages.list', compact('items', 'entity', 'count', 'title'));
+    }
+
     function newsPage($id)
     {
         $news = News::findOrFail($id);
         $news->author = User::find($news->user_id);
         $news->admin = User::find($news->admin_id);
         return view('pages.news', compact('news'));
+    }
+
+    function podcastPage($id)
+    {
+        $podcast = Podcast::findOrFail($id);
+        $podcast->author = User::find($podcast->user_id);
+        $podcast->admin = User::find($podcast->admin_id);
+        return view('pages.podcast', compact('podcast'));
     }
 
     function aboutPage()

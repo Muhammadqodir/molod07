@@ -28,11 +28,13 @@ Route::get('/course/{id}', [PagesController::class, 'coursePage'])->name("course
 Route::get('/event/{id}', [PagesController::class, 'eventPage'])->name("event");
 Route::get('/vacancy/{id}', [PagesController::class, 'vacancyPage'])->name("vacancy");
 Route::get('/news/{id}', [PagesController::class, 'newsPage'])->name("news");
+Route::get('/podcast/{id}', [PagesController::class, 'podcastPage'])->name("podcast");
 
 Route::get('/courses', [PagesController::class, 'coursesList'])->name("courses.list");
 Route::get('/events', [PagesController::class, 'eventsList'])->name("events.list");
 Route::get('/vacancies', [PagesController::class, 'vacanciesList'])->name("vacancies.list");
 Route::get('/news', [PagesController::class, 'newsList'])->name("news.list");
+Route::get('/podcasts', [PagesController::class, 'podcastsList'])->name("podcasts.list");
 
 Route::get('/about', [PagesController::class, 'aboutPage'])->name('about');
 Route::get('/contacts', [PagesController::class, 'contactsPage'])->name('contacts');

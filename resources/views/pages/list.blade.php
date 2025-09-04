@@ -47,6 +47,17 @@
                                     link="{{ route('news', $item->id) }}" />
                             @break
 
+                            @case('podcasts')
+                                <x-podcast-card
+                                    image="{{ asset($item->cover) }}"
+                                    category="{{ $item->category }}"
+                                    title="{{ $item->title }}"
+                                    description="{{ $item->short_description }}"
+                                    length="{{ $item->length }}"
+                                    episodeNumbers="{{ $item->episode_numbers }}"
+                                    link="{{ route('podcast', $item->id) }}" />
+                            @break
+
                             @default
                         @endswitch
                     @endforeach
