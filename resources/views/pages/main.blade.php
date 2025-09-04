@@ -6,9 +6,8 @@
     @include("inc.main.hero")
     @include("inc.main.about")
     @include("inc.main.activities")
+    @include("inc.main.news")
     @include("inc.main.events")
-    {{-- @include("inc.main.news") --}}
-    @include("inc.main.vacancies")
     @include("inc.main.features")
     @include("inc.main.faq")
     @include("inc.main.contacts")
