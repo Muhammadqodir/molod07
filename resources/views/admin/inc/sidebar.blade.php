@@ -55,7 +55,7 @@
     <hr class="my-2">
     <x-sidebar-link icon="file-text" label="Документы" />
     <x-sidebar-link icon="settings" label="Настройки" />
-    <x-sidebar-link icon="bell" label="Уведомления" />
+    {{-- <x-sidebar-link icon="bell" label="Уведомления" /> --}}
     <x-sidebar-link icon="ban" label="Чёрный список" />
 
 </x-sidebar>
