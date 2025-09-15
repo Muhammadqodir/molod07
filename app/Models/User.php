@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->hasOne(AdminsProfile::class);
     }
 
+    public function points()
+    {
+        return $this->hasMany(Points::class);
+    }
+
     public function getProfile()
     {
         return match ($this->role) {

@@ -20,6 +20,7 @@ use App\Http\Controllers\Profiles\AdminProfileController;
 use App\Http\Controllers\Profiles\YouthProfileController;
 use App\Http\Controllers\Youth\EventsController;
 use App\Http\Controllers\Youth\VacancyController;
+use App\Http\Controllers\Youth\PointsController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CommentController;
@@ -72,6 +73,9 @@ Route::middleware(['auth', 'role:youth'])->group(function () {
     // Vacancy routes
     Route::get('/youth/vacancies', [VacancyController::class, 'myVacancies'])->name('youth.vacancies');
     Route::post('/vacancy/{id}/respond', [VacancyController::class, 'respond'])->name('vacancy.respond');
+
+    // Points routes
+    Route::get('/youth/points', [PointsController::class, 'index'])->name('youth.points');
 });
 
 
