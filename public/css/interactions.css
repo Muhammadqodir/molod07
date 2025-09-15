@@ -1,0 +1,142 @@
+/* Стили для системы взаимодействий */
+
+/* Активные состояния кнопок лайков */
+.likes-button.active {
+    background-color: #eff6ff !important;
+    color: #2563eb !important;
+}
+
+.dislikes-button.active {
+    background-color: #fef2f2 !important;
+    color: #dc2626 !important;
+}
+
+/* Анимации для кнопок */
+.likes-button:hover,
+.dislikes-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.likes-button:active,
+.dislikes-button:active {
+    transform: translateY(0);
+}
+
+/* Стили для комментариев */
+.comment-item {
+    transition: all 0.3s ease;
+}
+
+.comment-item:hover {
+    background-color: #f8fafc;
+}
+
+/* Форма ответа */
+.reply-form {
+    transition: all 0.3s ease;
+}
+
+.reply-form.hidden {
+    display: none;
+}
+
+/* Кнопки лайков в комментариях */
+.comment-like-button:hover,
+.comment-dislike-button:hover {
+    transform: translateY(-1px);
+}
+
+.comment-like-button:hover {
+    color: #16a34a !important;
+}
+
+.comment-dislike-button:hover {
+    color: #dc2626 !important;
+}
+
+/* Анимация для новых комментариев */
+.comment-item {
+    animation: fadeInComment 0.4s ease-out;
+}
+
+@keyframes fadeInComment {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Индикатор загрузки */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Ошибки валидации */
+.error-message {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Анимации для модального окна */
+#auth-modal {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+#auth-modal.flex {
+    animation: fadeIn 0.3s ease-out;
+}
+
+#auth-modal .bg-white {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Стили для уведомлений */
+.notification-enter {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.notification-enter-active {
+    transform: translateX(0);
+    opacity: 1;
+    transition: all 0.3s ease-out;
+}
+
+.notification-exit {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification-exit-active {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease-in;
+}

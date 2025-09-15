@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <section class="bg-accentbg mt-[-80px] pt-[80px]">
+    <section class="bg-accentbg mt-[-80px] pt-[80px]" data-track-view data-viewable-type="App\Models\News" data-viewable-id="{{ $news->id }}">
         <div class="max-w-6xl mx-auto py-6 space-y-8" x-data="{ tab: 'info', roleIdx: 0 }">
 
             {{-- Top: cover + header --}}
@@ -67,15 +67,15 @@
                             <div class="flex items-center gap-2 text-gray-500">
                                 <span class="inline-flex items-center gap-1 text-gray-500">
                                     <x-lucide-eye class="w-4 h-4" />
-                                    <span class="mt-0.5">{{ $news->views_count ?? 0 }}</span>
+                                    <span class="mt-0.5 views-count">{{ $news->views_count }}</span>
                                 </span>
                                 <span class="inline-flex items-center gap-1 text-gray-500">
                                     <x-lucide-message-circle class="w-4 h-4" />
-                                    <span class="mt-0.5">{{ $news->comments_count ?? 0 }}</span>
+                                    <span class="mt-0.5 comments-count">{{ $news->comments_count }}</span>
                                 </span>
                                 <span class="inline-flex items-center gap-1 text-gray-500">
                                     <x-lucide-heart class="w-4 h-4" />
-                                    <span class="mt-0.5">{{ $news->likes_count ?? 0 }}</span>
+                                    <span class="mt-0.5">{{ $news->likes_count }}</span>
                                 </span>
                             </div>
                         </div>
@@ -104,13 +104,19 @@
             <div>
                 <h2 class="text-xl md:text-2xl font-semibold leading-tight mt-6">Понравилась публикация? </h2>
                 <div class="flex items-center gap-2 mt-2">
-                    <button type="button" class="flex items-center gap-2 text-gray-600 bg-white rounded-xl py-2 px-4">
+                    <button type="button"
+                            class="likes-button flex items-center gap-2 text-gray-600 bg-white rounded-xl py-2 px-4 hover:bg-gray-50 transition-colors {{ $news->hasUserLiked() ? 'active bg-blue-50 text-blue-600' : '' }}"
+                            data-likeable-type="App\Models\News"
+                            data-likeable-id="{{ $news->id }}">
                         <x-lucide-thumbs-up class="w-5 h-5" />
-                        <span class="mt-0.5">{{ $news->thumbs_up_count ?? 0 }}</span>
+                        <span class="mt-0.5 likes-count">{{ $news->likes_count }}</span>
                     </button>
-                    <button type="button" class="flex items-center gap-2 text-gray-600 bg-white rounded-xl py-2 px-4">
+                    <button type="button"
+                            class="dislikes-button flex items-center gap-2 text-gray-600 bg-white rounded-xl py-2 px-4 hover:bg-gray-50 transition-colors {{ $news->hasUserDisliked() ? 'active bg-red-50 text-red-600' : '' }}"
+                            data-likeable-type="App\Models\News"
+                            data-likeable-id="{{ $news->id }}">
                         <x-lucide-thumbs-down class="w-5 h-5" />
-                        <span class="mt-0.5">{{ $news->thumbs_up_count ?? 0 }}</span>
+                        <span class="mt-0.5 dislikes-count">{{ $news->dislikes_count }}</span>
                     </button>
                 </div>
             </div>
@@ -118,14 +124,15 @@
             <div>
                 <h2 class="text-xl md:text-2xl font-semibold leading-tight mt-6">Комментарии </h2>
                 <div class="mt-2 mb-2">
-                    <x-comment-form placeholder="Введите текст комментария" />
+                    <x-comment-form
+                        :commentable-type="'App\\Models\\News'"
+                        :commentable-id="$news->id"
+                        placeholder="Введите текст комментария" />
                 </div>
 
-                {{-- <div class="mt-6">
-                    <x-comment-item author="Имя Фамилия" time="10 дней назад"
-                        body="Если не поможет, психологи советуют прибегнуть к Арт-терапии. Её цель – отразить на бумаге самые сокровенные эмоции. Важно помнить, что настоящее творчество не терпит формализма и слепого подражания."
-                        likes="1" dislikes="0" likeUrl="#" dislikeUrl="#" replyUrl="#" />
-                </div> --}}
+                <div class="comments-container mt-6" data-load-comments data-commentable-type="App\Models\News" data-commentable-id="{{ $news->id }}">
+                    {{-- Комментарии будут загружены здесь через JavaScript --}}
+                </div>
             </div>
         </div>
 

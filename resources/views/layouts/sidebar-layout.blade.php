@@ -16,6 +16,11 @@
 
 <body class="font-sans text-gray-800 bg-white">
 
+    @php
+        $userAgent = request()->header('User-Agent', '');
+        $isNativeApp = str_contains($userAgent, 'Molod07-NativeApp/1.0 (Mobile; Flutter)');
+    @endphp
+
     {{-- Навигация --}}
     @include('inc.navigation')
 
@@ -74,7 +79,9 @@
     </main>
 
     {{-- Футер --}}
-    @include('inc.footer')
+    @unless ($isNativeApp)
+        @include('inc.footer')
+    @endunless
 
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
         integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>

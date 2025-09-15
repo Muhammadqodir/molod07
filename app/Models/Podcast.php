@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Traits\HasInteractions;
 use Illuminate\Database\Eloquent\Model;
 
 class Podcast extends Model
 {
+    use HasInteractions;
     protected $fillable = [
         'user_id',
         'category',

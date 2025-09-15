@@ -100,9 +100,6 @@
                     </ul>
                 </div>
             </div>
-            <x-nav-icon>
-                <x-lucide-heart class="h-5 w-5" />
-            </x-nav-icon>
             <x-profile />
         </div>
 
@@ -113,12 +110,12 @@
         <x-logo />
 
         <div class="flex items-center gap-4">
-            <x-nav-icon>
+            {{-- <x-nav-icon>
                 <x-lucide-heart class="h-5 w-5" />
             </x-nav-icon>
             <x-nav-icon>
                 <x-lucide-bell class="h-5 w-5" />
-            </x-nav-icon>
+            </x-nav-icon> --}}
             <x-profile />
             {{-- Открытие меню --}}
             <x-button @click="open = true" class="bg-primary text-white p-2 rounded-xl">

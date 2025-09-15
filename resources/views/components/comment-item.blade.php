@@ -4,17 +4,21 @@
     'author'   => 'Имя Фамилия',
     'time'     => '10 дней назад',
     'body'     => '',
+    'commentId' => null,
     // Действия
-    'likes'    => 1,
+    'likes'    => 0,
     'dislikes' => 0,
     'likeUrl'  => '#',
     'dislikeUrl' => '#',
     'replyUrl' => '#',      // если null — не показываем «Ответить»
     // Вложенный комментарий
     'isReply'  => false,
+    // Для работы с формами
+    'commentableType' => '',
+    'commentableId' => '',
 ])
 
-<article class="{{ $isReply ? 'relative pl-12' : '' }}" @if($isReply) style="padding-left:50px;" @endif>
+<article class="{{ $isReply ? 'relative pl-12' : '' }} mb-4" @if($isReply) style="padding-left:50px;" @endif>
     {{-- скобка слева для вложенного коммента --}}
     @if($isReply)
         <div class="absolute left-0 top-8 h-[calc(100%-2rem)] w-4">
@@ -50,24 +54,43 @@
         {{-- Низ: слева «Ответить», справа лайки/дизлайки --}}
         {{-- <footer class="mt-4 flex items-center justify-between">
             <div>
-                @if($replyUrl)
-                    <a href="{{ $replyUrl }}"
-                       class="text-[15px] text-primary hover:underline">
+                @if($replyUrl && !$isReply)
+                    <button
+                        onclick="toggleReplyForm({{ $commentId ?? 'null' }})"
+                        class="text-[15px] text-primary hover:underline font-medium transition-colors">
                         Ответить
-                    </a>
+                    </button>
                 @endif
             </div>
 
             <div class="flex items-center gap-6 text-gray-500">
-                <a href="{{ $likeUrl }}" class="inline-flex items-center gap-2 hover:text-primary transition-colors">
+                <button
+                    class="comment-like-button inline-flex items-center gap-2 hover:text-green-600 transition-colors"
+                    data-comment-id="{{ $commentId ?? '' }}"
+                    data-type="like">
                     <x-lucide-thumbs-up class="w-5 h-5" />
-                    <span class="text-[15px]">{{ $likes }}</span>
-                </a>
-                <a href="{{ $dislikeUrl }}" class="inline-flex items-center gap-2 hover:text-primary transition-colors">
+                    <span class="text-[15px] like-count">{{ $likes }}</span>
+                </button>
+                <button
+                    class="comment-dislike-button inline-flex items-center gap-2 hover:text-red-600 transition-colors"
+                    data-comment-id="{{ $commentId ?? '' }}"
+                    data-type="dislike">
                     <x-lucide-thumbs-down class="w-5 h-5" />
-                    <span class="text-[15px]">{{ $dislikes }}</span>
-                </a>
+                    <span class="text-[15px] dislike-count">{{ $dislikes }}</span>
+                </button>
             </div>
         </footer> --}}
+
+        {{-- Форма ответа (скрыта по умолчанию) --}}
+        @if(!$isReply)
+            <div id="reply-form-{{ $commentId ?? 0 }}" class="reply-form mt-4 hidden">
+                <x-comment-form
+                    :commentable-type="$commentableType ?? ''"
+                    :commentable-id="$commentableId ?? ''"
+                    :parent-id="$commentId ?? null"
+                    placeholder="Введите ответ на комментарий"
+                    class="reply-comment-form" />
+            </div>
+        @endif
     </div>
 </article>

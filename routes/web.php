@@ -22,6 +22,9 @@ use App\Http\Controllers\Youth\EventsController;
 use App\Http\Controllers\Youth\VacancyController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\ViewController;
 
 Route::get('/', [PagesController::class, 'main'])->name("main");
 Route::get('/course/{id}', [PagesController::class, 'coursePage'])->name("course");
@@ -231,6 +234,20 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'address' => $partner->getProfile()->org_address,
         ]);
     })->middleware(['auth', 'role:admin,partner'])->name('admin.get.partner');
+});
+
+// API маршруты для комментариев, лайков и просмотров
+Route::middleware(['web'])->group(function () {
+    // Комментарии
+    Route::post('/api/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/api/comments', [CommentController::class, 'index'])->name('comments.index');
+    Route::delete('/api/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+    // Лайки
+    Route::post('/api/likes/toggle', [LikeController::class, 'toggle'])->name('likes.toggle');
+
+    // Просмотры
+    Route::post('/api/views/track', [ViewController::class, 'track'])->name('views.track');
 });
 
 //Profile redirect

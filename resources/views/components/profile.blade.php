@@ -45,4 +45,9 @@
             <x-lucide-user-plus class="h-5 w-5" />
         </x-nav-icon>
     </a>
+    <a href="{{ route('login') }}">
+        <x-nav-icon>
+            <x-lucide-log-in class="h-5 w-5" />
+        </x-nav-icon>
+    </a>
 @endauth
