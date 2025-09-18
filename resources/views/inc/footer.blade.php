@@ -14,14 +14,16 @@
     <div>
       <h3 class="font-semibold mb-4">Разделы сайта</h3>
       <div class="grid grid-cols-2 gap-y-2">
-        <a href="#" class="hover:text-primary">Главная</a>
-        <a href="#" class="hover:text-primary">Вакансии</a>
-        <a href="#" class="hover:text-primary">Лента активности</a>
-        <a href="#" class="hover:text-primary">Документы</a>
-        <a href="#" class="hover:text-primary">Организаторы</a>
-        <a href="#" class="hover:text-primary">О нас</a>
-        <a href="#" class="hover:text-primary">Образование</a>
-        <a href="#" class="hover:text-primary">Контакты</a>
+        <a href="{{ route('main') }}" class="hover:text-primary">Главная</a>
+        <a href="{{ route('vacancies.list') }}" class="hover:text-primary">Вакансии</a>
+        <a href="{{ route('events.list') }}" class="hover:text-primary">Мероприятия</a>
+        <a href="{{ route('documents') }}" class="hover:text-primary">Документы</a>
+        <a href="{{ route('partners') }}" class="hover:text-primary">Организаторы</a>
+        <a href="{{ route('about') }}" class="hover:text-primary">О нас</a>
+        <a href="{{ route('courses.list') }}" class="hover:text-primary">Образование</a>
+        <a href="{{ route('contacts') }}" class="hover:text-primary">Контакты</a>
+        <a href="{{ route('privacy-policy') }}" class="hover:text-primary">Политика конфиденциальности</a>
+        <a href="{{ route('news.list') }}" class="hover:text-primary">Новости</a>
       </div>
     </div>
 
@@ -59,7 +61,7 @@
         База данных о мероприятиях. Использование сайта означает согласие с
         <a href="#" class="text-primary hover:underline">Пользовательским соглашением</a>
         и
-        <a href="#" class="text-primary hover:underline">Политикой конфиденциальности</a>.
+        <a href="{{ route('privacy-policy') }}" class="text-primary hover:underline">Политикой конфиденциальности</a>.
       </p>
       <p class="text-right">Разработка AL-Focus Group</p>
     </div>

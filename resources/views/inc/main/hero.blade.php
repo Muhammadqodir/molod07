@@ -1,5 +1,5 @@
 <section class="bg-white">
-  
+
   {{-- <div class="text-center px-4 max-w-4xl mx-auto relative mt-20">
     <h1 class="text-3xl md:text-[60px] font-light leading-tight text-gray-800">
       ПЛАТФОРМА <span class="inline-block align-middle">🎓</span>,
@@ -10,7 +10,7 @@
       class="mt-1 inline-block px-[12px] py-[12px] bg-[#5887F4] text-white text-3xl md:text-[60px] rounded-xl tracking-wide">
       ВОЗМОЖНОСТИ
     </div>
-    
+
     <div class="absolute left-38 top-23 hidden md:block">
       <img src="/images/text-decor.svg" class="w-8 h-8" alt="">
     </div>
@@ -23,7 +23,7 @@
 
   <img src="/images/hero-decor-1.png" class="absolute top-[350px] left-[30px] md:top-[400px] md:left-[100px] z-[9] w-[120px] md:w-[200px]">
 
-  <div x-data="scrollGallery()" x-init="start()" class="relative w-full overflow-hidden mt-20 mb-20">
+  <div x-data="scrollGallery" x-init="start()" class="relative w-full overflow-hidden mt-20 mb-20">
     <div x-ref="container" class="flex gap-6 overflow-x-scroll slider-scroll-hide">
 
       @foreach (['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png', '9.png'] as $photo)

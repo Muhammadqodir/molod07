@@ -43,6 +43,7 @@ Route::get('/podcasts', [PagesController::class, 'podcastsList'])->name("podcast
 Route::get('/about', [PagesController::class, 'aboutPage'])->name('about');
 Route::get('/contacts', [PagesController::class, 'contactsPage'])->name('contacts');
 Route::get('/documents', [PagesController::class, 'documentsPage'])->name('documents');
+Route::get('/privacy-policy', [PagesController::class, 'privacyPolicyPage'])->name('privacy-policy');
 Route::get('/partners', [PagesController::class, 'partnersList'])->name('partners');
 Route::get('/partner/{id}', [PagesController::class, 'partnerPage'])->name('partner');
 

@@ -164,6 +164,10 @@ class PagesController extends Controller
     {
         return view('pages.documents');
     }
+    function privacyPolicyPage()
+    {
+        return view('pages.privacy-policy');
+    }
 
     function partnersList()
     {
