@@ -36,8 +36,11 @@
 
     </main>
 
+
     {{-- Футер --}}
-    @include('inc.footer')
+    @if (!$isNativeApp)
+        @include('inc.footer')
+    @endif
 
     {{-- Модальное окно для авторизации --}}
     <x-auth-modal />
