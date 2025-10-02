@@ -16,6 +16,12 @@
         <x-sidebar-leaf route="partner.vacancies.responses" label="Отклики" />
     </x-sidebar-group>
 
+    {{-- Группа: Гранты --}}
+    <x-sidebar-group icon="award" label="Гранты" :open="request()->routeIs('partner.grants.*')">
+        <x-sidebar-leaf route="partner.grants.index" label="Гранты" />
+        <x-sidebar-leaf route="partner.grants.responses" label="Отклики" />
+    </x-sidebar-group>
+
     <hr class="my-2">
     <x-sidebar-link icon="settings" label="Настройки" />
     {{-- <x-sidebar-link icon="bell" label="Уведомления" /> --}}

@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ViewController;
+use App\Http\Controllers\GrantApplicationController;
 
 Route::get('/', [PagesController::class, 'main'])->name("main");
 Route::get('/course/{id}', [PagesController::class, 'coursePage'])->name("course");
@@ -33,12 +34,14 @@ Route::get('/event/{id}', [PagesController::class, 'eventPage'])->name("event");
 Route::get('/vacancy/{id}', [PagesController::class, 'vacancyPage'])->name("vacancy");
 Route::get('/news/{id}', [PagesController::class, 'newsPage'])->name("news");
 Route::get('/podcast/{id}', [PagesController::class, 'podcastPage'])->name("podcast");
+Route::get('/grants/{id}', [PagesController::class, 'grantsPage'])->name("grant");
 
 Route::get('/courses', [PagesController::class, 'coursesList'])->name("courses.list");
 Route::get('/events', [PagesController::class, 'eventsList'])->name("events.list");
 Route::get('/vacancies', [PagesController::class, 'vacanciesList'])->name("vacancies.list");
 Route::get('/news', [PagesController::class, 'newsList'])->name("news.list");
 Route::get('/podcasts', [PagesController::class, 'podcastsList'])->name("podcasts.list");
+Route::get('/grants', [PagesController::class, 'grantsList'])->name("grants.list");
 
 Route::get('/about', [PagesController::class, 'aboutPage'])->name('about');
 Route::get('/contacts', [PagesController::class, 'contactsPage'])->name('contacts');
@@ -113,6 +116,15 @@ Route::middleware(['auth', 'role:partner'])->group(function () {
     Route::post('partner/vacancies/action/archive/{id}', [ManageVacanciesController::class, 'archive'])->name('partner.vacancies.action.archive');
     Route::post('partner/vacancies/action/remove/{id}', [ManageVacanciesController::class, 'remove'])->name('partner.vacancies.action.remove');
     Route::get('partner/vacancies/preview/{id}', [ManageVacanciesController::class, 'preview'])->name('partner.vacancies.preview');
+
+    // Grants
+    Route::get('partner/grants/list', [ManageGrantsController::class, 'show'])->name('partner.grants.index');
+    Route::get('partner/grants/responses', [ManageGrantsController::class, 'getResponses'])->name('partner.grants.responses');
+    Route::get('partner/grants/create', [ManageGrantsController::class, 'create'])->name('partner.grants.create');
+    Route::post('partner/grants/create', [ManageGrantsController::class, 'store'])->name('partner.grants.store');
+    Route::post('partner/grants/action/archive/{id}', [ManageGrantsController::class, 'archive'])->name('partner.grants.action.archive');
+    Route::get('partner/grants/preview/{id}', [ManageGrantsController::class, 'preview'])->name('partner.grants.preview');
+
 });
 
 //Admin routes

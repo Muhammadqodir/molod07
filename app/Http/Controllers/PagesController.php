@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Event;
+use App\Models\Grant;
 use App\Models\News;
 use App\Models\Participant;
 use App\Models\Podcast;
@@ -136,6 +137,17 @@ class PagesController extends Controller
         return view('pages.list', compact('items', 'entity', 'count', 'title'));
     }
 
+    function grantsList(Request $request)
+    {
+        $query = Grant::where('status', 'approved');
+        $query = $this->applyFilters($query, $request);
+        $items = $query->paginate(10);
+        $entity = 'grants';
+        $count = $items->total();
+        $title = $request->input('category', 'Все') === 'Все' ? 'Все гранты' : $request->input('category', 'Все');
+        return view('pages.list', compact('items', 'entity', 'count', 'title'));
+    }
+
     function newsPage($id)
     {
         $news = News::findOrFail($id);
@@ -150,6 +162,14 @@ class PagesController extends Controller
         $podcast->author = User::find($podcast->user_id);
         $podcast->admin = User::find($podcast->admin_id);
         return view('pages.podcast', compact('podcast'));
+    }
+
+    function grantsPage($id)
+    {
+        $grant = Grant::findOrFail($id);
+        $grant->author = User::find($grant->user_id);
+        $grant->admin = User::find($grant->admin_id);
+        return view('pages.grant', compact('grant'));
     }
 
     function aboutPage()

@@ -46,7 +46,13 @@
                         <li>
                             <a href="{{ route('events.list') }}"
                                 class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                                <x-lucide-heart class="w-5 h-5 text-inherit" /> Лента активности
+                                <x-lucide-heart class="w-5 h-5 text-inherit" /> Мероприятия
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('grants.list') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-trophy class="w-5 h-5 text-inherit" /> Гранты
                             </a>
                         </li>
                         <li>
@@ -151,7 +157,13 @@
             <li>
                 <a href="{{ route('events.list') }}"
                     class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
-                    <x-lucide-heart class="w-5 h-5 text-inherit" /> Лента активности
+                    <x-lucide-heart class="w-5 h-5 text-inherit" /> Мероприятия
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('grants.list') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-trophy class="w-5 h-5 text-inherit" /> Гранты
                 </a>
             </li>
             <li>

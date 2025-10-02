@@ -58,6 +58,15 @@
                                     link="{{ route('podcast', $item->id) }}" />
                             @break
 
+                            @case('grants')
+                                <x-grant-card
+                                    image="{{ asset($item->cover) }}"
+                                    category="{{ $item->category }}"
+                                    title="{{ $item->title }}"
+                                    description="{{ $item->short_description }}"
+                                    link="{{ route('grant', $item->id) }}" />
+                            @break
+
                             @default
                         @endswitch
                     @endforeach

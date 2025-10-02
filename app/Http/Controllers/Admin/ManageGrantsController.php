@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateGrantRequest;
 use App\Models\Grant;
+use App\Models\GrantApplication;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -137,5 +138,31 @@ class ManageGrantsController extends Controller
         return redirect()
             ->route('admin.grants.index')
             ->with('success', 'Грант успешно перемещен в архив.');
+    }
+
+    public function getResponses(Request $request)
+    {
+        $q = $request->string('q')->toString();
+        $isPartner = Auth::user()->role === 'partner';
+        $responsesQuery = GrantApplication::query()
+            ->with(['grant', 'user', 'user.youthProfile'])
+            ->whereHas('grant', function ($query) use ($isPartner) {
+                if ($isPartner) {
+                    $query->where('user_id', Auth::id());
+                }
+            });
+        if ($q) {
+            $responsesQuery->whereHas('grant', function ($grantQuery) use ($q) {
+                $grantQuery->where('title', 'like', "%{$q}%");
+            })->orWhereHas('user.youthProfile', function ($userQuery) use ($q) {
+                $userQuery->where('name', 'like', "%{$q}%")
+                    ->orWhere('l_name', 'like', "%{$q}%");
+            });
+        }
+        $responses = $responsesQuery
+            ->orderByDesc('created_at')
+            ->paginate(10)
+            ->appends($request->query());
+        return view("admin.grants.responses", compact('responses', 'q'));
     }
 }
