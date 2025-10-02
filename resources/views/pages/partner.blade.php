@@ -147,7 +147,7 @@
                         @if($partner->partnersProfile->about)
                             <div class="prose prose-gray max-w-none">
                                 <p class="text-gray-700 leading-relaxed">
-                                    {{ $partner->partnersProfile->about }}
+                                    {!! $partner->partnersProfile->about !!}
                                 </p>
                             </div>
                         @else

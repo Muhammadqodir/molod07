@@ -78,6 +78,219 @@
                 </div>
             </div>
 
+            <!-- Молодежные центры -->
+            <h2 class="text-2xl font-bold mb-6 mt-10">Молодежные центры КБР</h2>
+            <div class="flex flex-col space-y-6 mb-8">
+                <!-- МЦ: Министерство по делам молодежи КБР -->
+                <div x-data="{ open: false }" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                    <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 bg-gray-100 rounded-full">
+                                <x-lucide-building class="w-7 h-7 text-primary" />
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800">Министерство по делам молодежи КБР</h3>
+                        </div>
+                        <button class="text-primary font-semibold hover:underline">Подробнее</button>
+                    </div>
+                    <div x-show="open" class="mt-4 text-gray-700 text-base space-y-2">
+                        <div class="flex items-center"><x-lucide-user class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Министр:</span> Люев Азамат Хасейнович</div>
+                        <div class="flex items-center"><x-lucide-phone class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Телефон:</span></div>
+                        <div class="flex items-center"><x-lucide-map-pin class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Адрес:</span> пр. Кулиева, 12</div>
+                    </div>
+                </div>
+                <!-- МЦ: Многофункциональный молодежный центр КБР -->
+                <div x-data="{ open: false }" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                    <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 bg-gray-100 rounded-full">
+                                <x-lucide-building class="w-7 h-7 text-primary" />
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800">Многофункциональный молодежный центр КБР</h3>
+                        </div>
+                        <button class="text-primary font-semibold hover:underline">Подробнее</button>
+                    </div>
+                    <div x-show="open" class="mt-4 text-gray-700 text-base space-y-2">
+                        <div class="flex items-center"><x-lucide-user class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Директор:</span> Дзагаштов Азамат Мусарбиевич</div>
+                        <div class="flex items-center"><x-lucide-phone class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Телефон:</span> +7 (8662) 49-60-33</div>
+                        <div class="flex items-center"><x-lucide-map-pin class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Адрес:</span> пр. Кулиева, 12</div>
+                    </div>
+                </div>
+                <!-- МЦ: Молодежный центр Черекского района -->
+                <div x-data="{ open: false }" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                    <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 bg-gray-100 rounded-full">
+                                <x-lucide-building class="w-7 h-7 text-primary" />
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Черекского района</h3>
+                        </div>
+                        <button class="text-primary font-semibold hover:underline">Подробнее</button>
+                    </div>
+                    <div x-show="open" class="mt-4 text-gray-700 text-base space-y-2">
+                        <div class="flex items-center"><x-lucide-user class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Директор:</span> Мокаев Ислам Кемалович</div>
+                        <div class="flex items-center"><x-lucide-phone class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Телефон:</span> +7 918 728-55-55</div>
+                        <div class="flex items-center"><x-lucide-map-pin class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Адрес:</span> ул. Зукаева 5</div>
+                    </div>
+                </div>
+                <!-- МЦ: Молодежный центр Урванского района -->
+                <div x-data="{ open: false }" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                    <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 bg-gray-100 rounded-full">
+                                <x-lucide-building class="w-7 h-7 text-primary" />
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Урванского района</h3>
+                        </div>
+                        <button class="text-primary font-semibold hover:underline">Подробнее</button>
+                    </div>
+                    <div x-show="open" class="mt-4 text-gray-700 text-base space-y-2">
+                        <div class="flex items-center"><x-lucide-user class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Директор:</span> Хостов Темирлан Мухадинович</div>
+                        <div class="flex items-center"><x-lucide-phone class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Телефон:</span> +7 964 039-03-09</div>
+                        <div class="flex items-center"><x-lucide-map-pin class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Адрес:</span> ул. Кабардинская 115</div>
+                    </div>
+                </div>
+                <!-- МЦ: Молодежный центр Чегемского района -->
+                <div x-data="{ open: false }" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                    <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 bg-gray-100 rounded-full">
+                                <x-lucide-building class="w-7 h-7 text-primary" />
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Чегемского района</h3>
+                        </div>
+                        <button class="text-primary font-semibold hover:underline">Подробнее</button>
+                    </div>
+                    <div x-show="open" class="mt-4 text-gray-700 text-base space-y-2">
+                        <div class="flex items-center"><x-lucide-user class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Директор:</span> Хапова Фатима Аслановна</div>
+                        <div class="flex items-center"><x-lucide-phone class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Телефон:</span> +7 928 690-97-50</div>
+                        <div class="flex items-center"><x-lucide-map-pin class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Адрес:</span> ул. Баксанское шоссе,3</div>
+                    </div>
+                </div>
+                <!-- МЦ: Молодежный центр Лескенского района -->
+                <div x-data="{ open: false }" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                    <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 bg-gray-100 rounded-full">
+                                <x-lucide-building class="w-7 h-7 text-primary" />
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Лескенского района</h3>
+                        </div>
+                        <button class="text-primary font-semibold hover:underline">Подробнее</button>
+                    </div>
+                    <div x-show="open" class="mt-4 text-gray-700 text-base space-y-2">
+                        <div class="flex items-center"><x-lucide-user class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Директор:</span> Бижоев Азамат Анзорович</div>
+                        <div class="flex items-center"><x-lucide-phone class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Телефон:</span> +7 (965) 499-21-11</div>
+                        <div class="flex items-center"><x-lucide-map-pin class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Адрес:</span> ул Хамгокова, 27</div>
+                    </div>
+                </div>
+                <!-- МЦ: Молодежный центр Майского района -->
+                <div x-data="{ open: false }" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                    <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 bg-gray-100 rounded-full">
+                                <x-lucide-building class="w-7 h-7 text-primary" />
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Майского района</h3>
+                        </div>
+                        <button class="text-primary font-semibold hover:underline">Подробнее</button>
+                    </div>
+                    <div x-show="open" class="mt-4 text-gray-700 text-base space-y-2">
+                        <div class="flex items-center"><x-lucide-user class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Директор:</span> Урусова Екатерина Олеговна</div>
+                        <div class="flex items-center"><x-lucide-phone class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Телефон:</span> +7 988 929-36-08</div>
+                        <div class="flex items-center"><x-lucide-map-pin class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Адрес:</span> ул Энгельса, 72</div>
+                    </div>
+                </div>
+                <!-- МЦ: Молодежный центр Эльбрусского района -->
+                <div x-data="{ open: false }" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                    <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 bg-gray-100 rounded-full">
+                                <x-lucide-building class="w-7 h-7 text-primary" />
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Эльбрусского района</h3>
+                        </div>
+                        <button class="text-primary font-semibold hover:underline">Подробнее</button>
+                    </div>
+                    <div x-show="open" class="mt-4 text-gray-700 text-base space-y-2">
+                        <div class="flex items-center"><x-lucide-user class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Директор:</span> Этезов Аслан Рашидович</div>
+                        <div class="flex items-center"><x-lucide-phone class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Телефон:</span> +7 (938) 079-05-75</div>
+                        <div class="flex items-center"><x-lucide-map-pin class="w-5 h-5 mr-2 text-gray-400" /><span class="font-medium">Адрес:</span> ул. Энеева, 7</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карта с точками молодежных центров -->
+            <div class="rounded-xl shadow mb-10" style="height:500px;">
+                <div id="youth-centers-map" style="width:100%; height:100%;"></div>
+            </div>
+            <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+            <script>
+                ymaps.ready(function () {
+                    var map = new ymaps.Map('youth-centers-map', {
+                        center: [43.484329, 43.612058], // Нальчик
+                        zoom: 10
+                    });
+                    var centers = [
+                        {
+                            coords: [43.484329, 43.612058],
+                            name: 'Министерство по делам молодежи КБР',
+                            address: 'пр. Кулиева, 12',
+                            info: 'Министр – Люев Азамат Хасейнович'
+                        },
+                        {
+                            coords: [43.484329, 43.612058],
+                            name: 'Многофункциональный молодежный центр КБР',
+                            address: 'пр. Кулиева, 12',
+                            info: 'Директор - Дзагаштов Азамат Мусарбиевич'
+                        },
+                        {
+                            coords: [43.495, 43.585],
+                            name: 'Молодежный центр Черекского района',
+                            address: 'ул. Зукаева 5',
+                            info: 'Директор - Мокаев Ислам Кемалович'
+                        },
+                        {
+                            coords: [43.520, 43.600],
+                            name: 'Молодежный центр Урванского района',
+                            address: 'ул. Кабардинская 115',
+                            info: 'Директор - Хостов Темирлан Мухадинович'
+                        },
+                        {
+                            coords: [43.570, 43.670],
+                            name: 'Молодежный центр Чегемского района',
+                            address: 'ул. Баксанское шоссе,3',
+                            info: 'Директор - Хапова Фатима Аслановна'
+                        },
+                        {
+                            coords: [43.610, 43.650],
+                            name: 'Молодежный центр Лескенского района',
+                            address: 'ул Хамгокова, 27',
+                            info: 'Директор - Бижоев Азамат Анзорович'
+                        },
+                        {
+                            coords: [43.630, 43.700],
+                            name: 'Молодежный центр Майского района',
+                            address: 'ул Энгельса, 72',
+                            info: 'Директор - Урусова Екатерина Олеговна'
+                        },
+                        {
+                            coords: [43.250, 42.510],
+                            name: 'Молодежный центр Эльбрусского района',
+                            address: 'ул. Энеева, 7',
+                            info: 'Директор - Этезов Аслан Рашидович'
+                        }
+                    ];
+                    centers.forEach(function(center) {
+                        var placemark = new ymaps.Placemark(center.coords, {
+                            balloonContent: `<strong>${center.name}</strong><br>${center.info}<br>${center.address}`
+                        }, {
+                            preset: 'islands#blueIcon'
+                        });
+                        map.geoObjects.add(placemark);
+                    });
+                });
+            </script>
+
         </div>
     </div>
 
