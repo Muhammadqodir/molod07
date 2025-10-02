@@ -12,8 +12,8 @@
             <a href="{{ route('partner.reg') }}">
                 <x-button variant="outline">Стать партнёром</x-button>
             </a>
-            <x-icon-button icon="vk" />
-            <x-icon-button icon="telega" />
+            <a href="https://vk.com/minmol07" target="_blank"> <x-icon-button icon="vk" /> </a>
+            <a href="https://t.me/minmolkbr" target="_blank"> <x-icon-button icon="telega" /> </a>
         </div>
 
         {{-- Поиск --}}
@@ -218,8 +218,8 @@
 
         {{-- Соц. сети и кнопка --}}
         <div class="mt-6 flex items-center gap-4">
-            <x-icon-button icon="vk" />
-            <x-icon-button icon="telega" />
+            <a href="https://vk.com/minmol07"> <x-icon-button icon="vk" /> </a>
+            <a href="https://t.me/minmolkbr"> <x-icon-button icon="telega" /> </a>
         </div>
 
         <div class="mt-auto">

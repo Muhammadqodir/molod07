@@ -242,10 +242,10 @@
                             <div class="text-xs uppercase text-gray-400">Мероприятие в соцсетях</div>
                             <div class="flex items-center gap-3 text-gray-600">
                                 @if ($event->vk)
-                                    <x-icon-button icon="vk" />
+                                    <a href="{{$event->vk}}" target="_blank"> <x-icon-button icon="vk" /> </a>
                                 @endif
                                 @if ($event->telegram)
-                                    <x-icon-button icon="telega" />
+                                    <a href="{{$event->telegram}}" target="_blank"> <x-icon-button icon="telega" /> </a>
                                 @endif
                                 @if ($event->web)
                                     <a href="{{ $event->web }}" target="_blank">
