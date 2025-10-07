@@ -20,11 +20,10 @@
                         <h2 class="text-lg font-semibold">Главный офис</h2>
                     </div>
                     <div class="text-gray-600 text-sm">
-                        <p><span class="font-medium">Адрес</span><br>Нальчик, Большой Трёхсвятительский переулок, дом 2/1
-                            строение 2</p>
+                        <p><span class="font-medium">Адрес</span><br>КБР, г. Нальчик, пр-т Кулиева, 12</p>
                         <p class="mt-3"><span class="font-medium">Режим работы</span><br>
-                            Пн - Пт : с 9:00 до 18:00<br>
-                            Сб - Вс : выходной
+                            Пн - Пт : с 10:00 до 20:00<br>
+                            Сб - Вс : с 11:00 до 20:00
                         </p>
                     </div>
                 </div>
@@ -39,8 +38,10 @@
                     </div>
                     <div class="text-gray-600 text-sm">
                         <p><span class="font-medium">Телефон</span><br>
-                            01. 8 (800) 000 00 00<br>
-                            02. 8 (800) 000 00 00
+                            +7 (8662) 49-60-33
+                        </p>
+                        <p><span class="font-medium">Email</span><br>
+                            mmckbr@mail.ru
                         </p>
                         <p class="mt-3"><span class="font-medium">Факс</span><br>+7 499 000 00 00</p>
                     </div>
@@ -89,7 +90,8 @@
                             <div class="p-3 bg-gray-100 rounded-full">
                                 <x-lucide-building class="w-7 h-7 text-primary" />
                             </div>
-                            <h3 class="text-lg font-bold text-gray-800">Министерство по делам молодежи КБР</h3>
+                            <h3 class="text-base md:text-lg font-bold text-gray-800">Министерство по делам молодежи КБР
+                            </h3>
                         </div>
                         <button class="text-primary font-semibold hover:underline">Подробнее</button>
                     </div>
@@ -109,7 +111,7 @@
                             <div class="p-3 bg-gray-100 rounded-full">
                                 <x-lucide-building class="w-7 h-7 text-primary" />
                             </div>
-                            <h3 class="text-lg font-bold text-gray-800">Многофункциональный молодежный центр КБР</h3>
+                            <h3 class="text-base md:text-lg font-bold text-gray-800">Многофункциональный молодежный центр КБР</h3>
                         </div>
                         <button class="text-primary font-semibold hover:underline">Подробнее</button>
                     </div>
@@ -129,7 +131,7 @@
                             <div class="p-3 bg-gray-100 rounded-full">
                                 <x-lucide-building class="w-7 h-7 text-primary" />
                             </div>
-                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Черекского района</h3>
+                            <h3 class="text-base md:text-lg font-bold text-gray-800">Молодежный центр Черекского района</h3>
                         </div>
                         <button class="text-primary font-semibold hover:underline">Подробнее</button>
                     </div>
@@ -149,7 +151,7 @@
                             <div class="p-3 bg-gray-100 rounded-full">
                                 <x-lucide-building class="w-7 h-7 text-primary" />
                             </div>
-                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Урванского района</h3>
+                            <h3 class="text-base md:text-lg font-bold text-gray-800">Молодежный центр Урванского района</h3>
                         </div>
                         <button class="text-primary font-semibold hover:underline">Подробнее</button>
                     </div>
@@ -169,7 +171,7 @@
                             <div class="p-3 bg-gray-100 rounded-full">
                                 <x-lucide-building class="w-7 h-7 text-primary" />
                             </div>
-                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Чегемского района</h3>
+                            <h3 class="text-base md:text-lg font-bold text-gray-800">Молодежный центр Чегемского района</h3>
                         </div>
                         <button class="text-primary font-semibold hover:underline">Подробнее</button>
                     </div>
@@ -189,7 +191,7 @@
                             <div class="p-3 bg-gray-100 rounded-full">
                                 <x-lucide-building class="w-7 h-7 text-primary" />
                             </div>
-                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Лескенского района</h3>
+                            <h3 class="text-base md:text-lg font-bold text-gray-800">Молодежный центр Лескенского района</h3>
                         </div>
                         <button class="text-primary font-semibold hover:underline">Подробнее</button>
                     </div>
@@ -209,7 +211,7 @@
                             <div class="p-3 bg-gray-100 rounded-full">
                                 <x-lucide-building class="w-7 h-7 text-primary" />
                             </div>
-                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Майского района</h3>
+                            <h3 class="text-base md:text-lg font-bold text-gray-800">Молодежный центр Майского района</h3>
                         </div>
                         <button class="text-primary font-semibold hover:underline">Подробнее</button>
                     </div>
@@ -229,7 +231,7 @@
                             <div class="p-3 bg-gray-100 rounded-full">
                                 <x-lucide-building class="w-7 h-7 text-primary" />
                             </div>
-                            <h3 class="text-lg font-bold text-gray-800">Молодежный центр Эльбрусского района</h3>
+                            <h3 class="text-base md:text-lg font-bold text-gray-800">Молодежный центр Эльбрусского района</h3>
                         </div>
                         <button class="text-primary font-semibold hover:underline">Подробнее</button>
                     </div>

@@ -35,9 +35,8 @@
         <div class="space-y-4">
             <h3 class="font-semibold">Контакты</h3>
             <p>
-                Пн–Пт: 10:00 – 18:00; Сб, Вс: Выходной<br>
-                ООО «Название», УНП 111111111<br>
-                220030, г. Нальчик, ул. Название, 5 (пом. 77)
+                Пн–Пт: 10:00 – 20:00; Сб, Вс: 11:00 – 20:00<br>
+                КБР, г. Нальчик, пр-т Кулиева, 12
             </p>
             <div class="flex flex-row gap-5">
                 <div>
@@ -51,7 +50,9 @@
                 <div>
                     <p class="font-medium">Техподдержка</p>
                     <div class="flex gap-3">
-                        <x-icon-button icon="mail" />
+                        <a href="mailto:mmckbr@mail.ru">
+                            <x-icon-button icon="mail" />
+                        </a>
                     </div>
                 </div>
             </div>
