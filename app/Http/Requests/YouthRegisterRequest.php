@@ -41,10 +41,10 @@ class YouthRegisterRequest extends FormRequest
             'l_name' => 'required|string|max:255',
             'f_name' => 'nullable|string|max:255',
             'address' => 'required|string|max:255',
-            'bday' => 'required|date',
+            'bday' => 'nullable|date',
             'sex' => 'nullable|in:male,female',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|max:20',
+            'phone' => 'nullable|string|max:20',
             'password' => 'required|string|min:8|confirmed',
         ];
     }

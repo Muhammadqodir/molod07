@@ -288,6 +288,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const type = button.dataset.type;
             toggleCommentLike(commentId, type);
         }
+
+        // Обработчик для кнопок поделиться
+        if (e.target.closest('.share-button')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const button = e.target.closest('.share-button');
+            const title = button.dataset.shareTitle || document.title;
+            const url = button.dataset.shareUrl || window.location.href;
+            console.log('Share button clicked:', { title, url });
+            shareContent(title, url);
+        }
     });
 
     // Автоматическое отслеживание просмотров
@@ -300,6 +311,59 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             trackView(viewableType, viewableId);
         }, 3000);
+    }
+
+    // Функция поделиться
+    function shareContent(title, url) {
+        // Проверяем поддержку Web Share API
+        if (navigator.share) {
+            navigator.share({
+                title: title || document.title,
+                url: url || window.location.href
+            }).then(() => {
+                showNotification('Ссылка успешно поделена!', 'success');
+            }).catch(() => {
+                // Если пользователь отменил или произошла ошибка, просто копируем в буфер
+                copyToClipboard(url || window.location.href, title);
+            });
+        } else {
+            // Fallback - копирование в буфер обмена
+            copyToClipboard(url || window.location.href, title);
+        }
+    }
+
+    // Функция копирования в буфер обмена
+    function copyToClipboard(text, title) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Ссылка скопирована в буфер обмена!', 'success');
+            }).catch(() => {
+                fallbackCopyToClipboard(text);
+            });
+        } else {
+            fallbackCopyToClipboard(text);
+        }
+    }
+
+    // Fallback для старых браузеров
+    function fallbackCopyToClipboard(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+            showNotification('Ссылка скопирована в буфер обмена!', 'success');
+        } catch (err) {
+            showNotification('Не удалось скопировать ссылку', 'error');
+        }
+
+        document.body.removeChild(textArea);
     }
 
     // Загрузка существующих комментариев при загрузке страницы

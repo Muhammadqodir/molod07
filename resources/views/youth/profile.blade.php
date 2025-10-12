@@ -73,4 +73,27 @@
 
     </form>
 
+    <!-- Delete Profile Button -->
+    <div class="mt-8 pt-6 border-t border-gray-200">
+        <form action="{{ route('youth.profile.delete') }}" method="post" id="deleteProfileForm">
+            @csrf
+            @method('DELETE')
+            <x-button type="button"
+                      variant="outline"
+                      onclick="confirmDelete()"
+                      class="!border-red-600 !text-red-600 hover:!bg-red-50 focus:!ring-red-500"
+                      style="border-color: #DC2626 !important; color: #DC2626 !important;">
+                Удалить профиль
+            </x-button>
+        </form>
+    </div>
+
+    <script>
+        function confirmDelete() {
+            if (confirm('Вы уверены, что хотите удалить свой профиль? Это действие нельзя отменить.')) {
+                document.getElementById('deleteProfileForm').submit();
+            }
+        }
+    </script>
+
 @endsection

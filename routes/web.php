@@ -70,6 +70,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 Route::middleware(['auth', 'role:youth'])->group(function () {
     Route::get('/profile/youth', [YouthProfileController::class, 'show'])->name('youth.profile');
     Route::post('/profile/youth/post', [YouthProfileController::class, 'updateProfile'])->name('youth.profile.post');
+    Route::delete('/profile/youth/delete', [YouthProfileController::class, 'deleteProfile'])->name('youth.profile.delete');
 
     Route::post('/event/{id}/register', [EventsController::class, 'registerForEvent'])->name("event.register");
     Route::get('/youth/events', [EventsController::class, 'myEvents'])->name('youth.events');

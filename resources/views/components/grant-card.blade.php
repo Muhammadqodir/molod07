@@ -4,7 +4,10 @@
     <div class="bg-white rounded-2xl shadow-sm p-3 w-full cursor-pointer hover:shadow-lg transition">
         <div class="relative rounded-xl overflow-hidden mb-3">
             <img src="{{ $image }}" alt="" class="w-full h-[180px] object-cover">
-            <button class="absolute top-2 right-2 bg-white p-2 rounded-full shadow">
+            <button class="share-button absolute top-2 right-2 bg-white p-2 rounded-full shadow hover:bg-gray-50 transition-colors z-10"
+                    data-share-title="{{ $title }}"
+                    data-share-url="{{ $link }}"
+                    title="Поделиться">
                 <x-lucide-share-2 class="w-4 h-4 text-gray-600" />
             </button>
         </div>

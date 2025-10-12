@@ -32,9 +32,9 @@ class RegisterYouthController extends Controller
             'l_name' => $validated['l_name'],
             'f_name' => $validated['f_name'] ?? null,
             'address' => $validated['address'],
-            'bday' => $validated['bday'],
+            'bday' => $validated['bday'] ?? null,
             'sex' => $validated['sex'] ?? null,
-            'phone' => $validated['phone'],
+            'phone' => $validated['phone'] ?? null,
         ]);
 
         Auth::login($user);

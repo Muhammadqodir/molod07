@@ -45,7 +45,10 @@
 
                             <div class="flex items-center gap-4 flex-shrink-0">
 
-                                <button type="button" class="p-2 hover:bg-gray-100 rounded-xl" title="Поделиться">
+                                <button type="button" class="share-button p-2 hover:bg-gray-100 rounded-xl"
+                                        title="Поделиться"
+                                        data-share-title="{{ $news->title }}"
+                                        data-share-url="{{ request()->fullUrl() }}">
                                     <x-lucide-share-2 class="w-5 h-5" />
                                 </button>
                                 <button type="button" class="p-2 hover:bg-gray-100 rounded-xl" title="В избранное">

@@ -28,13 +28,13 @@
                 <div x-show="step === 2">
                     <x-input name="address" type="text" label="Населенный пункт"
                         placeholder="Введите населенный пункт" />
-                    <x-input name="bday" type="date" label="Дата рождения" placeholder="Введите дату рождения" />
-                    <x-select name="sex" label="Пол" placeholder="Виберите пол" :options="['male' => 'Мужской', 'female' => 'Женский']" />
+                    <x-input name="bday" type="date" label="Дата рождения (необязательно)" placeholder="Введите дату рождения" />
+                    <x-select name="sex" label="Пол (необязательно)" placeholder="Виберите пол" :options="['male' => 'Мужской', 'female' => 'Женский']" />
                 </div>
 
                 <div x-show="step === 3">
                     <x-input name="email" type="email" label="E-mail" placeholder="Укажите e-mail" />
-                    <x-input name="phone" type="tel" label="Телефон" placeholder="+7(999)999-99-99" />
+                    <x-input name="phone" type="tel" label="Телефон (необязательно)" placeholder="+7(999)999-99-99" />
                 </div>
 
                 <div x-show="step === 4">
