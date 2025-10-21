@@ -1,6 +1,23 @@
 // Обработка комментариев, лайков и просмотров
 document.addEventListener('DOMContentLoaded', function() {
 
+    // Функция для показа модального окна авторизации
+    function showAuthModal(modalId) {
+        // Пытаемся найти модальное окно с указанным ID
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            // Если модалка существует, показываем её
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        } else {
+            // Если модалка не найдена, перенаправляем на страницу входа
+            showNotification('Для выполнения этого действия необходимо войти в систему', 'warning');
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 2000);
+        }
+    }
+
     // Функция для показа уведомлений
     function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
@@ -72,7 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Обработка лайков
     function toggleLike(likeableType, likeableId, type) {
+        console.log('toggleLike вызван:', { likeableType, likeableId, type });
+
         if (!document.querySelector('meta[name="user-authenticated"]')) {
+            console.log('Пользователь не авторизован');
             showAuthModal('auth-modal');
             return;
         }
@@ -90,10 +110,12 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         }).then(response => response.json())
         .then(data => {
+            console.log('Ответ сервера на toggleLike:', data);
             if (data.success) {
-                // Обновляем счетчики лайков
-                const likesButton = document.querySelector('.likes-button');
-                const dislikesButton = document.querySelector('.dislikes-button');
+                // Ищем кнопки лайка и дизлайка для конкретного элемента
+                const likesButton = document.querySelector(`.likes-button[data-likeable-type="${likeableType}"][data-likeable-id="${likeableId}"]`);
+                const dislikesButton = document.querySelector(`.dislikes-button[data-likeable-type="${likeableType}"][data-likeable-id="${likeableId}"]`);
+                console.log('Найдены кнопки:', { likesButton, dislikesButton });
 
                 if (likesButton) {
                     const likesCount = likesButton.querySelector('.likes-count');
@@ -121,6 +143,64 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }).catch(error => {
             console.error('Ошибка при обработке лайка:', error);
+            showNotification('Произошла ошибка. Попробуйте еще раз.', 'error');
+        });
+    }
+
+    // Обработка лайков для комментариев
+    function toggleCommentLike(commentId, type) {
+        if (!document.querySelector('meta[name="user-authenticated"]')) {
+            showAuthModal('auth-modal');
+            return;
+        }
+
+        fetch('/api/likes/toggle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                likeable_type: 'App\\Models\\Comment',
+                likeable_id: commentId,
+                type: type
+            })
+        }).then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Находим кнопки лайка и дизлайка для этого комментария
+                const commentElement = document.querySelector(`[data-comment-id="${commentId}"]`);
+                if (commentElement) {
+                    const likeButton = commentElement.querySelector('.comment-like-button');
+                    const dislikeButton = commentElement.querySelector('.comment-dislike-button');
+
+                    if (likeButton) {
+                        const likeCount = likeButton.querySelector('.like-count');
+                        if (likeCount) likeCount.textContent = data.likes_count;
+
+                        // Обновляем состояние кнопки лайка
+                        if (data.user_liked && type === 'like') {
+                            likeButton.classList.add('active');
+                        } else {
+                            likeButton.classList.remove('active');
+                        }
+                    }
+
+                    if (dislikeButton) {
+                        const dislikeCount = dislikeButton.querySelector('.dislike-count');
+                        if (dislikeCount) dislikeCount.textContent = data.dislikes_count;
+
+                        // Обновляем состояние кнопки дизлайка
+                        if (data.user_disliked && type === 'dislike') {
+                            dislikeButton.classList.add('active');
+                        } else {
+                            dislikeButton.classList.remove('active');
+                        }
+                    }
+                }
+            }
+        }).catch(error => {
+            console.error('Ошибка при обработке лайка комментария:', error);
             showNotification('Произошла ошибка. Попробуйте еще раз.', 'error');
         });
     }
