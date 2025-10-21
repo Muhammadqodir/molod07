@@ -34,6 +34,16 @@ class User extends Authenticatable
         };
     }
 
+    public function getFirstName()
+    {
+        return match ($this->role) {
+            'youth' => $this->youthProfile->name,
+            'partner' => $this->partnersProfile->name,
+            'admin' => $this->adminsProfile->name,
+            default => "Undefined",
+        };
+    }
+
 
     public function youthProfile()
     {

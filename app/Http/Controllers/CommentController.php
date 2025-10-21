@@ -21,19 +21,49 @@ class CommentController extends Controller
             return response()->json(['error' => 'Необходимо войти в систему'], 401);
         }
 
+        // Проверяем на дублирование комментариев за последние 10 секунд
+        $recentComment = Comment::where('user_id', Auth::id())
+            ->where('content', $request->input('content'))
+            ->where('commentable_type', $request->input('commentable_type'))
+            ->where('commentable_id', $request->input('commentable_id'))
+            ->where('created_at', '>', now()->subSeconds(10))
+            ->first();
+
+        if ($recentComment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Комментарий уже был добавлен'
+            ], 422);
+        }
+
         $comment = Comment::create([
             'user_id' => Auth::id(),
             'content' => $request->input('content'),
             'commentable_type' => $request->input('commentable_type'),
             'commentable_id' => $request->input('commentable_id'),
             'parent_id' => $request->input('parent_id'),
+            'status' => 'approved', // Сразу одобряем комментарий
         ]);
 
-        $comment->load('user', 'replies.user');
+        $comment->load('user');
+
+        // Генерируем HTML для нового комментария
+        $html = view('components.comment-item', [
+            'commentId' => $comment->id,
+            'author' => $comment->user ? $comment->user->getFullName() : 'Аноним',
+            'time' => $comment->created_at->diffForHumans(),
+            'body' => $comment->content,
+            'likes' => 0,
+            'dislikes' => 0,
+            'commentableType' => $request->input('commentable_type'),
+            'commentableId' => $request->input('commentable_id'),
+            'isReply' => !is_null($request->input('parent_id')),
+        ])->render();
 
         return response()->json([
             'success' => true,
             'comment' => $comment,
+            'html' => $html,
             'message' => 'Комментарий добавлен успешно'
         ]);
     }
@@ -61,8 +91,11 @@ class CommentController extends Controller
 
         $comments = Comment::where('commentable_type', $request->input('commentable_type'))
             ->where('commentable_id', $request->input('commentable_id'))
+            ->where('status', 'approved') // Показываем только одобренные комментарии
             ->whereNull('parent_id')
-            ->with(['user', 'replies.user'])
+            ->with(['user', 'replies' => function($query) {
+                $query->where('status', 'approved'); // Также фильтруем ответы
+            }, 'replies.user'])
             ->latest()
             ->paginate(10);
 

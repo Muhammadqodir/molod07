@@ -31,6 +31,14 @@
         <x-sidebar-leaf route="admin.news.archive" label="Архив" />
     </x-sidebar-group>
 
+    {{-- Группа: Комментарии --}}
+    {{-- <x-sidebar-group icon="message-circle" label="Комментарии" :open="request()->routeIs('admin.comments.*')">
+        <x-sidebar-leaf route="admin.comments.index" label="Одобренные" />
+        <x-sidebar-leaf route="admin.comments.requests" label="На модерации" />
+        <x-sidebar-leaf route="admin.comments.rejected" label="Отклоненные" />
+    </x-sidebar-group> --}}
+    <x-sidebar-link icon="message-circle" route="admin.comments.index" label="Комментарии" />
+
     {{-- Группа: Гранты --}}
     <x-sidebar-group icon="file-badge" label="Гранты" :open="request()->routeIs('admin.grants.*')">
         <x-sidebar-leaf route="admin.grants.index" label="Активные" />

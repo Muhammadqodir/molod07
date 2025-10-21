@@ -18,7 +18,7 @@
     'commentableId' => '',
 ])
 
-<article class="{{ $isReply ? 'relative pl-12' : '' }} mb-4" @if($isReply) style="padding-left:50px;" @endif>
+<article class="{{ $isReply ? 'relative pl-12' : '' }} mb-4" data-comment-id="{{ $commentId ?? '' }}" @if($isReply) style="padding-left:50px;" @endif>
     {{-- скобка слева для вложенного коммента --}}
     @if($isReply)
         <div class="absolute left-0 top-8 h-[calc(100%-2rem)] w-4">
@@ -93,4 +93,9 @@
             </div>
         @endif
     </div>
+
+    {{-- Контейнер для ответов --}}
+    @if(!$isReply)
+        <div class="replies-container mt-2"></div>
+    @endif
 </article>

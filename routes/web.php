@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdministratorsController;
+use App\Http\Controllers\Admin\ManageCommentsController;
 use App\Http\Controllers\Admin\ManageCoursesController;
 use App\Http\Controllers\Admin\ManageEventsController;
 use App\Http\Controllers\Admin\ManageGrantsController;
@@ -174,6 +175,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/news/approve/{id}', [ManageNewsController::class, 'approve'])->name('admin.news.approve');
     Route::post('admin/news/reject/{id}', [ManageNewsController::class, 'reject'])->name('admin.news.reject');
     Route::post('admin/news/action/archive/{id}', [ManageNewsController::class, 'archive'])->name('admin.news.action.archive');
+
+    //Comments
+    Route::get('admin/comments/list', [ManageCommentsController::class, 'show'])->name('admin.comments.index')->defaults('status', 'approved');
+    Route::get('admin/comments/requests', [ManageCommentsController::class, 'show'])->name('admin.comments.requests')->defaults('status', 'pending');
+    Route::get('admin/comments/rejected', [ManageCommentsController::class, 'show'])->name('admin.comments.rejected')->defaults('status', 'rejected');
+    Route::get('admin/comments/preview/{id}', [ManageCommentsController::class, 'preview'])->name('admin.comments.preview');
+    Route::post('admin/comments/approve/{id}', [ManageCommentsController::class, 'approve'])->name('admin.comments.approve');
+    Route::post('admin/comments/reject/{id}', [ManageCommentsController::class, 'reject'])->name('admin.comments.reject');
+    Route::post('admin/comments/delete/{id}', [ManageCommentsController::class, 'delete'])->name('admin.comments.delete');
+    Route::post('admin/comments/block-user/{id}', [ManageCommentsController::class, 'block'])->name('admin.comments.block');
 
     //Grants
     Route::get('admin/grants/list', [ManageGrantsController::class, 'show'])->name('admin.grants.index')->defaults('status', 'approved');

@@ -127,6 +127,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Обработка комментариев
     function submitComment(form) {
+        console.log('submitComment вызван для формы:', form);
+
+        // Проверяем, не отправляется ли уже форма
+        if (form.dataset.submitting === 'true') {
+            console.log('Форма уже отправляется, пропускаем');
+            return;
+        }
+
         if (!document.querySelector('meta[name="user-authenticated"]')) {
             showAuthModal('auth-modal');
             return;
@@ -143,6 +151,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // Помечаем форму как отправляющуюся
+        form.dataset.submitting = 'true';
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
         fetch('/api/comments', {
             method: 'POST',
             headers: {
@@ -157,6 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         }).then(response => response.json())
         .then(data => {
+            console.log('Получен ответ от сервера:', data);
             if (data.success) {
                 // Очищаем форму
                 form.reset();
@@ -167,21 +183,56 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (replyContainer) {
                         replyContainer.classList.add('hidden');
                     }
-                }
 
-                // Добавляем новый комментарий в список
-                loadComments(commentableType, commentableId);
+                    // Для ответов добавляем HTML рядом с родительским комментарием
+                    if (data.html && parentId && data.comment) {
+                        // Проверяем, не существует ли уже комментарий с таким ID
+                        const existingComment = document.querySelector(`[data-comment-id="${data.comment.id}"]`);
+                        if (!existingComment) {
+                            const parentComment = document.querySelector(`[data-comment-id="${parentId}"]`);
+                            if (parentComment) {
+                                const repliesContainer = parentComment.querySelector('.replies-container') ||
+                                    parentComment.querySelector('.comment-replies');
+                                if (repliesContainer) {
+                                    repliesContainer.insertAdjacentHTML('beforeend', data.html);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // Для основных комментариев добавляем в начало списка комментариев
+                    if (data.html && data.comment) {
+                        // Проверяем, не существует ли уже комментарий с таким ID
+                        const existingComment = document.querySelector(`[data-comment-id="${data.comment.id}"]`);
+                        if (!existingComment) {
+                            const commentsContainer = document.querySelector('.comments-container');
+                            if (commentsContainer) {
+                                commentsContainer.insertAdjacentHTML('afterbegin', data.html);
+                            }
+                        }
+                    }
+                }
 
                 // Обновляем счетчик комментариев
                 updateCommentsCount();
 
                 showNotification('Комментарий успешно добавлен', 'success');
             } else {
-                showNotification(data.message || 'Произошла ошибка при добавлении комментария', 'error');
+                // Не показываем уведомление для дублированных комментариев
+                if (data.message !== 'Комментарий уже был добавлен') {
+                    showNotification(data.message || 'Произошла ошибка при добавлении комментария', 'error');
+                }
             }
         }).catch(error => {
             console.error('Ошибка при добавлении комментария:', error);
             showNotification('Произошла ошибка. Попробуйте еще раз.', 'error');
+        }).finally(() => {
+            // Снимаем флаг отправки и восстанавливаем кнопку
+            form.dataset.submitting = 'false';
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
         });
     }
 
@@ -251,6 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Обработчики для форм комментариев
     document.addEventListener('submit', function(e) {
         if (e.target.classList.contains('comment-form') || e.target.classList.contains('reply-comment-form')) {
+            console.log('Submit событие для формы комментария:', e.target);
             e.preventDefault();
             submitComment(e.target);
         }

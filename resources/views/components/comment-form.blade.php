@@ -6,7 +6,7 @@
     'button' => 'Отправить',
 ])
 
-<form class="comment-form w-full" data-commentable-type="{{ $commentableType }}" data-commentable-id="{{ $commentableId }}" data-parent-id="{{ $parentId }}">
+<form class="comment-form w-full" action="javascript:void(0)" data-commentable-type="{{ $commentableType }}" data-commentable-id="{{ $commentableId }}" data-parent-id="{{ $parentId }}">
     @csrf
 
     <div class="flex items-center w-full rounded-lg border border-gray-200 bg-white h-10 pl-3 pr-3 text-sm shadow-sm">

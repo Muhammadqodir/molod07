@@ -17,6 +17,7 @@ class Comment extends Model
         'commentable_id',
         'content',
         'parent_id',
+        'status',
     ];
 
     public function user(): BelongsTo
