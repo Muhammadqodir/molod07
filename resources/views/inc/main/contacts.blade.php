@@ -9,7 +9,7 @@
                 </div>
                 <div class="flex justify-center flex-col">
                     <div class="font-medium">Телефон</div>
-                    <div class="text-sm text-gray-500">+7 77 777 77 77</div>
+                    <div class="text-sm text-gray-500">+7 (8662) 49-60-33</div>
                 </div>
             </div>
             <div class="bg-white rounded-xl p-4 shadow-sm flex gap-2">
@@ -18,7 +18,7 @@
                 </div>
                 <div class="flex justify-center flex-col">
                     <div class="font-medium">Почта</div>
-                    <div class="text-sm text-gray-500">@mail.com</div>
+                    <div class="text-sm text-gray-500">mmckbr@mail.ru</div>
                 </div>
             </div>
             <div class="bg-white rounded-xl p-4 shadow-sm flex gap-2">
@@ -27,15 +27,85 @@
                 </div>
                 <div class="flex justify-center flex-col">
                     <div class="font-medium">Адрес</div>
-                    <div class="text-sm text-gray-500">пр. Кулиева, 12, Нальчик</div>
+                    <div class="text-sm text-gray-500">КБР, г. Нальчик, пр-т Кулиева, 12</div>
                 </div>
             </div>
         </div>
-        <div style="position:relative;overflow:hidden;">
-            <iframe
-                src="https://yandex.uz/map-widget/v1/?ll=43.612058%2C43.484329&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1MzExOTY0MxJa0KDQvtGB0YHQuNGPLCDQmtCw0LHQsNGA0LTQuNC90L4t0JHQsNC70LrQsNGA0YHQutCw0Y8g0KDQtdGB0L_Rg9Cx0LvQuNC60LAsINCd0LDQu9GM0YfQuNC6IgoNpm0uQhXo8C1C&z=15.74"
-                width="100%" class="mt-6 rounded-lg" height="400" frameborder="1" allowfullscreen="true"
-                style="position:relative;"></iframe>
+        <div style="position:relative;overflow:hidden;" class="rounded-xl shadow mt-6">
+
+            <!-- Карта с точками молодежных центров -->
+            <div class="rounded-xl shadow" style="height:500px;">
+                <div id="youth-centers-map" style="width:100%; height:100%;"></div>
+            </div>
         </div>
+
+
+        <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+        <script>
+            ymaps.ready(function() {
+                var map = new ymaps.Map('youth-centers-map', {
+                    center: [43.484329, 43.612058], // Нальчик
+                    zoom: 10,
+                    controls: [] // убираем все элементы управления
+                });
+                var centers = [{
+                        coords: [43.475283, 43.582404],
+                        name: 'Министерство по делам молодежи КБР',
+                        address: 'пр. Кулиева, 12',
+                        info: 'Министр – Люев Азамат Хасейнович'
+                    },
+                    {
+                        coords: [43.475283, 43.582404],
+                        name: 'Многофункциональный молодежный центр КБР',
+                        address: 'пр. Кулиева, 12',
+                        info: 'Директор - Дзагаштов Азамат Мусарбиевич'
+                    },
+                    {
+                        coords: [43.314542, 43.606443],
+                        name: 'Молодежный центр Черекского района',
+                        address: 'ул. Зукаева 5',
+                        info: 'Директор - Мокаев Ислам Кемалович'
+                    },
+                    {
+                        coords: [43.555950, 43.854009],
+                        name: 'Молодежный центр Урванского района',
+                        address: 'ул. Кабардинская 115',
+                        info: 'Директор - Хостов Темирлан Мухадинович'
+                    },
+                    {
+                        coords: [43.572542, 43.586716],
+                        name: 'Молодежный центр Чегемского района',
+                        address: 'ул. Баксанское шоссе,3',
+                        info: 'Директор - Хапова Фатима Аслановна'
+                    },
+                    {
+                        coords: [43.356842, 43.941074],
+                        name: 'Молодежный центр Лескенского района',
+                        address: 'ул Хамгокова, 27',
+                        info: 'Директор - Бижоев Азамат Анзорович'
+                    },
+                    {
+                        coords: [43.629207, 44.051100],
+                        name: 'Молодежный центр Майского района',
+                        address: 'ул Энгельса, 72',
+                        info: 'Директор - Урусова Екатерина Олеговна'
+                    },
+                    {
+                        coords: [43.386613, 42.917399],
+                        name: 'Молодежный центр Эльбрусского района',
+                        address: 'ул. Энеева, 7',
+                        info: 'Директор - Этезов Аслан Рашидович'
+                    }
+                ];
+                centers.forEach(function(center) {
+                    var placemark = new ymaps.Placemark(center.coords, {
+                        balloonContent: `<strong>${center.name}</strong><br>${center.info}<br>${center.address}`
+                    }, {
+                        preset: 'islands#blueIcon'
+                    });
+                    map.geoObjects.add(placemark);
+                });
+            });
+        </script>
     </div>
 </section>

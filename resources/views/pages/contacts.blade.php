@@ -43,7 +43,7 @@
                         <p><span class="font-medium">Email</span><br>
                             mmckbr@mail.ru
                         </p>
-                        <p class="mt-3"><span class="font-medium">Факс</span><br>+7 499 000 00 00</p>
+                        {{-- <p class="mt-3"><span class="font-medium">Факс</span><br>+7 499 000 00 00</p> --}}
                     </div>
                 </div>
             </div>
