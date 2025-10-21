@@ -1,8 +1,28 @@
 <?php
 
 use App\Http\Controllers\Api\PartnerApiController;
+use App\Http\Controllers\Api\PublicApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+// Публичные API маршруты
+Route::prefix('public')->group(function () {
+    // События
+    Route::get('/events', [PublicApiController::class, 'getEvents']);
+    Route::get('/events/{id}', [PublicApiController::class, 'getEvent']);
+
+    // Новости
+    Route::get('/news', [PublicApiController::class, 'getNews']);
+    Route::get('/news/{id}', [PublicApiController::class, 'getNewsItem']);
+
+    // Гранты
+    Route::get('/grants', [PublicApiController::class, 'getGrants']);
+    Route::get('/grants/{id}', [PublicApiController::class, 'getGrant']);
+
+    // Вакансии
+    Route::get('/vacancies', [PublicApiController::class, 'getVacancies']);
+    Route::get('/vacancies/{id}', [PublicApiController::class, 'getVacancy']);
+});
 
 // API для партнёрского приложения
 Route::prefix('partner')->group(function () {
