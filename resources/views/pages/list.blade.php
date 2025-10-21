@@ -43,7 +43,7 @@
                                     category="{{ $item->category }}"
                                     title="{{ $item->title }}"
                                     description="{{ $item->short_description }}"
-                                    date="{{ $item->created_at->format('d.m.Y') }}"
+                                    date="{{ $item->publication_date ? \Carbon\Carbon::parse($item->publication_date)->format('d.m.Y') : $item->created_at->format('d.m.Y') }}"
                                     link="{{ route('news', $item->id) }}" />
                             @break
 

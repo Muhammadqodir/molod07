@@ -27,6 +27,7 @@ class CreateNewsRequest extends FormRequest
             'description' => 'required|string',
             'cover' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'category' => 'required|string|max:255',
+            'publication_date' => 'nullable|date',
             'admin_id' => 'nullable|integer|exists:users,id',
             'status' => 'nullable|string|in:draft,published,archived',
         ];
@@ -41,6 +42,7 @@ class CreateNewsRequest extends FormRequest
             'description' => 'описание',
             'cover' => 'обложка',
             'category' => 'категория',
+            'publication_date' => 'дата публикации',
             'admin_id' => 'администратор',
             'status' => 'статус',
         ];

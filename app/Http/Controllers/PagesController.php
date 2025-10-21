@@ -34,7 +34,7 @@ class PagesController extends Controller
             ->get();
 
         $news = News::where('status', 'approved')
-            ->orderByDesc('id')
+            ->orderByDesc('publication_date')
             ->limit(6)
             ->get();
 
@@ -75,7 +75,7 @@ class PagesController extends Controller
         // Sort by 'popular' or 'date'
         $sort = $request->input('sort', 'popular');
         if ($sort === 'date') {
-            $query->orderByDesc('created_at'); // Change 'date' to your actual date column
+            $query->orderByDesc('publication_date'); // Change 'date' to your actual date column
         } else {
             // $query->orderByDesc('views'); // Change 'views' to your actual popularity column
         }
@@ -118,6 +118,8 @@ class PagesController extends Controller
     function newsList(Request $request)
     {
         $query = News::where('status', 'approved');
+        // Order news by publication_date (newest first)
+        $query->orderByDesc('publication_date');
         $query = $this->applyFilters($query, $request);
         $items = $query->paginate(10);
         $entity = 'news';

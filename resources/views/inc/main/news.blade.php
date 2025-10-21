@@ -29,7 +29,7 @@
                         category="{{ $newsItem->category }}"
                         title="{{ $newsItem->title }}"
                         description="{{ $newsItem->short_description }}"
-                        date="{{ $newsItem->created_at->format('d.m.Y') }}"
+                        date="{{ $newsItem->publication_date ? \Carbon\Carbon::parse($newsItem->publication_date)->format('d.m.Y') : $newsItem->created_at->format('d.m.Y') }}"
                         link="{{ route('news', $newsItem->id) }}" />
                 </template>
             @endforeach

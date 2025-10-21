@@ -16,6 +16,7 @@ class News extends Model
         'description',
         'cover',
         'category',
+        'publication_date',
         'admin_id',
         'status',
     ];

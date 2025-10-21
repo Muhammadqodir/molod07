@@ -61,6 +61,11 @@ class ManageNewsController extends Controller
 
         $v['user_id'] = Auth::id();
 
+        // Set publication_date to today if not provided
+        if (empty($v['publication_date'])) {
+            $v['publication_date'] = now()->toDateString();
+        }
+
         // Handle cover image upload using storage
         if ($request->hasFile('cover')) {
             $coverFile = $request->file('cover');

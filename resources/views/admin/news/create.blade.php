@@ -36,6 +36,26 @@
 
         <hr>
 
+        {{-- Дата публикации --}}
+        <section class="space-y-3">
+            <div class="text-lg font-medium">Дата публикации</div>
+            <div class="space-y-2">
+                <x-input
+                    label="Дата публикации"
+                    name="publication_date"
+                    type="date"
+                    placeholder="Выберите дату публикации"
+                    value="{{ old('publication_date', date('Y-m-d')) }}"
+                />
+                @error('publication_date')
+                    <p class="text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <p class="text-xs text-gray-500">Если не выбрана, будет использована текущая дата</p>
+            </div>
+        </section>
+
+        <hr>
+
         {{-- Основная информация --}}
         <section class="space-y-4">
             <div class="text-lg font-medium">Основная информация</div>

@@ -35,10 +35,10 @@
                                         <span class="mt-0.5"> {{ $news->category }}</span>
                                     </span>
                                 @endif
-                                @if ($news->created_at)
+                                @if ($news->publication_date)
                                     <span class="inline-flex items-center gap-1 text-gray-500 align-middle">
                                         <x-lucide-calendar class="w-4 h-4" style="vertical-align: middle;" />
-                                        <span class="align-middle mt-0.5">{{ $news->created_at->format('d.m.Y') }}</span>
+                                        <span class="align-middle mt-0.5">{{ \Carbon\Carbon::parse($news->publication_date)->format('d.m.Y') }}</span>
                                     </span>
                                 @endif
                             </div>
