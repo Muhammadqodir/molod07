@@ -78,44 +78,48 @@
         <form action="{{ route('youth.profile.delete') }}" method="post" id="deleteProfileForm">
             @csrf
             @method('DELETE')
-            <x-button type="button"
-                      variant="outline"
-                      onclick="showDeleteDialog()"
-                      class="!border-red-600 !text-red-600 hover:!bg-red-50 focus:!ring-red-500"
-                      style="border-color: #DC2626 !important; color: #DC2626 !important;">
+            <x-button type="button" variant="outline" onclick="showDeleteDialog()"
+                class="!border-red-600 !text-red-600 hover:!bg-red-50 focus:!ring-red-500"
+                style="border-color: #DC2626 !important; color: #DC2626 !important;">
                 Удалить профиль
             </x-button>
         </form>
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div id="deleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 hidden">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div class="mt-3 text-center">
-                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-                    <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                    </svg>
-                </div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Удаление профиля</h3>
-                <div class="mt-2 px-7 py-3">
-                    <p class="text-sm text-gray-500">
-                        Вы уверены, что хотите удалить свой профиль? Все ваши данные, включая участие в мероприятиях, комментарии и лайки будут безвозвратно удалены.
-                    </p>
-                    <p class="text-sm text-red-600 font-medium mt-2">
-                        Это действие нельзя отменить!
-                    </p>
-                </div>
-                <div class="items-center px-4 py-3">
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <button id="confirmDelete"
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden overflow-y-auto sm:w-full sm:max-w-2xl m-auto"
+        style="z-index: 99999999999;">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75" onclick="hideCoverLetter()"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                <div class="mt-3 text-center">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Удаление профиля</h3>
+                    <div class="mt-2 px-7 py-3">
+                        <p class="text-sm text-gray-500">
+                            Вы уверены, что хотите удалить свой профиль? Все ваши данные, включая участие в мероприятиях,
+                            комментарии и лайки будут безвозвратно удалены.
+                        </p>
+                        <p class="text-sm text-red-600 font-medium mt-2">
+                            Это действие нельзя отменить!
+                        </p>
+                    </div>
+                    <div class="items-center px-4 py-3">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button id="confirmDelete"
                                 class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-colors duration-200">
-                            Да, удалить профиль
-                        </button>
-                        <button id="cancelDelete"
+                                Да, удалить профиль
+                            </button>
+                            <button id="cancelDelete"
                                 class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors duration-200">
-                            Отмена
-                        </button>
+                                Отмена
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
