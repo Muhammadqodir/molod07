@@ -58,7 +58,7 @@ class YouthProfileController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect()->route('main')->with('success', 'Ваш профиль был успешно удален.');
+            return redirect()->route('profile.deleted');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Произошла ошибка при удалении профиля. Попробуйте позже.');
         }

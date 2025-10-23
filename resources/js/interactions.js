@@ -91,8 +91,26 @@ document.addEventListener('DOMContentLoaded', function() {
     function toggleLike(likeableType, likeableId, type) {
         console.log('toggleLike вызван:', { likeableType, likeableId, type });
 
+        // Создаем уникальный ключ для этого действия
+        const actionKey = `${likeableType}-${likeableId}-${type}`;
+
+        // Проверяем, не выполняется ли уже этот запрос
+        if (window.likesInProgress && window.likesInProgress[actionKey]) {
+            console.log('Запрос уже выполняется, пропускаем');
+            return;
+        }
+
+        // Инициализируем объект для отслеживания запросов
+        if (!window.likesInProgress) {
+            window.likesInProgress = {};
+        }
+
+        // Помечаем, что запрос выполняется
+        window.likesInProgress[actionKey] = true;
+
         if (!document.querySelector('meta[name="user-authenticated"]')) {
             console.log('Пользователь не авторизован');
+            window.likesInProgress[actionKey] = false;
             showAuthModal('auth-modal');
             return;
         }
@@ -112,9 +130,35 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log('Ответ сервера на toggleLike:', data);
             if (data.success) {
-                // Ищем кнопки лайка и дизлайка для конкретного элемента
-                const likesButton = document.querySelector(`.likes-button[data-likeable-type="${likeableType}"][data-likeable-id="${likeableId}"]`);
-                const dislikesButton = document.querySelector(`.dislikes-button[data-likeable-type="${likeableType}"][data-likeable-id="${likeableId}"]`);
+                // Ищем кнопки лайка и дизлайка для конкретного элемента более надежным способом
+                const allLikesButtons = document.querySelectorAll('.likes-button');
+                const allDislikesButtons = document.querySelectorAll('.dislikes-button');
+
+                let likesButton = null;
+                let dislikesButton = null;
+
+                // Находим нужные кнопки по точному совпадению атрибутов
+                console.log('Ищем среди кнопок лайков:', allLikesButtons.length);
+                for (let btn of allLikesButtons) {
+                    console.log('Проверяем кнопку:', {
+                        btnType: btn.dataset.likeableType,
+                        btnId: btn.dataset.likeableId,
+                        searchType: likeableType,
+                        searchId: likeableId
+                    });
+                    if (btn.dataset.likeableType === likeableType && btn.dataset.likeableId == likeableId) {
+                        likesButton = btn;
+                        break;
+                    }
+                }
+
+                for (let btn of allDislikesButtons) {
+                    if (btn.dataset.likeableType === likeableType && btn.dataset.likeableId == likeableId) {
+                        dislikesButton = btn;
+                        break;
+                    }
+                }
+
                 console.log('Найдены кнопки:', { likesButton, dislikesButton });
 
                 if (likesButton) {
@@ -144,6 +188,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }).catch(error => {
             console.error('Ошибка при обработке лайка:', error);
             showNotification('Произошла ошибка. Попробуйте еще раз.', 'error');
+        }).finally(() => {
+            // Снимаем флаг выполнения запроса
+            if (window.likesInProgress) {
+                window.likesInProgress[actionKey] = false;
+            }
         });
     }
 
@@ -389,19 +438,55 @@ document.addEventListener('DOMContentLoaded', function() {
     });    // Обработчики для кнопок лайков
     document.addEventListener('click', function(e) {
         if (e.target.closest('.likes-button')) {
+            console.log('Клик по кнопке лайка');
             e.preventDefault();
+            e.stopPropagation();
             const button = e.target.closest('.likes-button');
+
+            // Проверяем, не заблокирована ли кнопка
+            if (button.dataset.processing === 'true') {
+                console.log('Кнопка уже обрабатывается');
+                return;
+            }
+
             const likeableType = button.dataset.likeableType;
             const likeableId = button.dataset.likeableId;
+            console.log('Данные кнопки лайка:', { likeableType, likeableId });
+
+            // Блокируем кнопку на время обработки
+            button.dataset.processing = 'true';
             toggleLike(likeableType, likeableId, 'like');
+
+            // Разблокируем через небольшую задержку
+            setTimeout(() => {
+                button.dataset.processing = 'false';
+            }, 1000);
         }
 
         if (e.target.closest('.dislikes-button')) {
+            console.log('Клик по кнопке дизлайка');
             e.preventDefault();
+            e.stopPropagation();
             const button = e.target.closest('.dislikes-button');
+
+            // Проверяем, не заблокирована ли кнопка
+            if (button.dataset.processing === 'true') {
+                console.log('Кнопка уже обрабатывается');
+                return;
+            }
+
             const likeableType = button.dataset.likeableType;
             const likeableId = button.dataset.likeableId;
+            console.log('Данные кнопки дизлайка:', { likeableType, likeableId });
+
+            // Блокируем кнопку на время обработки
+            button.dataset.processing = 'true';
             toggleLike(likeableType, likeableId, 'dislike');
+
+            // Разблокируем через небольшую задержку
+            setTimeout(() => {
+                button.dataset.processing = 'false';
+            }, 1000);
         }
 
         // Лайки для комментариев

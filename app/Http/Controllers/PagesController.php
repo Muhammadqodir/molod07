@@ -219,4 +219,9 @@ class PagesController extends Controller
 
         return view('pages.partner', compact('partner', 'events', 'vacancies'));
     }
+
+    function profileDeletedPage()
+    {
+        return view('pages.profile-deleted');
+    }
 }
