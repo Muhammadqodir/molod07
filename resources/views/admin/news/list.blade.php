@@ -90,6 +90,12 @@
 
                                     @switch($item->status)
                                         @case('approved')
+                                            <a href="{{ route(Auth::user()->role . '.news.edit', $item->id) }}"
+                                                class="p-0 m-0 bg-transparent border-0 mr-2" title="Редактировать">
+                                                <x-nav-icon>
+                                                    <x-lucide-edit class="w-5 h-5 text-orange-600" />
+                                                </x-nav-icon>
+                                            </a>
                                             <form method="POST"
                                                 action="{{ route(Auth::user()->role . '.news.action.archive', $item->id) }}"
                                                 class="mr-2">
@@ -125,9 +131,18 @@
                                                 </form>
                                             @endif
 
+                                            @if (Auth::user()->role === 'partner' || ($item->user_id === Auth::id()))
+                                                <a href="{{ route(Auth::user()->role . '.news.edit', $item->id) }}"
+                                                    class="p-0 m-0 bg-transparent border-0 mr-2" title="Редактировать">
+                                                    <x-nav-icon>
+                                                        <x-lucide-edit class="w-5 h-5 text-orange-600" />
+                                                    </x-nav-icon>
+                                                </a>
+                                            @endif
+
                                             @if (Auth::user()->role === 'partner')
                                                 <form method="POST"
-                                                    action="{{ route('partner.events.action.remove', $item->id) }}" class="mr-2">
+                                                    action="{{ route('partner.news.action.remove', $item->id) }}" class="mr-2">
                                                     @csrf
                                                     <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Удалить">
                                                         <x-nav-icon>
@@ -139,12 +154,20 @@
                                         @break
 
                                         @case('rejected')
+                                            @if (Auth::user()->role === 'partner' || ($item->user_id === Auth::id()))
+                                                <a href="{{ route(Auth::user()->role . '.news.edit', $item->id) }}"
+                                                    class="p-0 m-0 bg-transparent border-0 mr-2" title="Редактировать">
+                                                    <x-nav-icon>
+                                                        <x-lucide-edit class="w-5 h-5 text-orange-600" />
+                                                    </x-nav-icon>
+                                                </a>
+                                            @endif
                                             @if (Auth::user()->role === 'partner')
                                                 <form method="POST"
                                                     action="{{ route('partner.news.action.remove', $item->id) }}" class="mr-2">
                                                     @csrf
                                                     <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Удалить"
-                                                        onclick="return confirm('Вы уверены, что хотите удалить это мероприятие?');">
+                                                        onclick="return confirm('Вы уверены, что хотите удалить эту новость?');">
                                                         <x-nav-icon>
                                                             <x-lucide-trash-2 class="w-5 h-5 text-red-600" />
                                                         </x-nav-icon>

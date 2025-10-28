@@ -95,6 +95,8 @@ Route::middleware(['auth', 'role:partner'])->group(function () {
     Route::get('partner/news/list', [ManageNewsController::class, 'show'])->name('partner.news.index');
     Route::get('partner/news/create', [ManageNewsController::class, 'create'])->name('partner.news.create');
     Route::post('partner/news/create', [ManageNewsController::class, 'store'])->name('partner.news.store');
+    Route::get('partner/news/edit/{id}', [ManageNewsController::class, 'edit'])->name('partner.news.edit');
+    Route::put('partner/news/update/{id}', [ManageNewsController::class, 'update'])->name('partner.news.update');
     Route::post('partner/news/action/archive/{id}', [ManageNewsController::class, 'archive'])->name('partner.news.action.archive');
     Route::post('partner/news/action/remove/{id}', [ManageNewsController::class, 'remove'])->name('partner.news.action.remove');
     Route::get('partner/news/preview/{id}', [ManageNewsController::class, 'preview'])->name('partner.news.preview');
@@ -172,6 +174,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/news/archive', [ManageNewsController::class, 'show'])->name('admin.news.archive')->defaults('status', 'archived');
     Route::get('admin/news/create', [ManageNewsController::class, 'create'])->name('admin.news.create');
     Route::post('admin/news/create', [ManageNewsController::class, 'store'])->name('admin.news.store');
+    Route::get('admin/news/edit/{id}', [ManageNewsController::class, 'edit'])->name('admin.news.edit');
+    Route::put('admin/news/update/{id}', [ManageNewsController::class, 'update'])->name('admin.news.update');
     Route::get('admin/news/preview/{id}', [ManageNewsController::class, 'preview'])->name('admin.news.preview');
     Route::post('admin/news/approve/{id}', [ManageNewsController::class, 'approve'])->name('admin.news.approve');
     Route::post('admin/news/reject/{id}', [ManageNewsController::class, 'reject'])->name('admin.news.reject');

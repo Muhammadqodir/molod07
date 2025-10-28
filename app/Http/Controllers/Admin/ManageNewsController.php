@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateNewsRequest;
+use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -85,6 +86,54 @@ class ManageNewsController extends Controller
         return redirect()
             ->route(Auth::user()->role . '.news.index')
             ->with('success', 'Новость успешно создана.');
+    }
+
+    public function edit($id)
+    {
+        $news = News::findOrFail($id);
+
+        // Check if user can edit this news
+        if (Auth::user()->role !== 'admin' && $news->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        return view('admin.news.edit', compact('news'));
+    }
+
+    public function update(UpdateNewsRequest $request, $id)
+    {
+        $news = News::findOrFail($id);
+
+        // Check if user can edit this news
+        if (Auth::user()->role !== 'admin' && $news->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $v = $request->validated();
+
+        // Set publication_date to today if not provided
+        if (empty($v['publication_date'])) {
+            $v['publication_date'] = now()->toDateString();
+        }
+
+        // Handle cover image upload using storage if new file is provided
+        if ($request->hasFile('cover')) {
+            // Delete old cover if exists
+            if ($news->cover && file_exists(public_path($news->cover))) {
+                unlink(public_path($news->cover));
+            }
+
+            $coverFile = $request->file('cover');
+            $coverPath = $coverFile->store('news_covers', 'public');
+            $v['cover'] = 'storage/' . $coverPath;
+        }
+
+        // Update the news entry
+        $news->update($v);
+
+        return redirect()
+            ->route(Auth::user()->role . '.news.index')
+            ->with('success', 'Новость успешно обновлена.');
     }
 
     public function approve($id)
