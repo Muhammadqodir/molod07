@@ -16,38 +16,119 @@
             @if (Auth::user()->role === 'admin')
                 <div class="text-lg font-medium">Организатор мероприятия</div>
 
-                <x-input label="ID партнера" name="user_id" placeholder="ID партнера" value="{{ old('user_id') }}" />
-                <small id="partner_name">Введите ID партнера</small>
+                <div class="space-y-3 relative">
+                    <x-input label="Поиск партнера" name="partner_search" placeholder="Введите название партнера" autocomplete="off" />
+                    <input type="hidden" name="user_id" value="{{ old('user_id') }}" />
+                    <div id="partner_suggestions" class="hidden absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto z-50 mt-1"></div>
+                    <small id="partner_status" class="text-gray-600">Введите название партнера для поиска</small>
+                    <div id="selected_partner" class="hidden p-3 bg-blue-50 border border-blue-200 rounded-md">
+                        <span class="text-sm text-blue-800">Выбранный партнер: </span>
+                        <span id="selected_partner_name" class="font-medium"></span>
+                        <button type="button" id="clear_partner" class="ml-2 text-red-600 hover:text-red-800 text-lg leading-none">×</button>
+                    </div>
+                </div>
 
                 @push('scripts')
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
+                            const partnerSearchInput = document.querySelector('[name="partner_search"]');
                             const partnerIdInput = document.querySelector('[name="user_id"]');
-                            const partnerNameElem = document.getElementById('partner_name');
+                            const suggestionsContainer = document.getElementById('partner_suggestions');
+                            const statusElem = document.getElementById('partner_status');
+                            const selectedPartnerDiv = document.getElementById('selected_partner');
+                            const selectedPartnerName = document.getElementById('selected_partner_name');
+                            const clearButton = document.getElementById('clear_partner');
                             let timeout = null;
 
-                            partnerIdInput.addEventListener('input', function() {
+                            // Поиск партнеров по названию
+                            partnerSearchInput.addEventListener('input', function() {
                                 clearTimeout(timeout);
-                                const id = partnerIdInput.value.trim();
-                                if (!id) {
-                                    partnerNameElem.textContent = 'Введите ID партнера';
+                                const query = partnerSearchInput.value.trim();
+
+                                if (query.length < 2) {
+                                    suggestionsContainer.classList.add('hidden');
+                                    statusElem.textContent = 'Введите название партнера для поиска';
                                     return;
                                 }
+
+                                statusElem.textContent = 'Поиск...';
+
                                 timeout = setTimeout(() => {
-                                    fetch(`/admin/get-partner/${id}`)
+                                    fetch(`/admin/search-partners?q=${encodeURIComponent(query)}`)
                                         .then(res => res.json())
                                         .then(data => {
-                                            if (data.error || !data.name) {
-                                                partnerNameElem.textContent = 'Партнер не найден';
-                                                return;
+                                            suggestionsContainer.innerHTML = '';
+
+                                            if (data.partners && data.partners.length > 0) {
+                                                statusElem.textContent = `Найдено ${data.partners.length} партнеров`;
+
+                                                data.partners.forEach(partner => {
+                                                    const item = document.createElement('div');
+                                                    item.className = 'p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0';
+                                                    item.innerHTML = `
+                                                        <div class="font-medium">${partner.name}</div>
+                                                        <div class="text-sm text-gray-600">ID: ${partner.id}</div>
+                                                    `;
+
+                                                    item.addEventListener('click', function() {
+                                                        selectPartner(partner);
+                                                    });
+
+                                                    suggestionsContainer.appendChild(item);
+                                                });
+
+                                                suggestionsContainer.classList.remove('hidden');
+                                            } else {
+                                                statusElem.textContent = 'Партнеры не найдены';
+                                                suggestionsContainer.classList.add('hidden');
                                             }
-                                            partnerNameElem.textContent = data.name;
                                         })
                                         .catch(() => {
-                                            partnerNameElem.textContent = 'Ошибка поиска партнера';
+                                            statusElem.textContent = 'Ошибка поиска партнеров';
+                                            suggestionsContainer.classList.add('hidden');
                                         });
-                                }, 500);
+                                }, 300);
                             });
+
+                            // Выбор партнера
+                            function selectPartner(partner) {
+                                partnerIdInput.value = partner.id;
+                                partnerSearchInput.value = '';
+                                selectedPartnerName.textContent = partner.name;
+                                selectedPartnerDiv.classList.remove('hidden');
+                                suggestionsContainer.classList.add('hidden');
+                                statusElem.textContent = 'Партнер выбран';
+                            }
+
+                            // Очистка выбора
+                            clearButton.addEventListener('click', function() {
+                                partnerIdInput.value = '';
+                                selectedPartnerDiv.classList.add('hidden');
+                                statusElem.textContent = 'Введите название партнера для поиска';
+                            });
+
+                            // Скрытие предложений при клике вне
+                            document.addEventListener('click', function(e) {
+                                if (!partnerSearchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+                                    suggestionsContainer.classList.add('hidden');
+                                }
+                            });
+
+                            // Показать выбранного партнера если ID уже установлен
+                            if (partnerIdInput.value) {
+                                fetch(`/admin/get-partner/${partnerIdInput.value}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.name) {
+                                            selectedPartnerName.textContent = data.name;
+                                            selectedPartnerDiv.classList.remove('hidden');
+                                            statusElem.textContent = 'Партнер выбран';
+                                        }
+                                    })
+                                    .catch(() => {
+                                        console.log('Ошибка получения данных партнера');
+                                    });
+                            }
                         });
                     </script>
                 @endpush
@@ -137,22 +218,22 @@
 
         {{-- Руководитель --}}
         <section class="space-y-3">
-            <div class="text-lg font-medium">Руководитель</div>
+            <div class="text-lg font-medium">Руководитель <span class="text-sm font-normal text-gray-500">(необязательно)</span></div>
 
             <x-input label="ID (если пользователь зарегистрирован, укажите ID)" name="supervisor_id"
-                placeholder="ID пользователя" value="{{ old('supervisor_id') }}" />
+                placeholder="ID пользователя" value="{{ old('supervisor_id') }}" :help="'не обязательно к заполнению'" />
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <x-input label="Имя" name="supervisor_name" placeholder="Укажите имя"
-                    value="{{ old('supervisor_name') }}" />
+                    value="{{ old('supervisor_name') }}" :help="'не обязательно к заполнению'" />
                 <x-input label="Фамилия" name="supervisor_l_name" placeholder="Укажите фамилию"
-                    value="{{ old('supervisor_l_name') }}" />
+                    value="{{ old('supervisor_l_name') }}" :help="'не обязательно к заполнению'" />
                 <x-input type="tel" label="Номер телефона" name="supervisor_phone" placeholder="+7(999)999-99-99"
-                    value="{{ old('supervisor_phone') }}" />
+                    value="{{ old('supervisor_phone') }}" :help="'не обязательно к заполнению'" />
             </div>
 
             <x-input type="email" label="E‑mail" name="supervisor_email" placeholder="E‑mail"
-                value="{{ old('supervisor_email') }}" />
+                value="{{ old('supervisor_email') }}" :help="'не обязательно к заполнению'" />
         </section>
 
         <hr>

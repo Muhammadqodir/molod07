@@ -247,10 +247,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         if (!$user) {
             return response()->json(['error' => 'Пользователь не найден'], 404);
         }
+        $profile = $user->getProfile();
         return response()->json([
-            'name' => $user->getProfile()->name,
-            'l_name' => $user->getProfile()->l_name,
-            'phone' => $user->getProfile()->phone,
+            'name' => $profile?->name ?? $profile?->person_name ?? '',
+            'l_name' => $profile?->l_name ?? $profile?->person_lname ?? '',
+            'phone' => $profile?->phone ?? '',
             'email' => $user->email,
         ]);
     })->middleware(['auth', 'role:admin,partner'])->name('admin.get.user');
@@ -261,13 +262,43 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         if (!$partner) {
             return response()->json(['error' => 'Партнер не найден'], 404);
         }
+        $profile = $partner->getProfile();
         return response()->json([
             'name' => $partner->getFullName(),
             'email' => $partner->email,
-            'phone' => $partner->getProfile()->phone,
-            'address' => $partner->getProfile()->org_address,
+            'phone' => $profile?->phone ?? '',
+            'address' => $profile?->org_address ?? '',
         ]);
     })->middleware(['auth', 'role:admin,partner'])->name('admin.get.partner');
+
+    Route::get('/admin/search-partners', function () {
+        $query = request('q');
+        if (!$query || strlen($query) < 2) {
+            return response()->json(['partners' => []]);
+        }
+
+        $partners = User::where('role', 'partner')
+            ->whereHas('partnersProfile', function ($q) use ($query) {
+                $q->where('org_name', 'like', '%' . $query . '%');
+            })
+            ->orWhere(function ($q) use ($query) {
+                $q->where('role', 'partner')
+                  ->whereHas('partnersProfile', function ($subQ) use ($query) {
+                      $subQ->where('person_name', 'like', '%' . $query . '%')
+                           ->orWhere('person_lname', 'like', '%' . $query . '%');
+                  });
+            })
+            ->limit(10)
+            ->get()
+            ->map(function ($partner) {
+                return [
+                    'id' => $partner->id,
+                    'name' => $partner->partnersProfile->org_name ?? $partner->getFullName(),
+                ];
+            });
+
+        return response()->json(['partners' => $partners]);
+    })->middleware(['auth', 'role:admin'])->name('admin.search.partners');
 });
 
 // API маршруты для комментариев, лайков и просмотров

@@ -35,10 +35,10 @@ class CreateEventRequest extends FormRequest
             'end' => 'required|date|after_or_equal:start',
 
             'supervisor_id' => 'nullable|integer',
-            'supervisor_name' => 'required|string|max:255',
-            'supervisor_l_name' => 'required|string|max:255',
-            'supervisor_phone' => 'required|string|max:20',
-            'supervisor_email' => 'required|email|max:255',
+            'supervisor_name' => 'nullable|string|max:255',
+            'supervisor_l_name' => 'nullable|string|max:255',
+            'supervisor_phone' => 'nullable|string|max:20',
+            'supervisor_email' => 'nullable|email|max:255',
 
             'docs' => 'nullable|array',
             'docs.*' => 'file|max:5120',

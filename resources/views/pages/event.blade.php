@@ -22,6 +22,11 @@
             }
             return $s;
         };
+
+        $rolesExist = false;
+        if ($roles[0]['title'] != '') {
+            $rolesExist = true;
+        }
     @endphp
 
     <section class="bg-accentbg mt-[-80px] pt-[80px]">
@@ -118,15 +123,15 @@
                         @endif
 
                         <div class="mt-auto flex items-center justify-between gap-3">
-                            <x-button @click="showRegistrationDialog = true">
-                                Подать заявку
-                            </x-button>
-
+                            @if ($rolesExist)
+                                <x-button @click="showRegistrationDialog = true">
+                                    Подать заявку
+                                </x-button>
+                            @endif
                             <div class="flex items-center gap-2 text-gray-500">
                                 <button type="button" class="share-button p-2 hover:bg-gray-100 rounded-xl"
-                                        title="Поделиться"
-                                        data-share-title="{{ $event->title }}"
-                                        data-share-url="{{ request()->fullUrl() }}">
+                                    title="Поделиться" data-share-title="{{ $event->title }}"
+                                    data-share-url="{{ request()->fullUrl() }}">
                                     <x-lucide-share-2 class="w-5 h-5" />
                                 </button>
                                 <button type="button" class="p-2 hover:bg-gray-100 rounded-xl" title="В избранное">
@@ -181,26 +186,18 @@
                                 </div>
                             </div>
 
-                            <div class="space-y-2">
-                                <div class="text-xs uppercase text-gray-400">Контактное лицо</div>
-                                <div class="flex items-center gap-2">
-                                    @if ($event->supervisor)
+                            @if ($event->supervisor)
+                                <div class="space-y-2">
+                                    <div class="text-xs uppercase text-gray-400">Контактное лицо</div>
+                                    <div class="flex items-center gap-2">
                                         <x-profile-pic :user="$event->supervisor" size="w-12 h-12" />
                                         <div class="text-sm">
                                             {{ $event->supervisor->getFullName() }}
                                             <div class="text-gray-500 text-xs">куратор мероприятия</div>
                                         </div>
-                                    @else
-                                        <div class="w-8 h-8 rounded-xl object-cover" alt="">
-                                            <x-lucide-user />
-                                        </div>
-                                        <div class="text-sm">
-                                            {{ $event->supervisor_name }} {{ $event->supervisor_l_name }}
-                                            <div class="text-gray-500 text-xs">куратор мероприятия</div>
-                                        </div>
-                                    @endif
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
                             <div class="space-y-2">
                                 <div class="text-xs uppercase text-gray-400">Дата и место проведения</div>
@@ -245,10 +242,10 @@
                             <div class="text-xs uppercase text-gray-400">Мероприятие в соцсетях</div>
                             <div class="flex items-center gap-3 text-gray-600">
                                 @if ($event->vk)
-                                    <a href="{{$event->vk}}" target="_blank"> <x-icon-button icon="vk" /> </a>
+                                    <a href="{{ $event->vk }}" target="_blank"> <x-icon-button icon="vk" /> </a>
                                 @endif
                                 @if ($event->telegram)
-                                    <a href="{{$event->telegram}}" target="_blank"> <x-icon-button icon="telega" /> </a>
+                                    <a href="{{ $event->telegram }}" target="_blank"> <x-icon-button icon="telega" /> </a>
                                 @endif
                                 @if ($event->web)
                                     <a href="{{ $event->web }}" target="_blank">
@@ -353,106 +350,110 @@
                 </div>
             </div>
 
-            {{-- Section tabs --}}
-            <div class="bg-white rounded-2xl shadow-sm p-4 md:p-6">
+            @if ($rolesExist)
 
-                {{-- Roles (Условия участия) --}}
-                @if ($roles && count($roles))
-                    <section class="space-y-4" x-data>
-                        <h2 class="text-lg font-semibold">Условия участия</h2>
+                {{-- Section tabs --}}
+                <div class="bg-white rounded-2xl shadow-sm p-4 md:p-6">
 
-                        {{-- Tabs by roles --}}
-                        <div class="flex items-center gap-4 border-b">
-                            @foreach ($roles as $i => $r)
-                                <button class="py-3 text-sm border-b-2"
-                                    :class="roleIdx === {{ $i }} ? 'border-primary text-primary' :
-                                        'border-transparent text-gray-500'"
-                                    @click="roleIdx={{ $i }}">
-                                    {{ $r['title'] ?? 'Роль ' . ($i + 1) }}
-                                </button>
-                            @endforeach
-                        </div>
+                    {{-- Roles (Условия участия) --}}
+                    @if ($roles && count($roles))
+                        <section class="space-y-4" x-data>
+                            <h2 class="text-lg font-semibold">Условия участия</h2>
 
-                        @foreach ($roles as $i => $r)
-                            <div x-show="roleIdx==={{ $i }}" class="space-y-4">
-                                <div class="text-sm text-gray-600">
-                                    <span class="font-medium">Период отбора:</span>
-                                    {{ $periodStr($r['selection_start'] ?? null, $r['selection_end'] ?? null) ?: '—' }}
-                                </div>
-
-                                @if (!empty($r['description']))
-                                    <div>
-                                        <div class="text-sm font-medium mb-1">Описание</div>
-                                        <p class="text-sm text-gray-700">{{ $r['description'] }}</p>
-                                    </div>
-                                @endif
-
-                                @if (!empty($r['task']))
-                                    <div>
-                                        <div class="text-sm font-medium mb-1">Задачи</div>
-                                        <p class="text-sm text-gray-700">{{ $r['task'] }}</p>
-                                    </div>
-                                @endif
-
-                                {{-- Shifts --}}
-                                @if (!empty($r['shifts']) && is_array($r['shifts']))
-                                    <div class="space-y-2">
-                                        <div class="text-sm font-medium">Занятость</div>
-                                        <div class="space-y-1 text-sm text-gray-700">
-                                            @foreach ($r['shifts'] as $idx => $s)
-                                                <div class="flex items-center gap-4">
-                                                    <span class="text-gray-500">{{ $idx + 1 }} смена</span>
-                                                    <span>
-                                                        {{ $periodStr($s['date_start'] ?? null, $s['date_end'] ?? null) ?: '—' }},
-                                                        {{ $s['time_start'] ?? '—' }} —
-                                                        {{ $s['time_end'] ?? '—' }}
-                                                    </span>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-
-                                {{-- Requirements --}}
-                                @if (!empty($r['requirements']))
-                                    @php $req = is_array($r['requirements']) ? $r['requirements'] : explode(',', (string)$r['requirements']); @endphp
-                                    <div class="space-y-2">
-                                        <div class="text-sm font-medium">Требования</div>
-                                        <div class="flex flex-wrap gap-2">
-                                            @foreach ($req as $q)
-                                                <span
-                                                    class="px-3 py-1 rounded-xl bg-gray-100 text-gray-700 text-sm">{{ trim($q) }}</span>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-
-                                {{-- Benefits --}}
-                                @if (!empty($r['benefits']))
-                                    @php $ben = is_array($r['benefits']) ? $r['benefits'] : explode(',', (string)$r['benefits']); @endphp
-                                    <div class="space-y-2">
-                                        <div class="text-sm font-medium">Предлагаемые условия</div>
-                                        <div class="flex flex-wrap gap-2">
-                                            @foreach ($ben as $b)
-                                                <span
-                                                    class="px-3 py-1 rounded-xl bg-blue-50 text-primary text-sm">{{ trim($b) }}</span>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-
-                                <div>
-                                    <x-button class="mt-2" @click="showRegistrationDialog = true">Подать
-                                        заявку</x-button>
-                                    <small class="block text-gray-500">
-                                        * на роль <span class="text-primary">{{ $r['title'] }}</span>
-                                    </small>
-                                </div>
+                            {{-- Tabs by roles --}}
+                            <div class="flex items-center gap-4 border-b">
+                                @foreach ($roles as $i => $r)
+                                    <button class="py-3 text-sm border-b-2"
+                                        :class="roleIdx === {{ $i }} ? 'border-primary text-primary' :
+                                            'border-transparent text-gray-500'"
+                                        @click="roleIdx={{ $i }}">
+                                        {{ $r['title'] ?? 'Роль ' . ($i + 1) }}
+                                    </button>
+                                @endforeach
                             </div>
-                        @endforeach
-                    </section>
-                @endif
-            </div>
+
+                            @foreach ($roles as $i => $r)
+                                <div x-show="roleIdx==={{ $i }}" class="space-y-4">
+                                    <div class="text-sm text-gray-600">
+                                        <span class="font-medium">Период отбора:</span>
+                                        {{ $periodStr($r['selection_start'] ?? null, $r['selection_end'] ?? null) ?: '—' }}
+                                    </div>
+
+                                    @if (!empty($r['description']))
+                                        <div>
+                                            <div class="text-sm font-medium mb-1">Описание</div>
+                                            <p class="text-sm text-gray-700">{{ $r['description'] }}</p>
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($r['task']))
+                                        <div>
+                                            <div class="text-sm font-medium mb-1">Задачи</div>
+                                            <p class="text-sm text-gray-700">{{ $r['task'] }}</p>
+                                        </div>
+                                    @endif
+
+                                    {{-- Shifts --}}
+                                    @if (!empty($r['shifts']) && is_array($r['shifts']))
+                                        <div class="space-y-2">
+                                            <div class="text-sm font-medium">Занятость</div>
+                                            <div class="space-y-1 text-sm text-gray-700">
+                                                @foreach ($r['shifts'] as $idx => $s)
+                                                    <div class="flex items-center gap-4">
+                                                        <span class="text-gray-500">{{ $idx + 1 }} смена</span>
+                                                        <span>
+                                                            {{ $periodStr($s['date_start'] ?? null, $s['date_end'] ?? null) ?: '—' }},
+                                                            {{ $s['time_start'] ?? '—' }} —
+                                                            {{ $s['time_end'] ?? '—' }}
+                                                        </span>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    {{-- Requirements --}}
+                                    @if (!empty($r['requirements']))
+                                        @php $req = is_array($r['requirements']) ? $r['requirements'] : explode(',', (string)$r['requirements']); @endphp
+                                        <div class="space-y-2">
+                                            <div class="text-sm font-medium">Требования</div>
+                                            <div class="flex flex-wrap gap-2">
+                                                @foreach ($req as $q)
+                                                    <span
+                                                        class="px-3 py-1 rounded-xl bg-gray-100 text-gray-700 text-sm">{{ trim($q) }}</span>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    {{-- Benefits --}}
+                                    @if (!empty($r['benefits']))
+                                        @php $ben = is_array($r['benefits']) ? $r['benefits'] : explode(',', (string)$r['benefits']); @endphp
+                                        <div class="space-y-2">
+                                            <div class="text-sm font-medium">Предлагаемые условия</div>
+                                            <div class="flex flex-wrap gap-2">
+                                                @foreach ($ben as $b)
+                                                    <span
+                                                        class="px-3 py-1 rounded-xl bg-blue-50 text-primary text-sm">{{ trim($b) }}</span>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <div>
+                                        <x-button class="mt-2" @click="showRegistrationDialog = true">Подать
+                                            заявку</x-button>
+                                        <small class="block text-gray-500">
+                                            * на роль <span class="text-primary">{{ $r['title'] }}</span>
+                                        </small>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </section>
+                    @endif
+                </div>
+
+            @endif
 
             {{-- Registration dialog --}}
             {{-- x-show="showRegistrationDialog" --}}
