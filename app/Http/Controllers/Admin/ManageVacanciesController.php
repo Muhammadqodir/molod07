@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateVacanciesRequest;
+use App\Http\Requests\UpdateVacancyRequest;
 use App\Models\Vacancy;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -97,6 +98,53 @@ class ManageVacanciesController extends Controller
             ->with('success', 'Вакансия успешно создана.');
     }
 
+    public function edit($id)
+    {
+        $vacancy = Vacancy::findOrFail($id);
+
+        // Check if user can edit this vacancy
+        if (Auth::user()->role !== 'admin' && $vacancy->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Add user information
+        $vacancy->user = User::find($vacancy->user_id);
+
+        return view('admin.vacancies.edit', compact('vacancy'));
+    }
+
+    public function update(UpdateVacancyRequest $request, $id)
+    {
+        $vacancy = Vacancy::findOrFail($id);
+
+        // Check if user can edit this vacancy
+        if (Auth::user()->role !== 'admin' && $vacancy->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $v = $request->validated();
+
+        // Update the vacancy entry
+        $vacancy->update([
+            'category' => $v['category'],
+            'title' => $v['title'],
+            'description' => $v['description'],
+            'salary_from' => $v['salary_from'] ?? null,
+            'salary_to' => $v['salary_to'] ?? null,
+            'salary_negotiable' => $v['salary_negotiable'] ?? false,
+            'type' => $v['type'],
+            'experience' => $v['experience'] ?? null,
+            'org_name' => $v['org_name'],
+            'org_phone' => $v['org_phone'] ?? null,
+            'org_email' => $v['org_email'] ?? null,
+            'org_address' => $v['org_address'] ?? null,
+        ]);
+
+        return redirect()
+            ->route(Auth::user()->role . '.vacancies.index')
+            ->with('success', 'Вакансия успешно обновлена.');
+    }
+
     public function approve($id)
     {
         $vacancy = Vacancy::findOrFail($id);
@@ -141,11 +189,11 @@ class ManageVacanciesController extends Controller
             ->route(Auth::user()->role . '.vacancies.index')
             ->with('success', 'Вакансия успешно удалена.');
     }
-    
+
     public function getResponses(Request $request)
     {
         $q = $request->string('q')->toString();
-        
+
         $responsesQuery = \App\Models\VacancyResponse::query()
             ->with(['vacancy', 'user', 'user.youthProfile'])
             ->whereHas('vacancy', function ($query) {

@@ -86,11 +86,18 @@
                             </td>
 
                             <td class="px-4 py-4">
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-1">
+
+                                    {{-- Edit button (always available) --}}
+                                    <a href="{{ route('admin.podcasts.edit', $item->id) }}" title="Редактировать">
+                                        <x-nav-icon>
+                                            <x-lucide-edit class="w-5 h-5 text-blue-600" />
+                                        </x-nav-icon>
+                                    </a>
 
                                     @switch($item->status)
                                         @case('approved')
-                                            <form method="POST" action="{{ route('admin.news.action.archive', $item->id) }}"
+                                            <form method="POST" action="{{ route('admin.podcasts.action.archive', $item->id) }}"
                                                 class="mr-2">
                                                 @csrf
                                                 <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Архивировать">
@@ -102,7 +109,7 @@
                                         @break
 
                                         @case('pending')
-                                            <form method="POST" action="{{ route('admin.news.approve', $item->id) }}"
+                                            <form method="POST" action="{{ route('admin.podcasts.approve', $item->id) }}"
                                                 class="mr-2">
                                                 @csrf
                                                 <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Одобрить">
@@ -111,7 +118,7 @@
                                                     </x-nav-icon>
                                                 </button>
                                             </form>
-                                            <form method="POST" action="{{ route('admin.news.reject', $item->id) }}"
+                                            <form method="POST" action="{{ route('admin.podcasts.reject', $item->id) }}"
                                                 class="mr-2">
                                                 @csrf
                                                 <button type="submit" class="p-0 m-0 bg-transparent border-0" title="Отклонить">

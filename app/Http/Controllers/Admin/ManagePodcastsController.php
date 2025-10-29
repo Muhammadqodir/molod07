@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePodcastRequest;
+use App\Http\Requests\UpdatePodcastRequest;
 use App\Models\Podcast;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -61,6 +62,50 @@ class ManagePodcastsController extends Controller
 
         return redirect()->route('admin.podcasts.index')
             ->with('success', 'Подкаст успешно создан!');
+    }
+
+    public function edit($id)
+    {
+        $podcast = Podcast::findOrFail($id);
+
+        // Check if user can edit this podcast
+        if (Auth::user()->role !== 'admin' && $podcast->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Add creator information
+        $podcast->creator = User::find($podcast->user_id);
+
+        return view('admin.podcasts.edit', compact('podcast'));
+    }
+
+    public function update(UpdatePodcastRequest $request, $id)
+    {
+        $podcast = Podcast::findOrFail($id);
+
+        // Check if user can edit this podcast
+        if (Auth::user()->role !== 'admin' && $podcast->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $validated = $request->validated();
+
+        // Handle cover image upload if new file is provided
+        if ($request->hasFile('cover')) {
+            // Delete old cover if exists
+            if ($podcast->cover && Storage::disk('public')->exists(str_replace('storage/', '', $podcast->cover))) {
+                Storage::disk('public')->delete(str_replace('storage/', '', $podcast->cover));
+            }
+
+            $coverPath = $request->file('cover')->store('uploads/podcasts/covers', 'public');
+            $validated['cover'] = 'storage/' . $coverPath;
+        }
+
+        // Update the podcast entry
+        $podcast->update($validated);
+
+        return redirect()->route('admin.podcasts.index')
+            ->with('success', 'Подкаст успешно обновлен!');
     }
 
     public function preview($id)

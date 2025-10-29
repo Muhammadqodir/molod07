@@ -120,6 +120,8 @@ Route::middleware(['auth', 'role:partner'])->group(function () {
     Route::get('partner/vacancies/responses', [ManageVacanciesController::class, 'getResponses'])->name('partner.vacancies.responses');
     Route::get('partner/vacancies/create', [ManageVacanciesController::class, 'create'])->name('partner.vacancies.create');
     Route::post('partner/vacancies/create', [ManageVacanciesController::class, 'store'])->name('partner.vacancies.store');
+    Route::get('partner/vacancies/edit/{id}', [ManageVacanciesController::class, 'edit'])->name('partner.vacancies.edit');
+    Route::put('partner/vacancies/update/{id}', [ManageVacanciesController::class, 'update'])->name('partner.vacancies.update');
     Route::post('partner/vacancies/action/archive/{id}', [ManageVacanciesController::class, 'archive'])->name('partner.vacancies.action.archive');
     Route::post('partner/vacancies/action/remove/{id}', [ManageVacanciesController::class, 'remove'])->name('partner.vacancies.action.remove');
     Route::get('partner/vacancies/preview/{id}', [ManageVacanciesController::class, 'preview'])->name('partner.vacancies.preview');
@@ -216,6 +218,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/podcasts/archive', [ManagePodcastsController::class, 'show'])->name('admin.podcasts.archive')->defaults('status', 'archived');
     Route::get('admin/podcasts/create', [ManagePodcastsController::class, 'create'])->name('admin.podcasts.create');
     Route::post('admin/podcasts/create', [ManagePodcastsController::class, 'store'])->name('admin.podcasts.store');
+    Route::get('admin/podcasts/edit/{id}', [ManagePodcastsController::class, 'edit'])->name('admin.podcasts.edit');
+    Route::put('admin/podcasts/update/{id}', [ManagePodcastsController::class, 'update'])->name('admin.podcasts.update');
     Route::get('admin/podcasts/preview/{id}', [ManagePodcastsController::class, 'preview'])->name('admin.podcasts.preview');
     Route::post('admin/podcasts/approve/{id}', [ManagePodcastsController::class, 'approve'])->name('admin.podcasts.approve');
     Route::post('admin/podcasts/reject/{id}', [ManagePodcastsController::class, 'reject'])->name('admin.podcasts.reject');
@@ -242,6 +246,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/vacancies/archive', [ManageVacanciesController::class, 'show'])->name('admin.vacancies.archive')->defaults('status', 'archived');
     Route::get('admin/vacancies/create', [ManageVacanciesController::class, 'create'])->name('admin.vacancies.create');
     Route::post('admin/vacancies/create', [ManageVacanciesController::class, 'store'])->name('admin.vacancies.store');
+    Route::get('admin/vacancies/edit/{id}', [ManageVacanciesController::class, 'edit'])->name('admin.vacancies.edit');
+    Route::put('admin/vacancies/update/{id}', [ManageVacanciesController::class, 'update'])->name('admin.vacancies.update');
     Route::get('admin/vacancies/preview/{id}', [ManageVacanciesController::class, 'preview'])->name('admin.vacancies.preview');
     Route::post('admin/vacancies/approve/{id}', [ManageVacanciesController::class, 'approve'])->name('admin.vacancies.approve');
     Route::post('admin/vacancies/reject/{id}', [ManageVacanciesController::class, 'reject'])->name('admin.vacancies.reject');
