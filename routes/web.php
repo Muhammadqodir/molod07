@@ -105,6 +105,8 @@ Route::middleware(['auth', 'role:partner'])->group(function () {
     Route::get('partner/events/list', [ManageEventsController::class, 'show'])->name('partner.events.index');
     Route::get('partner/events/create', [ManageEventsController::class, 'create'])->name('partner.events.create');
     Route::post('partner/events/create', [ManageEventsController::class, 'store'])->name('partner.events.store');
+    Route::get('partner/events/edit/{id}', [ManageEventsController::class, 'edit'])->name('partner.events.edit');
+    Route::put('partner/events/update/{id}', [ManageEventsController::class, 'update'])->name('partner.events.update');
     Route::post('partner/events/action/archive/{id}', [ManageEventsController::class, 'archive'])->name('partner.events.action.archive');
     Route::post('partner/events/action/remove/{id}', [ManageEventsController::class, 'remove'])->name('partner.events.action.remove');
     Route::get('partner/events/preview/{id}', [ManageEventsController::class, 'preview'])->name('partner.events.preview');
@@ -163,6 +165,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/events/archive', [ManageEventsController::class, 'show'])->name('admin.events.archive')->defaults('status', 'archived');
     Route::get('admin/events/create', [ManageEventsController::class, 'create'])->name('admin.events.create');
     Route::post('admin/events/create', [ManageEventsController::class, 'store'])->name('admin.events.store');
+    Route::get('admin/events/edit/{id}', [ManageEventsController::class, 'edit'])->name('admin.events.edit');
+    Route::put('admin/events/update/{id}', [ManageEventsController::class, 'update'])->name('admin.events.update');
     Route::get('admin/events/preview/{id}', [ManageEventsController::class, 'preview'])->name('admin.events.preview');
     Route::post('admin/events/approve/{id}', [ManageEventsController::class, 'approve'])->name('admin.events.approve');
     Route::post('admin/events/reject/{id}', [ManageEventsController::class, 'reject'])->name('admin.events.reject');

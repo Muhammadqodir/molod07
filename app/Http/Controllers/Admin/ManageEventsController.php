@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 use App\Models\Participant;
 use App\Models\Points;
@@ -142,6 +143,79 @@ class ManageEventsController extends Controller
             return redirect()
                 ->route(Auth::user()->role . '.events.index', $event)
                 ->with('success', 'Мероприятие успешно создано.');
+        });
+    }
+
+    public function edit($id)
+    {
+        $event = Event::findOrFail($id);
+
+        // Check if user can edit this event
+        if (Auth::user()->role !== 'admin' && $event->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Add partner information
+        $event->partner = User::find($event->user_id);
+
+        return view('admin.events.edit', compact('event'));
+    }
+
+    public function update(UpdateEventRequest $request, $id)
+    {
+        $event = Event::findOrFail($id);
+
+        // Check if user can edit this event
+        if (Auth::user()->role !== 'admin' && $event->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $v = $request->validated();
+
+        return DB::transaction(function () use ($request, $v, $event) {
+            // Handle cover image upload if new file is provided
+            if ($request->hasFile('cover')) {
+                // Delete old cover if exists
+                if ($event->cover && file_exists(public_path($event->cover))) {
+                    unlink(public_path($event->cover));
+                }
+
+                $coverFile = $request->file('cover');
+                $coverPath = $coverFile->store("uploads/events{$event->id}/cover", 'public');
+                $v['cover'] = 'storage/' . $coverPath;
+            }
+
+            // Handle file uploads for docs, images, videos
+            if ($request->hasFile('docs')) {
+                $docPaths = [];
+                foreach ($request->file('docs') as $file) {
+                    $docPaths[] = 'storage/' . $file->store("uploads/events{$event->id}/docs", 'public');
+                }
+                $v['docs'] = array_merge($event->docs ?? [], $docPaths);
+            }
+
+            if ($request->hasFile('images')) {
+                $imagePaths = [];
+                foreach ($request->file('images') as $img) {
+                    $imagePaths[] = 'storage/' . $img->store("uploads/events{$event->id}/images", 'public');
+                }
+                $v['images'] = array_merge($event->images ?? [], $imagePaths);
+            }
+
+            if ($request->hasFile('videos')) {
+                $videoPaths = [];
+                foreach ($request->file('videos') as $video) {
+                    $videoPaths[] = 'storage/' . $video->store("uploads/events{$event->id}/videos", 'public');
+                }
+                $v['videos'] = array_merge($event->videos ?? [], $videoPaths);
+            }
+
+            // Update the event entry
+            $event->update($v);
+
+            return redirect()
+                ->route(Auth::user()->role . '.events.index')
+                ->with('success', 'Мероприятие успешно обновлено.');
         });
     }
 

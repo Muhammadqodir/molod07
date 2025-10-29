@@ -87,6 +87,15 @@
 
                             <td class="px-2 py-4">
                                 <div class="flex items-center justify-center">
+                                    {{-- Edit button - always available for editable events --}}
+                                    @if (Auth::user()->role === 'admin' || (Auth::user()->role === 'partner' && $item->user_id === Auth::id()))
+                                        <a href="{{ route(Auth::user()->role . '.events.edit', $item->id) }}"
+                                            title="Редактировать" class="mr-2">
+                                            <x-nav-icon>
+                                                <x-lucide-edit class="w-5 h-5 text-orange-600" />
+                                            </x-nav-icon>
+                                        </a>
+                                    @endif
 
                                     @switch($item->status)
                                         @case('approved')
