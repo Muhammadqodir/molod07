@@ -103,6 +103,12 @@
                                 <x-lucide-phone class="w-5 h-5 text-inherit" /> Контакты
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('about') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-info class="w-5 h-5 text-inherit" /> О нас
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -212,6 +218,12 @@
                 <a href="{{ route('contacts') }}"
                     class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
                     <x-lucide-phone class="w-5 h-5 text-inherit" /> Контакты
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('about') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-info class="w-5 h-5 text-inherit" /> О нас
                 </a>
             </li>
         </ul>
