@@ -81,7 +81,14 @@
                             </td>
 
                             <td class="px-2 py-4">
-                                <div class="flex items-center justify-center">
+                                <div class="flex items-center justify-center gap-1">
+
+                                    {{-- Edit button (always available) --}}
+                                    <a href="{{ route(auth()->user()->role . '.grants.edit', $item->id) }}" title="Редактировать">
+                                        <x-nav-icon>
+                                            <x-lucide-edit class="w-5 h-5 text-blue-600" />
+                                        </x-nav-icon>
+                                    </a>
 
                                     @switch($item->status)
                                         @case('approved')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -103,6 +104,35 @@ class ManageCoursesController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Курс архивирован!');
+    }
+
+    public function edit($id)
+    {
+        $course = Course::findOrFail($id);
+        return view('admin.courses.edit', compact('course'));
+    }
+
+    public function update(UpdateCourseRequest $request, $id)
+    {
+        $course = Course::findOrFail($id);
+        $validated = $request->validated();
+
+        // Handle file upload
+        if ($request->hasFile('cover')) {
+            // Delete old cover if exists
+            if ($course->cover && Storage::disk('public')->exists(str_replace('storage/', '', $course->cover))) {
+                Storage::disk('public')->delete(str_replace('storage/', '', $course->cover));
+            }
+
+            $coverPath = $request->file('cover')->store('uploads/courses/covers', 'public');
+            $validated['cover'] = 'storage/' . $coverPath;
+        }
+
+        // Update course
+        $course->update($validated);
+
+        return redirect()->route('admin.education.index')
+            ->with('success', 'Курс успешно обновлен!');
     }
 
     public function destroy($id)

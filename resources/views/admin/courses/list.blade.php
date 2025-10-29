@@ -118,6 +118,11 @@
                                         </form>
                                     @endif
 
+                                    <a href="{{ route('admin.education.edit', $item->id) }}" title="Редактировать"
+                                        class="inline-flex items-center justify-center w-8 h-8 text-blue-600 hover:bg-blue-50 rounded-lg transition">
+                                        <x-lucide-edit class="h-4 w-4" />
+                                    </a>
+
                                     @if ($item->status === 'approved')
                                         <form action="{{ route('admin.education.action.archive', $item->id) }}"
                                             method="POST" class="inline">

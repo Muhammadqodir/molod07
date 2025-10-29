@@ -129,6 +129,8 @@ Route::middleware(['auth', 'role:partner'])->group(function () {
     Route::get('partner/grants/responses', [ManageGrantsController::class, 'getResponses'])->name('partner.grants.responses');
     Route::get('partner/grants/create', [ManageGrantsController::class, 'create'])->name('partner.grants.create');
     Route::post('partner/grants/create', [ManageGrantsController::class, 'store'])->name('partner.grants.store');
+    Route::get('partner/grants/edit/{id}', [ManageGrantsController::class, 'edit'])->name('partner.grants.edit');
+    Route::put('partner/grants/update/{id}', [ManageGrantsController::class, 'update'])->name('partner.grants.update');
     Route::post('partner/grants/action/archive/{id}', [ManageGrantsController::class, 'archive'])->name('partner.grants.action.archive');
     Route::get('partner/grants/preview/{id}', [ManageGrantsController::class, 'preview'])->name('partner.grants.preview');
 
@@ -201,6 +203,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/grants/archive', [ManageGrantsController::class, 'show'])->name('admin.grants.archive')->defaults('status', 'archived');
     Route::get('admin/grants/create', [ManageGrantsController::class, 'create'])->name('admin.grants.create');
     Route::post('admin/grants/create', [ManageGrantsController::class, 'store'])->name('admin.grants.store');
+    Route::get('admin/grants/edit/{id}', [ManageGrantsController::class, 'edit'])->name('admin.grants.edit');
+    Route::put('admin/grants/update/{id}', [ManageGrantsController::class, 'update'])->name('admin.grants.update');
     Route::get('admin/grants/preview/{id}', [ManageGrantsController::class, 'preview'])->name('admin.grants.preview');
     Route::post('admin/grants/approve/{id}', [ManageGrantsController::class, 'approve'])->name('admin.grants.approve');
     Route::post('admin/grants/reject/{id}', [ManageGrantsController::class, 'reject'])->name('admin.grants.reject');
@@ -224,6 +228,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/education/archive', [ManageCoursesController::class, 'show'])->name('admin.education.archive')->defaults('status', 'archived');
     Route::get('admin/education/create', [ManageCoursesController::class, 'create'])->name('admin.education.create');
     Route::post('admin/education/create', [ManageCoursesController::class, 'store'])->name('admin.education.store');
+    Route::get('admin/education/edit/{id}', [ManageCoursesController::class, 'edit'])->name('admin.education.edit');
+    Route::put('admin/education/update/{id}', [ManageCoursesController::class, 'update'])->name('admin.education.update');
     Route::get('admin/education/preview/{id}', [ManageCoursesController::class, 'preview'])->name('admin.education.preview');
     Route::post('admin/education/approve/{id}', [ManageCoursesController::class, 'approve'])->name('admin.education.approve');
     Route::post('admin/education/reject/{id}', [ManageCoursesController::class, 'reject'])->name('admin.education.reject');

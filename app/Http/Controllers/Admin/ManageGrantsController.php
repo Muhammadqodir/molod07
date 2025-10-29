@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateGrantRequest;
+use App\Http\Requests\UpdateGrantRequest;
 use App\Models\Grant;
 use App\Models\GrantApplication;
 use App\Models\User;
@@ -102,6 +103,63 @@ class ManageGrantsController extends Controller
             return redirect()
                 ->route('admin.grants.index')
                 ->with('success', 'Грант успешно создан.');
+        });
+    }
+
+    public function edit($id)
+    {
+        $grant = Grant::findOrFail($id);
+
+        // Check if user can edit this grant
+        if (Auth::user()->role !== 'admin' && $grant->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Add partner information
+        $grant->partner = User::find($grant->user_id);
+
+        return view('admin.grants.edit', compact('grant'));
+    }
+
+    public function update(UpdateGrantRequest $request, $id)
+    {
+        $grant = Grant::findOrFail($id);
+
+        // Check if user can edit this grant
+        if (Auth::user()->role !== 'admin' && $grant->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $v = $request->validated();
+
+        return DB::transaction(function () use ($request, $v, $grant) {
+            // Handle cover image upload if new file is provided
+            if ($request->hasFile('cover')) {
+                // Delete old cover if exists
+                if ($grant->cover && file_exists(public_path($grant->cover))) {
+                    unlink(public_path($grant->cover));
+                }
+
+                $coverFile = $request->file('cover');
+                $coverPath = $coverFile->store("uploads/grants{$grant->id}/cover", 'public');
+                $v['cover'] = 'storage/' . $coverPath;
+            }
+
+            // Handle file uploads for docs
+            if ($request->hasFile('docs')) {
+                $docPaths = [];
+                foreach ($request->file('docs') as $file) {
+                    $docPaths[] = 'storage/' . $file->store("uploads/grants{$grant->id}/docs", 'public');
+                }
+                $v['docs'] = array_merge($grant->docs ?? [], $docPaths);
+            }
+
+            // Update the grant entry
+            $grant->update($v);
+
+            return redirect()
+                ->route(Auth::user()->role . '.grants.index')
+                ->with('success', 'Грант успешно обновлен.');
         });
     }
 
