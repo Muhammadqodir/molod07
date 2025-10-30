@@ -46,6 +46,12 @@
         <x-sidebar-leaf route="admin.grants.archive" label="Архив" />
     </x-sidebar-group>
 
+    {{-- Группа: Возможности --}}
+    <x-sidebar-group icon="sparkles" label="Возможности" :open="request()->routeIs('admin.ministries.*') || request()->routeIs('admin.opportunities.*')">
+        <x-sidebar-leaf route="admin.ministries.index" label="Министерства" />
+        <x-sidebar-leaf route="admin.opportunities.index" label="Программы" />
+    </x-sidebar-group>
+
     {{-- Группа: Подкасты --}}
     <x-sidebar-group icon="podcast" label="Подкасты" :open="request()->routeIs('admin.podcasts.*')">
         <x-sidebar-leaf route="admin.podcasts.index" label="Активные" />

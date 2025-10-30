@@ -56,6 +56,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('opportunities.index') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-sparkles class="w-5 h-5 text-inherit" /> Твои возможности
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('partners') }}"
                                 class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
                                 <x-lucide-users class="w-5 h-5 text-inherit" /> Организаторы
@@ -170,6 +176,12 @@
                 <a href="{{ route('grants.list') }}"
                     class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
                     <x-lucide-trophy class="w-5 h-5 text-inherit" /> Гранты
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('opportunities.index') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-sparkles class="w-5 h-5 text-inherit" /> Твои возможности
                 </a>
             </li>
             <li>

@@ -44,6 +44,11 @@ Route::get('/news', [PagesController::class, 'newsList'])->name("news.list");
 Route::get('/podcasts', [PagesController::class, 'podcastsList'])->name("podcasts.list");
 Route::get('/grants', [PagesController::class, 'grantsList'])->name("grants.list");
 
+// Opportunities routes
+Route::get('/opportunities', [App\Http\Controllers\OpportunityController::class, 'index'])->name('opportunities.index');
+Route::get('/opportunities/{opportunity}', [App\Http\Controllers\OpportunityController::class, 'show'])->name('opportunities.show');
+Route::get('/ministry/{ministry}/opportunities', [App\Http\Controllers\OpportunityController::class, 'byMinistry'])->name('opportunities.by-ministry');
+
 Route::get('/about', [PagesController::class, 'aboutPage'])->name('about');
 Route::get('/contacts', [PagesController::class, 'contactsPage'])->name('contacts');
 Route::get('/documents', [PagesController::class, 'documentsPage'])->name('documents');
@@ -315,6 +320,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
         return response()->json(['partners' => $partners]);
     })->middleware(['auth', 'role:admin'])->name('admin.search.partners');
+
+    // Ministries
+    Route::resource('admin/ministries', App\Http\Controllers\Admin\ManageMinistriesController::class, [
+        'as' => 'admin'
+    ]);
+
+    // Opportunities
+    Route::resource('admin/opportunities', App\Http\Controllers\Admin\ManageOpportunitiesController::class, [
+        'as' => 'admin'
+    ]);
 });
 
 // API маршруты для комментариев, лайков и просмотров
