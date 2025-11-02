@@ -12,8 +12,16 @@
     </div>
 
     <div class="bg-white rounded-2xl border border-gray-200 p-6">
-        <form method="POST" action="{{ route('admin.opportunities.store') }}">
+        <form method="POST" action="{{ route('admin.opportunities.store') }}" enctype="multipart/form-data">
             @csrf
+
+            {{-- Обложка --}}
+            <section class="space-y-3 mb-6">
+                <div class="text-lg font-medium">Обложка</div>
+                <x-image-selector name="cover" label="" :value="old('cover_url')" :max-mb="2" :accept="['image/png', 'image/jpeg']" />
+            </section>
+
+            <hr class="mb-6">
 
             <div class="grid grid-cols-1 gap-6">
                 <div>

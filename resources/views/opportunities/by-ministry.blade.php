@@ -40,15 +40,24 @@
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($opportunities as $opportunity)
-                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow duration-300">
-                            <div class="mb-4">
-                                <h4 class="text-xl font-semibold text-gray-800 mb-3 line-clamp-2">
-                                    {{ $opportunity->program_name }}
-                                </h4>
-                                <div class="text-gray-600 line-clamp-3 mb-4">
-                                    {{ Str::limit($opportunity->participation_conditions, 150) }}
+                        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                            @if($opportunity->cover_image)
+                                <div class="h-48 bg-gray-200 overflow-hidden">
+                                    <img src="{{ asset($opportunity->cover_image) }}"
+                                         alt="{{ $opportunity->program_name }}"
+                                         class="w-full h-full object-cover">
                                 </div>
-                            </div>
+                            @endif
+
+                            <div class="p-6">
+                                <div class="mb-4">
+                                    <h4 class="text-xl font-semibold text-gray-800 mb-3 line-clamp-2">
+                                        {{ $opportunity->program_name }}
+                                    </h4>
+                                    <div class="text-gray-600 line-clamp-3 mb-4">
+                                        {{ Str::limit($opportunity->participation_conditions, 150) }}
+                                    </div>
+                                </div>
 
                             <div class="space-y-3 mb-6">
                                 <div class="flex items-start gap-2">
@@ -69,12 +78,13 @@
                                 @endif
                             </div>
 
-                            <div class="border-t pt-4">
-                                <a href="{{ route('opportunities.show', $opportunity) }}"
-                                   class="inline-flex items-center justify-center gap-2 w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                                    Подробнее
-                                    <x-lucide-arrow-right class="h-4 w-4" />
-                                </a>
+                                <div class="border-t pt-4">
+                                    <a href="{{ route('opportunities.show', $opportunity) }}"
+                                       class="inline-flex items-center justify-center gap-2 w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                                        Подробнее
+                                        <x-lucide-arrow-right class="h-4 w-4" />
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     @endforeach

@@ -9,6 +9,7 @@ class Opportunity extends Model
 {
     protected $fillable = [
         'ministry_id',
+        'cover_image',
         'program_name',
         'participation_conditions',
         'implementation_period',

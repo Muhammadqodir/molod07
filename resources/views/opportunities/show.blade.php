@@ -5,22 +5,20 @@
 @section('content')
 
 <section class="bg-accentbg mt-[-80px] pt-[80px] pb-[80px] min-h-[calc(100vh-200px)]">
-    <div class="max-w-screen-xl mx-auto px-6">
+    <div class="max-w-screen-xl mx-auto px-6" style="padding-bottom: 24px;">
         <div class="mt-12">
-            <!-- Breadcrumbs -->
-            <nav class="mb-6">
-                <ol class="flex items-center space-x-2 text-sm text-gray-500">
-                    <li><a href="{{ route('main') }}" class="hover:text-blue-600 transition">Главная</a></li>
-                    <li><x-lucide-chevron-right class="h-4 w-4" /></li>
-                    <li><a href="{{ route('opportunities.index') }}" class="hover:text-blue-600 transition">Возможности</a></li>
-                    <li><x-lucide-chevron-right class="h-4 w-4" /></li>
-                    <li class="text-gray-800 font-medium">{{ Str::limit($opportunity->program_name, 50) }}</li>
-                </ol>
-            </nav>
 
-            <div class="bg-white rounded-2xl p-8 shadow-lg">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg">
+                @if($opportunity->cover_image)
+                    <div class="h-64 bg-gray-200 overflow-hidden">
+                        <img src="{{ asset($opportunity->cover_image) }}"
+                             alt="{{ $opportunity->program_name }}"
+                             class="w-full h-full object-cover">
+                    </div>
+                @endif
+
                 <!-- Header -->
-                <div class="mb-8">
+                <div class="p-8">
                     <div class="flex items-center gap-3 mb-4">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                             {{ $opportunity->ministry->title }}
@@ -29,7 +27,7 @@
                     <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ $opportunity->program_name }}</h1>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- Main content -->
                     <div class="lg:col-span-2 space-y-8">
                         <div>
@@ -136,6 +134,8 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="p-8"></div>
             </div>
         </div>
     </div>

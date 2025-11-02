@@ -39,6 +39,7 @@ class ManageOpportunitiesController extends Controller
     {
         $validated = $request->validate([
             'ministry_id' => 'required|exists:ministries,id',
+            'cover' => 'nullable|image|mimes:jpeg,png|max:2048',
             'program_name' => 'required|string|max:255',
             'participation_conditions' => 'required|string',
             'implementation_period' => 'required|string',
@@ -51,6 +52,13 @@ class ManageOpportunitiesController extends Controller
             'responsible_person.contact' => 'required|string|max:255',
         ]);
 
+        // Handle cover image upload
+        if ($request->hasFile('cover')) {
+            $coverFile = $request->file('cover');
+            $coverPath = $coverFile->store('opportunities_covers', 'public');
+            $validated['cover_image'] = 'storage/' . $coverPath;
+        }
+
         // Filter out empty legal documents
         if (!empty($validated['legal_documents'])) {
             $validated['legal_documents'] = array_filter($validated['legal_documents'], function ($doc) {
@@ -59,6 +67,9 @@ class ManageOpportunitiesController extends Controller
             // Re-index the array to avoid gaps
             $validated['legal_documents'] = array_values($validated['legal_documents']);
         }
+
+        // Remove cover from validated data as we store it as cover_image
+        unset($validated['cover']);
 
         Opportunity::create($validated);
 
@@ -82,6 +93,7 @@ class ManageOpportunitiesController extends Controller
     {
         $validated = $request->validate([
             'ministry_id' => 'required|exists:ministries,id',
+            'cover' => 'nullable|image|mimes:jpeg,png|max:2048',
             'program_name' => 'required|string|max:255',
             'participation_conditions' => 'required|string',
             'implementation_period' => 'required|string',
@@ -94,6 +106,18 @@ class ManageOpportunitiesController extends Controller
             'responsible_person.contact' => 'required|string|max:255',
         ]);
 
+        // Handle cover image upload if new file is provided
+        if ($request->hasFile('cover')) {
+            // Delete old cover if exists
+            if ($opportunity->cover_image && file_exists(public_path($opportunity->cover_image))) {
+                unlink(public_path($opportunity->cover_image));
+            }
+
+            $coverFile = $request->file('cover');
+            $coverPath = $coverFile->store('opportunities_covers', 'public');
+            $validated['cover_image'] = 'storage/' . $coverPath;
+        }
+
         // Filter out empty legal documents
         if (!empty($validated['legal_documents'])) {
             $validated['legal_documents'] = array_filter($validated['legal_documents'], function ($doc) {
@@ -102,6 +126,9 @@ class ManageOpportunitiesController extends Controller
             // Re-index the array to avoid gaps
             $validated['legal_documents'] = array_values($validated['legal_documents']);
         }
+
+        // Remove cover from validated data as we store it as cover_image
+        unset($validated['cover']);
 
         $opportunity->update($validated);
 

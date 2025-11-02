@@ -28,29 +28,39 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             @foreach ($ministry->opportunities as $opportunity)
-                                <div class="bg-white cursor-pointer border border-blue-100 rounded-xl p-6 hover:shadow-lg transition-shadow duration-300">
-                                    <div class="mb-4">
-                                        <h4 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
-                                            {{ $opportunity->program_name }}
-                                        </h4>
-                                        <div class="text-sm text-gray-600 line-clamp-3">
-                                            {{ Str::limit($opportunity->participation_conditions, 120) }}
+                                <div class="bg-white cursor-pointer border border-blue-100 rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                                    @if($opportunity->cover_image)
+                                        <div class="h-48 bg-gray-200 overflow-hidden">
+                                            <img src="{{ asset($opportunity->cover_image) }}"
+                                                 alt="{{ $opportunity->program_name }}"
+                                                 class="w-full h-full object-cover">
                                         </div>
-                                    </div>
+                                    @endif
 
-                                    <div class="flex items-center justify-between">
-                                        @if($opportunity->responsible_person && isset($opportunity->responsible_person['name']))
-                                            <div class="text-xs text-gray-500">
-                                                <div class="font-medium">{{ $opportunity->responsible_person['name'] }}</div>
-                                                <div>{{ $opportunity->responsible_person['position'] ?? '' }}</div>
+                                    <div class="p-6">
+                                        <div class="mb-4">
+                                            <h4 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+                                                {{ $opportunity->program_name }}
+                                            </h4>
+                                            <div class="text-sm text-gray-600 line-clamp-3">
+                                                {{ Str::limit($opportunity->participation_conditions, 120) }}
                                             </div>
-                                        @endif
+                                        </div>
 
-                                        <a href="{{ route('opportunities.show', $opportunity) }}"
-                                           class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
-                                            Подробнее
-                                            <x-lucide-arrow-right class="h-4 w-4" />
-                                        </a>
+                                        <div class="flex items-center justify-between">
+                                            @if($opportunity->responsible_person && isset($opportunity->responsible_person['name']))
+                                                <div class="text-xs text-gray-500">
+                                                    <div class="font-medium">{{ $opportunity->responsible_person['name'] }}</div>
+                                                    <div>{{ $opportunity->responsible_person['position'] ?? '' }}</div>
+                                                </div>
+                                            @endif
+
+                                            <a href="{{ route('opportunities.show', $opportunity) }}"
+                                               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                                                Подробнее
+                                                <x-lucide-arrow-right class="h-4 w-4" />
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
