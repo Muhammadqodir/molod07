@@ -26,7 +26,7 @@
                 <template x-if="selectedTab === '{{ $event->category }}' || selectedTab === 'Все'">
                     <x-event-card image="{{ asset($event->cover) }}" :tags="[$event->category, $event->type]"
                         points="{{ $event->getPoints() }}" title="{{ $event->title }}"
-                        location="{{ $event->getAddress() }}" date="{{ $event->start }}"
+                        location="{{ $event->getAddress() }}" date="{{ $event->created_at->format('d.m.Y') }}"
                         link="{{ route('event', $event->id) }}" />
                 </template>
             @endforeach

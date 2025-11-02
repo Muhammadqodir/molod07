@@ -20,13 +20,13 @@
                         @switch($entity)
                             @case('events')
                                 <x-event-card image="{{ asset($item->cover) }}" :tags="[$item->category, $item->type]" points="{{ $item->getPoints() }}"
-                                    title="{{ $item->title }}" location="{{ $item->getAddress() }}" date="{{ $item->start }}"
+                                    title="{{ $item->title }}" location="{{ $item->getAddress() }}" date="{{ $item->created_at->format('d.m.Y') }}"
                                     link="{{ route('event', $item->id) }}" />
                             @break
 
                             @case('vacancies')
                                 <x-vacancy-card title="{{ $item->title }}" category="{{ $item->category }}"
-                                    date="{{ $item->created_at->format('d.m.y') }}" salary="{{ $item->getSalaryRange() }}"
+                                    date="{{ $item->created_at->format('d.m.Y') }}" salary="{{ $item->getSalaryRange() }}"
                                     location="{{ $item->org_address }}" link="{{ route('vacancy', $item->id) }}" />
                             @break
 
