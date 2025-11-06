@@ -215,4 +215,29 @@ class ManageVacanciesController extends Controller
 
         return view('admin.vacancies.responses', compact('responses', 'q'));
     }
+
+    public function getAllResponses(Request $request)
+    {
+        $q = $request->string('q')->toString();
+
+        $responsesQuery = \App\Models\VacancyResponse::query()
+            ->with(['vacancy', 'user', 'user.youthProfile'])
+            ->when($q, function ($query) use ($q) {
+                $query->whereHas('vacancy', function ($vacancyQuery) use ($q) {
+                    $vacancyQuery->where('title', 'like', "%{$q}%")
+                        ->orWhere('org_name', 'like', "%{$q}%");
+                })->orWhereHas('user.youthProfile', function ($userQuery) use ($q) {
+                    $userQuery->where('name', 'like', "%{$q}%")
+                        ->orWhere('l_name', 'like', "%{$q}%")
+                        ->orWhere('f_name', 'like', "%{$q}%");
+                });
+            });
+
+        $responses = $responsesQuery
+            ->orderByDesc('created_at')
+            ->paginate(15)
+            ->appends($request->query());
+
+        return view('admin.vacancies.all-responses', compact('responses', 'q'));
+    }
 }

@@ -254,6 +254,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/vacancies/list', [ManageVacanciesController::class, 'show'])->name('admin.vacancies.index')->defaults('status', 'approved');
     Route::get('admin/vacancies/requests', [ManageVacanciesController::class, 'show'])->name('admin.vacancies.requests')->defaults('status', 'pending');
     Route::get('admin/vacancies/archive', [ManageVacanciesController::class, 'show'])->name('admin.vacancies.archive')->defaults('status', 'archived');
+    Route::get('admin/vacancies/responses', [ManageVacanciesController::class, 'getAllResponses'])->name('admin.vacancies.responses');
     Route::get('admin/vacancies/create', [ManageVacanciesController::class, 'create'])->name('admin.vacancies.create');
     Route::post('admin/vacancies/create', [ManageVacanciesController::class, 'store'])->name('admin.vacancies.store');
     Route::get('admin/vacancies/edit/{id}', [ManageVacanciesController::class, 'edit'])->name('admin.vacancies.edit');
