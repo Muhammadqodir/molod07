@@ -132,7 +132,7 @@
             @endphp
 
             <div class="space-y-2">
-                <x-multi-choice name="category" :options="$categories" :value="old('category', $grant->category)" :multiple="false" title="Категория"
+                <x-multi-choice name="category" :options="$categories" :value="old('category') ? [old('category')] : ($grant->category ? [$grant->category] : [])" :multiple="false" title="Категория"
                     hint="Выберите один вариант" />
                 @error('category')
                     <p class="text-sm text-red-600">{{ $message }}</p>

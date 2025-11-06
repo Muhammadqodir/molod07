@@ -197,9 +197,9 @@
                     </div>
                     <div x-show="open" class="mt-4 text-gray-700 text-base space-y-2">
                         <div class="flex items-center"><x-lucide-user class="w-5 h-5 mr-2 text-gray-400" /><span
-                                class="font-medium">Директор:</span> Бижоев Азамат Анзорович</div>
+                                class="font-medium">Директор:</span> Келеметов Амир Алешевич</div>
                         <div class="flex items-center"><x-lucide-phone class="w-5 h-5 mr-2 text-gray-400" /><span
-                                class="font-medium">Телефон:</span> +7 (965) 499-21-11</div>
+                                class="font-medium">Телефон:</span> +7 (968) 358-07-77</div>
                         <div class="flex items-center"><x-lucide-map-pin class="w-5 h-5 mr-2 text-gray-400" /><span
                                 class="font-medium">Адрес:</span> ул Хамгокова, 27</div>
                     </div>
@@ -288,7 +288,7 @@
                             coords: [43.356842, 43.941074],
                             name: 'Молодежный центр Лескенского района',
                             address: 'ул Хамгокова, 27',
-                            info: 'Директор - Бижоев Азамат Анзорович'
+                            info: 'Директор - Келеметов Амир Алешевич'
                         },
                         {
                             coords: [43.629207, 44.051100],

@@ -157,7 +157,7 @@
             @endphp
 
             <div class="space-y-2">
-                <x-multi-choice name="category" :options="$categories" :value="old('category', '')" :multiple="false" title="Категория"
+                <x-multi-choice name="category" :options="$categories" :value="old('category') ? [old('category')] : []" :multiple="false" title="Категория"
                     hint="Выберите один вариант" />
                 @error('category')
                     <p class="text-sm text-red-600">{{ $message }}</p>
@@ -165,7 +165,7 @@
             </div>
 
             <div class="space-y-2">
-                <x-multi-choice name="type" :options="$types" :value="old('type', '')" :multiple="false" title="Тип занятости"
+                <x-multi-choice name="type" :options="$types" :value="old('type') ? [old('type')] : []" :multiple="false" title="Тип занятости"
                     hint="Выберите один вариант" />
                 @error('type')
                     <p class="text-sm text-red-600">{{ $message }}</p>
@@ -173,7 +173,7 @@
             </div>
 
             <div class="space-y-2">
-                <x-multi-choice name="experience" :options="$experience_levels" :value="old('experience', '')" :multiple="false"
+                <x-multi-choice name="experience" :options="$experience_levels" :value="old('experience') ? [old('experience')] : []" :multiple="false"
                     title="Требуемый опыт" hint="Выберите один вариант" />
                 @error('experience')
                     <p class="text-sm text-red-600">{{ $message }}</p>

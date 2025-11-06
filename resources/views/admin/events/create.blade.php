@@ -144,7 +144,7 @@
             @endphp
 
             <div class="space-y-2">
-                <x-multi-choice name="category" :options="$categories" :value="old('category', '')" :multiple="false" title="Категория"
+                <x-multi-choice name="category" :options="$categories" :value="old('category') ? [old('category')] : []" :multiple="false" title="Категория"
                     hint="Выберите один вариант" />
                 @error('category')
                     <p class="text-sm text-red-600">{{ $message }}</p>
@@ -152,7 +152,7 @@
             </div>
 
             <div class="space-y-2">
-                <x-multi-choice name="type" :options="$types" :value="old('type', '')" :multiple="false" title="Тип"
+                <x-multi-choice name="type" :options="$types" :value="old('type') ? [old('type')] : []" :multiple="false" title="Тип"
                     hint="Выберите один вариант" />
                 @error('type')
                     <p class="text-sm text-red-600">{{ $message }}</p>

@@ -35,7 +35,7 @@
             @endphp
 
             <div class="space-y-2">
-                <x-multi-choice name="category" :options="$categories" :value="old('category', $news->category)" :multiple="false" title=""
+                <x-multi-choice name="category" :options="$categories" :value="old('category') ? [old('category')] : ($news->category ? [$news->category] : [])" :multiple="false" title=""
                     hint="Выберите один вариант" />
                 @error('category')
                     <p class="text-sm text-red-600">{{ $message }}</p>

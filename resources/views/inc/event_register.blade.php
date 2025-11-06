@@ -54,7 +54,7 @@
                                         ->toArray();
                                 @endphp
 
-                                <x-multi-choice name="role" :options="$roleOptions" :value="old('role', '')" :multiple="false"
+                                <x-multi-choice name="role" :options="$roleOptions" :value="old('role') ? [old('role')] : []" :multiple="false"
                                     title="Роль" />
 
                                 {{-- Show role details --}}
