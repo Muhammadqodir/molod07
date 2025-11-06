@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ManagePodcastsController;
 use App\Http\Controllers\Admin\ManageVacanciesController;
 use App\Http\Controllers\Admin\PartnersController;
 use App\Http\Controllers\Admin\SupportController;
+use App\Http\Controllers\Admin\FeedbackController as AdminFeedbackController;
 use App\Http\Controllers\Admin\YouthController;
 use App\Http\Controllers\Auth\RegisterPartnerController;
 use App\Http\Controllers\Auth\RegisterYouthController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\GrantApplicationController;
+use App\Http\Controllers\FeedbackController;
 
 Route::get('/', [PagesController::class, 'main'])->name("main");
 Route::get('/course/{id}', [PagesController::class, 'coursePage'])->name("course");
@@ -72,6 +74,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+// Feedback routes (available for all users)
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 //Youth routes
 Route::middleware(['auth', 'role:youth'])->group(function () {
@@ -261,6 +266,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     //Support
     Route::get('admin/support', [SupportController::class, 'show'])->name('admin.support');
+
+    //Feedback
+    Route::prefix('admin/feedback')->group(function () {
+        Route::get('/', [AdminFeedbackController::class, 'index'])->name('admin.feedback.index');
+        Route::get('/{feedback}', [AdminFeedbackController::class, 'show'])->name('admin.feedback.show');
+        Route::patch('/{feedback}/status', [AdminFeedbackController::class, 'updateStatus'])->name('admin.feedback.update-status');
+        Route::delete('/{feedback}', [AdminFeedbackController::class, 'destroy'])->name('admin.feedback.destroy');
+        Route::post('/bulk-action', [AdminFeedbackController::class, 'bulkAction'])->name('admin.feedback.bulk-action');
+    });
 
     Route::get('/admin/get-user/{id}', function ($id) {
         $id = ltrim($id, '0');
