@@ -2,7 +2,6 @@
     {{-- простые пункты --}}
     <x-sidebar-link route="admin.profile" icon="user-circle" label="Личные данные" />
     <x-sidebar-link route="admin.feedback.index" icon="message-circle" label="Обратная связь" />
-    <x-sidebar-link route="admin.support" icon="headphones" label="Поддержка" />
 
     {{-- Группа: Управление --}}
     <x-sidebar-group icon="user-cog" label="Управление" :open="request()->routeIs('admin.manage.*')">
