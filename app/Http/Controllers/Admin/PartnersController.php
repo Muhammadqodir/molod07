@@ -37,7 +37,7 @@ class PartnersController extends Controller
         }
         $id = $request["id"];
         $partner = User::where('role', 'partner')->findOrFail($id);
-        $partner->partnerProfile()->delete();
+        $partner->partnersProfile()->delete();
         $partner->delete();
 
         return redirect()->route('admin.manage.partners')->with('success', 'Пользователь успешно удален.');
