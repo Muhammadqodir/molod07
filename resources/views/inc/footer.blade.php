@@ -70,7 +70,7 @@
                 <a href="{{ route('privacy-policy') }}" class="text-primary hover:underline">Политикой
                     конфиденциальности</a>.
             </p>
-            <p class="text-right">Разработка AL-Focus Group</p>
+            <p class="text-right">Разработчик: <a href="https://alfocus.uz/">AL-FOCUS GROUP</a> </p>
         </div>
     </div>
 </footer>
