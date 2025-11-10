@@ -29,7 +29,7 @@
                     <x-input name="address" type="text" label="Населенный пункт"
                         placeholder="Введите населенный пункт" />
                     <x-input name="bday" type="date" label="Дата рождения (необязательно)" placeholder="Введите дату рождения" />
-                    <x-select name="sex" label="Пол (необязательно)" placeholder="Виберите пол" :options="['male' => 'Мужской', 'female' => 'Женский']" />
+                    <x-select name="sex" label="Пол (необязательно)" placeholder="Выберите пол" :options="['male' => 'Мужской', 'female' => 'Женский']" />
                 </div>
 
                 <div x-show="step === 3">

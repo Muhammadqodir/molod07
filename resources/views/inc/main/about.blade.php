@@ -32,7 +32,7 @@
             </a>
 
             {{-- Карточка: Реализация --}}
-            <a href="{{ route('events.list') }}"
+            <a href="{{ route('opportunities.index') }}"
                 class="bg-white rounded-2xl p-6 relative overflow-hidden md:col-span-3 flex items-end cursor-pointer hover:bg-gray-100 transition block">
                 <x-lucide-arrow-up-right class="absolute top-4 right-4 w-5 h-5 text-gray-500" />
                 <div class="z-10 mt-10">

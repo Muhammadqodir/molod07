@@ -24,7 +24,7 @@
 
                 <x-input type="date" label="Дата рождения" name="bday"
                     value="{{ Auth::user()->youthProfile->bday }}" />
-                <x-select name="sex" label="Пол" placeholder="Виберите пол" :options="['male' => 'Мужской', 'female' => 'Женский']"
+                <x-select name="sex" label="Пол" placeholder="Выберите пол" :options="['male' => 'Мужской', 'female' => 'Женский']"
                     value="{{ Auth::user()->youthProfile->sex }}" />
             </div>
         </div>
