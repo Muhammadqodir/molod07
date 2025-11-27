@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdministratorsController;
 use App\Http\Controllers\Admin\ManageCommentsController;
 use App\Http\Controllers\Admin\ManageCoursesController;
+use App\Http\Controllers\Admin\ManageBooksController;
 use App\Http\Controllers\Admin\ManageEventsController;
 use App\Http\Controllers\Admin\ManageGrantsController;
 use App\Http\Controllers\Admin\ManageNewsController;
@@ -40,6 +41,7 @@ Route::get('/podcast/{id}', [PagesController::class, 'podcastPage'])->name("podc
 Route::get('/grants/{id}', [PagesController::class, 'grantsPage'])->name("grant");
 
 Route::get('/courses', [PagesController::class, 'coursesList'])->name("courses.list");
+Route::get('/books', [PagesController::class, 'booksList'])->name("books.list");
 Route::get('/events', [PagesController::class, 'eventsList'])->name("events.list");
 Route::get('/vacancies', [PagesController::class, 'vacanciesList'])->name("vacancies.list");
 Route::get('/news', [PagesController::class, 'newsList'])->name("news.list");
@@ -252,6 +254,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/education/reject/{id}', [ManageCoursesController::class, 'reject'])->name('admin.education.reject');
     Route::post('admin/education/action/archive/{id}', [ManageCoursesController::class, 'archive'])->name('admin.education.action.archive');
     Route::delete('admin/education/{id}', [ManageCoursesController::class, 'destroy'])->name('admin.education.destroy');
+
+    //Books (Book Shelf / Книжная полка)
+    Route::get('admin/books/list', [ManageBooksController::class, 'show'])->name('admin.books.index')->defaults('status', 'approved');
+    Route::get('admin/books/requests', [ManageBooksController::class, 'show'])->name('admin.books.requests')->defaults('status', 'pending');
+    Route::get('admin/books/archive', [ManageBooksController::class, 'show'])->name('admin.books.archive')->defaults('status', 'archived');
+    Route::get('admin/books/create', [ManageBooksController::class, 'create'])->name('admin.books.create');
+    Route::post('admin/books/create', [ManageBooksController::class, 'store'])->name('admin.books.store');
+    Route::get('admin/books/edit/{id}', [ManageBooksController::class, 'edit'])->name('admin.books.edit');
+    Route::put('admin/books/update/{id}', [ManageBooksController::class, 'update'])->name('admin.books.update');
+    Route::post('admin/books/approve/{id}', [ManageBooksController::class, 'approve'])->name('admin.books.approve');
+    Route::post('admin/books/reject/{id}', [ManageBooksController::class, 'reject'])->name('admin.books.reject');
+    Route::post('admin/books/action/archive/{id}', [ManageBooksController::class, 'archive'])->name('admin.books.action.archive');
+    Route::delete('admin/books/{id}', [ManageBooksController::class, 'destroy'])->name('admin.books.destroy');
 
     //Vacancies
     Route::get('admin/vacancies/list', [ManageVacanciesController::class, 'show'])->name('admin.vacancies.index')->defaults('status', 'approved');

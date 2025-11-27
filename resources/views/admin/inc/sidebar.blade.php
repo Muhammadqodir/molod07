@@ -24,6 +24,13 @@
         <x-sidebar-leaf route="admin.education.archive" label="Архив" />
     </x-sidebar-group>
 
+    {{-- Группа: Книжная полка --}}
+    <x-sidebar-group icon="book-open" label="Книжная полка" :open="request()->routeIs('admin.books.*')">
+        <x-sidebar-leaf route="admin.books.index" label="Активные" />
+        <x-sidebar-leaf route="admin.books.requests" label="Заявки" />
+        <x-sidebar-leaf route="admin.books.archive" label="Архив" />
+    </x-sidebar-group>
+
     {{-- Группа: Новости --}}
     <x-sidebar-group icon="newspaper" label="Новости" :open="request()->routeIs('admin.news.*')">
         <x-sidebar-leaf route="admin.news.index" label="Активные" />

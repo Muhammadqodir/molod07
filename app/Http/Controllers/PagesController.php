@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\Course;
 use App\Models\Event;
 use App\Models\Grant;
@@ -113,6 +114,27 @@ class PagesController extends Controller
         $count = $items->total();
         $title = $request->input('category', 'Все') === 'Все' ? 'Все курсы' : $request->input('category', 'Все');
         return view('pages.list', compact('items', 'entity', 'count', 'title'));
+    }
+
+    function booksList(Request $request)
+    {
+        $query = Book::where('status', 'approved');
+
+        // Search by title, author, or description
+        if ($request->has('q') && $request->q) {
+            $searchTerm = $request->q;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('title', 'like', "%{$searchTerm}%")
+                  ->orWhere('author', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $items = $query->orderByDesc('id')->paginate(12);
+        $entity = 'books';
+        $count = $items->total();
+        $title = 'Книжная полка';
+        return view('pages.books', compact('items', 'entity', 'count', 'title'));
     }
 
     function newsList(Request $request)

@@ -74,6 +74,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('books.list') }}"
+                                class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                                <x-lucide-book-open class="w-5 h-5 text-inherit" /> Книжная полка
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('vacancies.list') }}"
                                 class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
                                 <x-lucide-briefcase class="w-5 h-5 text-inherit" /> Вакансии
@@ -194,6 +200,12 @@
                 <a href="{{ route('courses.list') }}"
                     class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
                     <x-lucide-graduation-cap class="w-5 h-5 text-inherit" /> Образование
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('books.list') }}"
+                    class="flex items-center gap-3 p-2 rounded-xl cursor-pointer hover:bg-secondary hover:text-primary transition">
+                    <x-lucide-book-open class="w-5 h-5 text-inherit" /> Книжная полка
                 </a>
             </li>
             <li>
