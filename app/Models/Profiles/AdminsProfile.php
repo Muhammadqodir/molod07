@@ -19,7 +19,7 @@ class AdminsProfile extends Model
 
     public function getName()
     {
-        return $this->name . " " . $this->l_name . " " . $this->f_name;
+        return $this->l_name . " " . $this->name . " " . $this->f_name;
     }
 
     public function user()

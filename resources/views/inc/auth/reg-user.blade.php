@@ -20,8 +20,8 @@
             @csrf
             <x-step-form :steps="4" submit="Зарегистрироваться">
                 <div x-show="step === 1">
-                    <x-input name="name" type="text" label="Имя" placeholder="Укажите имя" />
                     <x-input name="l_name" type="text" label="Фамилия" placeholder="Введите фамилию" />
+                    <x-input name="name" type="text" label="Имя" placeholder="Укажите имя" />
                     <x-input name="f_name" type="text" label="Отчество" placeholder="Введите отчество" />
                 </div>
 
