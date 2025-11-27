@@ -93,6 +93,9 @@ Route::middleware(['auth', 'role:youth'])->group(function () {
 
     // Points routes
     Route::get('/youth/points', [PointsController::class, 'index'])->name('youth.points');
+
+    // QR code route
+    Route::get('/youth/qrcode', [YouthProfileController::class, 'qrcode'])->name('youth.qrcode');
 });
 
 

@@ -63,4 +63,9 @@ class YouthProfileController extends Controller
             return redirect()->back()->with('error', 'Произошла ошибка при удалении профиля. Попробуйте позже.');
         }
     }
+
+    public function qrcode()
+    {
+        return view('youth.qrcode');
+    }
 }
