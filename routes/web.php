@@ -98,6 +98,9 @@ Route::middleware(['auth', 'role:youth'])->group(function () {
 
     // QR code route
     Route::get('/youth/qrcode', [YouthProfileController::class, 'qrcode'])->name('youth.qrcode');
+
+    // Grant application route
+    Route::post('/grant/{id}/apply', [GrantApplicationController::class, 'store'])->name('grant.apply');
 });
 
 
