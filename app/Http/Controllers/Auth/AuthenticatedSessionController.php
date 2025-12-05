@@ -26,7 +26,7 @@ class AuthenticatedSessionController extends Controller
             ])->onlyInput('email');
         }
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt($credentials, true)) {
             $request->session()->regenerate();
 
             return redirect()->intended('/'); // или на главную
