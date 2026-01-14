@@ -147,11 +147,11 @@
 
                         <div class="flex flex-col sm:flex-row gap-3 mt-6">
                             <button type="submit"
-                                class="px-4 py-2 bg-blue-600 text-white text-base font-medium rounded-lg w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-200">
-                                Сбросить пароль
+                                class="px-4 py-1 bg-primary text-white text-base font-medium rounded-lg w-full shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary-300 transition-colors duration-200">
+                                Сбросить
                             </button>
                             <button type="button" onclick="closePasswordModal()"
-                                class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-lg w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors duration-200">
+                                class="px-4 py-1 bg-gray-500 text-white text-base font-medium rounded-lg w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors duration-200">
                                 Отмена
                             </button>
                         </div>
