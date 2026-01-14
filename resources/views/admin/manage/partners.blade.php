@@ -74,7 +74,9 @@
                                         </button>
                                     </form>
 
-                                    <button type="button" onclick="openPasswordModal({{ $item->id }}, '{{ $item->getFullName() }}')" class="p-0 m-0 bg-transparent border-0">
+                                    <button type="button"
+                                        onclick="openPasswordModal({{ $item->id }}, '{{ $item->getFullName() }}')"
+                                        class="p-0 m-0 bg-transparent border-0">
                                         <x-nav-icon>
                                             <x-lucide-key-round class="w-5 h-5" />
                                         </x-nav-icon>
@@ -131,14 +133,14 @@
                                 Новый пароль
                             </label>
                             <input type="text" name="password" id="new_password" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   placeholder="Введите новый пароль">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Введите новый пароль">
                         </div>
 
                         <div class="flex flex-col sm:flex-row gap-3 mt-6">
                             <button type="submit"
-                                class="px-4 py-2 bg-blue-600 text-white text-base font-medium rounded-lg w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-200">
-                                Сбросить пароль
+                                class="px-4 py-1 bg-primary text-white text-base font-medium rounded-lg w-full shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary-300 transition-colors duration-200">
+                                Сбросить
                             </button>
                             <button type="button" onclick="closePasswordModal()"
                                 class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-lg w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors duration-200">
