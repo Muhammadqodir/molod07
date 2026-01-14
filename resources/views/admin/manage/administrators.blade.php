@@ -83,6 +83,12 @@
                                         </button>
                                     </form>
 
+                                    <button type="button" onclick="openPasswordModal({{ $item->id }}, '{{ $item->getFullName() }}')" class="p-0 m-0 bg-transparent border-0">
+                                        <x-nav-icon>
+                                            <x-lucide-key-round class="w-5 h-5" />
+                                        </x-nav-icon>
+                                    </button>
+
                                     <form method="POST" action="{{ route('admin.manage.youth.remove') }}"
                                         onsubmit="return confirm('Вы уверены, что хотите удалить этого пользователя?');">
                                         @csrf
@@ -113,5 +119,66 @@
         {{-- Пагинация (Tailwind-шаблон по умолчанию) --}}
         {{ $admins->onEachSide(1)->appends(request()->except('page'))->links('vendor.pagination') }}
     </div>
+
+    <!-- Password Reset Modal -->
+    <div id="passwordModal" class="fixed inset-0 z-50 hidden overflow-y-auto" style="z-index: 99999999999;">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75" onclick="closePasswordModal()"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative mx-auto p-6 border w-96 shadow-lg rounded-xl bg-white">
+                <div class="text-center">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
+                        <x-lucide-key-round class="h-6 w-6 text-blue-600" />
+                    </div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Сброс пароля</h3>
+                    <p class="text-sm text-gray-500 mt-2" id="modalUserName"></p>
+
+                    <form method="POST" action="{{ route('admin.manage.administrators.reset-password') }}" class="mt-4">
+                        @csrf
+                        <input type="hidden" name="id" id="modalUserId">
+
+                        <div class="text-left">
+                            <label for="new_password" class="block text-sm font-medium text-gray-700 mb-2">
+                                Новый пароль
+                            </label>
+                            <input type="text" name="password" id="new_password" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="Введите новый пароль">
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                            <button type="submit"
+                                class="px-4 py-2 bg-blue-600 text-white text-base font-medium rounded-lg w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-200">
+                                Сбросить пароль
+                            </button>
+                            <button type="button" onclick="closePasswordModal()"
+                                class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-lg w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors duration-200">
+                                Отмена
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openPasswordModal(userId, userName) {
+            document.getElementById('modalUserId').value = userId;
+            document.getElementById('modalUserName').textContent = userName;
+            document.getElementById('new_password').value = '';
+            document.getElementById('passwordModal').classList.remove('hidden');
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').classList.add('hidden');
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !document.getElementById('passwordModal').classList.contains('hidden')) {
+                closePasswordModal();
+            }
+        });
+    </script>
 
 @endsection

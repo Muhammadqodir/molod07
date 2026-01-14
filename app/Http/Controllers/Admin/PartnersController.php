@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class PartnersController extends Controller
 {
@@ -70,5 +72,25 @@ class PartnersController extends Controller
         $partner->save();
 
         return redirect()->route('admin.manage.partners')->with('success', 'Пользователь разблокирован.');
+    }
+
+    public function generateNewPassword(Request $request)
+    {
+        if (!isset($request["id"]) || !isset($request["password"])) {
+            abort(400, 'Bad Request');
+        }
+        $id = $request["id"];
+        $partner = User::where('role', 'partner')->findOrFail($id);
+
+        // Validate password
+        $request->validate([
+            'password' => 'required|string|min:6',
+        ]);
+
+        // Update the user's password
+        $partner->password = Hash::make($request->password);
+        $partner->save();
+
+        return redirect()->route('admin.manage.partners')->with('success', "Пароль для {$partner->getFullName()} успешно изменен.");
     }
 }

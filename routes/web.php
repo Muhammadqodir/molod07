@@ -168,6 +168,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/manage/administrators/remove', [AdministratorsController::class, 'remove'])->name('admin.manage.administrators.remove');
     Route::post('admin/manage/administrators/block', [AdministratorsController::class, 'block'])->name('admin.manage.administrators.block');
     Route::post('admin/manage/administrators/unblock', [AdministratorsController::class, 'unblock'])->name('admin.manage.administrators.unblock');
+    Route::post('admin/manage/administrators/generate-password', [AdministratorsController::class, 'generateNewPassword'])->name('admin.manage.administrators.reset-password');
 
     //Youth
     Route::get('admin/manage/youth', [YouthController::class, 'show'])->name('admin.manage.youth');
@@ -180,6 +181,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/manage/partners/remove', [PartnersController::class, 'remove'])->name('admin.manage.partners.remove');
     Route::post('admin/manage/partners/block', [PartnersController::class, 'block'])->name('admin.manage.partners.block');
     Route::post('admin/manage/partners/unblock', [PartnersController::class, 'unblock'])->name('admin.manage.partners.unblock');
+    Route::post('admin/manage/partners/generate-password', [PartnersController::class, 'generateNewPassword'])->name('admin.manage.partners.reset-password');
 
     //Events
     Route::get('admin/events/list', [ManageEventsController::class, 'show'])->name('admin.events.index')->defaults('status', 'approved');

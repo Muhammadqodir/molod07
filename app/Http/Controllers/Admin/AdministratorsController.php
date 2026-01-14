@@ -7,6 +7,7 @@ use App\Http\Requests\CreateAdministratorRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdministratorsController extends Controller
 {
@@ -133,5 +134,25 @@ class AdministratorsController extends Controller
         $admin->save();
 
         return redirect()->route('admin.manage.administrators')->with('success', 'Администратор разблокирован.');
+    }
+
+    public function generateNewPassword(Request $request)
+    {
+        if (!isset($request["id"]) || !isset($request["password"])) {
+            abort(400, 'Bad Request');
+        }
+        $id = $request["id"];
+        $admin = User::where('role', 'admin')->findOrFail($id);
+
+        // Validate password
+        $request->validate([
+            'password' => 'required|string|min:6',
+        ]);
+
+        // Update the user's password
+        $admin->password = Hash::make($request->password);
+        $admin->save();
+
+        return redirect()->route('admin.manage.administrators')->with('success', "Пароль для {$admin->getFullName()} успешно изменен.");
     }
 }
