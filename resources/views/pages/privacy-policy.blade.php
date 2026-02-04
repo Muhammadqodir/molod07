@@ -111,9 +111,9 @@
                     ваших персональных данных, свяжитесь с нами:
                 </p>
                 <div class="bg-gray-50 p-4 rounded-lg">
-                    <p class="text-gray-700">Email: privacy@example.com</p>
-                    <p class="text-gray-700">Телефон: +7 (xxx) xxx-xx-xx</p>
-                    <p class="text-gray-700">Адрес: г. Москва, ул. Примерная, д. 1</p>
+                    <p class="text-gray-700">Email: mmckbr@mail.ru</p>
+                    <p class="text-gray-700">Телефон: +7(662) 49-60-33</p>
+                    <p class="text-gray-700">Адрес: КБР, г. Нальчик, пр-т Кулиева, 12</p>
                 </div>
             </section>
         </div>
