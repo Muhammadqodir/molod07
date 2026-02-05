@@ -65,7 +65,7 @@ class PagesController extends Controller
         return view('pages.course', compact('course'));
     }
 
-    function applyFilters($query, $request)
+    function applyFilters($query, Request $request, string $dateColumn = 'created_at', ?string $dateFallbackColumn = null)
     {
         // Filter by category if set and not 'Все'
         $category = $request->input('category', 'Все');
@@ -76,9 +76,13 @@ class PagesController extends Controller
         // Sort by 'popular' or 'date'
         $sort = $request->input('sort', 'popular');
         if ($sort === 'date') {
-            $query->orderByDesc('publication_date'); // Change 'date' to your actual date column
+            if ($dateFallbackColumn) {
+                $query->orderByRaw("COALESCE({$dateColumn}, {$dateFallbackColumn}) desc");
+            } else {
+                $query->orderByDesc($dateColumn);
+            }
         } else {
-            // $query->orderByDesc('views'); // Change 'views' to your actual popularity column
+            $query->withCount('views')->orderByDesc('views_count');
         }
         return $query;
     }
@@ -86,7 +90,7 @@ class PagesController extends Controller
     function eventsList(Request $request)
     {
         $query = Event::where('status', 'approved');
-        $query = $this->applyFilters($query, $request);
+        $query = $this->applyFilters($query, $request, 'start', 'created_at');
         $items = $query->paginate(10);
         $entity = 'events';
         $count = $items->total();
@@ -140,9 +144,7 @@ class PagesController extends Controller
     function newsList(Request $request)
     {
         $query = News::where('status', 'approved');
-        // Order news by publication_date (newest first)
-        $query->orderByDesc('publication_date');
-        $query = $this->applyFilters($query, $request);
+        $query = $this->applyFilters($query, $request, 'publication_date', 'created_at');
         $items = $query->paginate(10);
         $entity = 'news';
         $count = $items->total();
@@ -164,7 +166,7 @@ class PagesController extends Controller
     function grantsList(Request $request)
     {
         $query = Grant::where('status', 'approved');
-        $query = $this->applyFilters($query, $request);
+        $query = $this->applyFilters($query, $request, 'deadline', 'created_at');
         $items = $query->paginate(10);
         $entity = 'grants';
         $count = $items->total();

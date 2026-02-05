@@ -20,7 +20,7 @@
                         @switch($entity)
                             @case('events')
                                 <x-event-card image="{{ asset($item->cover) }}" :tags="[$item->category, $item->type]" points="{{ $item->getPoints() }}"
-                                    title="{{ $item->title }}" location="{{ $item->getAddress() }}" date="{{ $item->created_at->format('d.m.Y') }}"
+                                    title="{{ $item->title }}" location="{{ $item->getAddress() }}" date="{{ $item->start ? \Carbon\Carbon::parse($item->start)->format('d.m.Y') : $item->created_at->format('d.m.Y') }}"
                                     link="{{ route('event', $item->id) }}" />
                             @break
 

@@ -9,9 +9,11 @@
         </a>
         {{-- Левая часть --}}
         <div class="flex items-center gap-4">
-            <a href="{{ route('partner.reg') }}">
-                <x-button variant="outline">Стать партнёром</x-button>
-            </a>
+            @guest
+                <a href="{{ route('partner.reg') }}">
+                    <x-button variant="outline">Стать партнёром</x-button>
+                </a>
+            @endguest
             <a href="https://vk.com/minmol07" target="_blank"> <x-icon-button icon="vk" /> </a>
             <a href="https://t.me/minmolkbr" target="_blank"> <x-icon-button icon="telega" /> </a>
         </div>
@@ -259,9 +261,11 @@
         </div>
 
         <div class="mt-auto">
+            @guest
             <x-button variant="outline" class="w-full justify-center">
                 Стать партнёром
             </x-button>
+            @endguest
         </div>
     </div>
 </div>
