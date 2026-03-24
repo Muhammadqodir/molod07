@@ -144,6 +144,9 @@ class PagesController extends Controller
     function newsList(Request $request)
     {
         $query = News::where('status', 'approved');
+        if (!$request->has('sort')) {
+            $request->merge(['sort' => 'date']);
+        }
         $query = $this->applyFilters($query, $request, 'publication_date', 'created_at');
         $items = $query->paginate(10);
         $entity = 'news';
